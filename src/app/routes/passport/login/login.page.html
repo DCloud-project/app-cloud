@@ -1,0 +1,50 @@
+
+<ion-content>
+  <div class="background">
+    <ion-grid>
+      <!-- <ion-row class="row" style="margin-top:80px;display: block;text-align: center;">
+        <img class="img-tel" src="assets/icon/cloud.png">
+        <ion-label style="font-size: 30px;font-family: cursive;">到云</ion-label>
+      </ion-row> -->
+      <ion-row class="row" style="margin-top:80px">
+        <ion-segment mode="md" [(ngModel)]="tab" style="background-color: rgba(225,225,225,0);">
+          <ion-segment-button  value="tab1">
+            <ion-label style="font-size: 18px;">验证码登录</ion-label>
+          </ion-segment-button>
+          <ion-segment-button  value="tab2">
+            <ion-label style="font-size: 18px;">密码登录</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-row>
+      <div [ngSwitch]="tab">
+        <div *ngSwitchCase="'tab1'">
+          <ion-row style="margin-top:20px;"></ion-row>
+         <app-login></app-login>
+        </div>
+        <div *ngSwitchCase="'tab2'">
+          <ion-row class="row" style="margin-top:30px">
+            <ion-icon name="phone-portrait-outline"></ion-icon>
+            <ion-label>&nbsp;&nbsp;手机号</ion-label>
+          </ion-row>
+          <ion-row class="row">
+            <ion-input type="tel" class="input-user" placeholder="请输入手机号"></ion-input>
+          </ion-row>
+          <ion-row class="row">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <ion-label>&nbsp;&nbsp;密码</ion-label>
+          </ion-row>
+          <ion-row class="row">
+            <ion-input type="text" class="input-user" placeholder="请输入密码"> </ion-input>
+          </ion-row>
+          <ion-row class="row">
+            <ion-button color="secondary" class="btn btn-login" [routerLink]="['/lesson-tabs']" > 登录 </ion-button>
+          </ion-row>
+        </div>
+
+      </div>
+      <ion-row class="row" style="display: block;text-align: center;">
+        <ion-label color="secondary" [routerLink]="['/register']" >注册到云账号</ion-label>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

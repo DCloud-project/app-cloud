@@ -1,0 +1,10 @@
+.label-inf{
+    float: left;
+    text-align: center;
+    margin-top:5px;
+}
+.more-inf{
+    padding-bottom: 5px;
+    overflow: auto;
+    border-bottom: solid 1px var(--ion-color-light-shade);
+}
