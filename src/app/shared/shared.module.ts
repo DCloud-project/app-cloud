@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {LoginComponent} from './components/login/login.component'
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
+import {SearchComponent} from './components/search/search.component'
+import {CheckinComponent} from './components/checkin/checkin.component'
 
 
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [SearchComponent,CheckinComponent],
   imports: [
     CommonModule, IonicModule,RouterModule
   ],
-  exports:[LoginComponent]
+  exports:[SearchComponent,CheckinComponent],
+  entryComponents:[SearchComponent,CheckinComponent]
 })
 export class SharedModule { }

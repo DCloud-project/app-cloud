@@ -14,7 +14,7 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../lesson/mylesson/mylesson.module').then(m => m.MylessonPageModule)
+              import('../mylesson/mylesson.module').then(m => m.MylessonPageModule)
           }
         ]
       },

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes,ActivatedRoute } from '@angular/router';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -49,14 +49,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/member',
+        redirectTo: '/tabs/activities',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/member',
+    redirectTo: '/tabs/activities',
     pathMatch: 'full'
   }
 ];

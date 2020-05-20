@@ -1,5 +1,6 @@
 <ion-content>
   <div class="background">
+    <form (ngSubmit)="onVerify(verifyForm)" #verifyForm="ngForm" novalidate>
     <ion-grid>
       <ion-row>
         <ion-button expand="block" fill="clear" shape="round" [routerLink]="['']">
@@ -11,17 +12,25 @@
         <ion-label style="font-size: 20px;"> 请输入验证码 </ion-label>
       </ion-row>
       <ion-row class="row" style="margin-top:20px">
-        <ion-label> 验证码已发送到xxxxxx </ion-label>
+        <ion-label> 验证码已发送到{{email}} </ion-label>
       </ion-row>
       <ion-row class="row" style="margin-top:10px">
-        <ion-input class="input-user" type="text" placeholder=" 请输入验证码"></ion-input>
+        <ion-input class="verify-input" placeholder=" 请输入验证码" name="code" type="number" required pattern="^\d{6}$"
+        [(ngModel)]="verify_code" #code="ngModel"></ion-input>
+        <ion-button class="btn-verify" color="secondary" (click)="onSendSMS()" [disabled]="!verifyCode.disable">{{verifyCode.verifyCodeTips}}</ion-button>
       </ion-row>
+      <div class="signup_warn">
+        <ion-text text-left color="danger" *ngIf="code.invalid && code.touched">
+          <p class="warn" [hidden]="!code.errors?.required" padding-start>请输入验证码</p>
+          <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入6位验证码</p>
+        </ion-text>
+      </div>
       <ion-row class="row">
-        <ion-button class="btn btn-verify" color="secondary" [routerLink]="['/verify']" expand="block">
-          获取验证码
+        <ion-button class="btn confirm" color="secondary" type="submit" [disabled]="verifyForm.invalid" expand="block">
+          确定
         </ion-button>
       </ion-row>
-
     </ion-grid>
+  </form>
   </div>
 </ion-content>

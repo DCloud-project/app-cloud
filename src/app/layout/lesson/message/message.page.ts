@@ -7,7 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagePage implements OnInit {
 
-  constructor() { }
+  public lesson={
+    no:'',
+    name:''
+  };
+  constructor() { 
+    this.lesson.name = localStorage.getItem("lesson_name");
+    this.lesson.no = localStorage.getItem("lesson_no");
+  }
 
   ngOnInit() {
   }

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>gesture-lock</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="gestureLockBox">
+    <div  class="gestureTitle" text-center  [ngStyle]="{'color':textColor}">{{titleMes}}</div>
+    <a #resetPassword class="resetPasswordBox" (click)="resetPasswordFun()">重置密码?</a>
+    <a #resetPassword  (click)="deletPasswordFun()">删除密码?</a>
+    <canvas #canvas [ngStyle]="{'height.px':height,'width.px':width}"></canvas>
+
+  </div>
+
+</ion-content>

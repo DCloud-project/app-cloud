@@ -2,6 +2,7 @@
 
 <ion-content>
   <div class="background">
+    <form (ngSubmit)="onRegister(registerForm)" #registerForm="ngForm" novalidate>
     <ion-grid>
       <ion-row>
         <ion-button expand="block" fill="clear" shape="round" [routerLink]="['']" >
@@ -12,7 +13,25 @@
       <ion-row class="row" style="margin-top:80px;display: block;text-align: center;">
         <ion-label style="font-size: 30px;">注册</ion-label>
       </ion-row>
-      <app-login></app-login>
+      <ion-row class="row" style="margin-top:10px">
+        <ion-icon name="mail-outline"></ion-icon>
+        <ion-label>&nbsp;&nbsp;电子邮箱</ion-label>
+      </ion-row>
+      <ion-row class="row">
+        <ion-input name="email" type="text" class="input-user" placeholder="请输入电子邮箱" required
+        pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" [(ngModel)]="register_email" #email="ngModel">
+        </ion-input>
+      </ion-row>
+      <div class="signup_warn">
+        <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
+          <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
+          <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱号格式不正确</p>
+        </ion-text>
+      </div>
+      <ion-row class="row">
+        <ion-button color="secondary" class="btn-verify" type="submit" [disabled]="registerForm.invalid"> 获取验证码 </ion-button>
+      </ion-row>
     </ion-grid>
+  </form>
   </div>
 </ion-content>

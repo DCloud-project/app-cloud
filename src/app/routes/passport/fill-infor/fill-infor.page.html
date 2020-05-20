@@ -1,0 +1,69 @@
+
+<ion-content>
+  <form (ngSubmit)="onFill(fillForm)" #fillForm="ngForm" novalidate>
+    <ion-grid>
+      <ion-row class="row" style="margin-top:40px;">
+        <ion-label style="font-size: 28px;">完善基本信息</ion-label>
+      </ion-row>
+      <ion-row class="row" style="margin-top:10px">
+        <ion-label>告诉我们你的基本信息吧~</ion-label>
+      </ion-row>
+      <ion-row class="row" style="margin-top:10px">
+        <ion-label>姓名</ion-label>
+      </ion-row>
+      <ion-row class="row">
+        <ion-input name="username" class="input-user" placeholder="请输入姓名" [(ngModel)]="userInfor.name" required #username=ngModel></ion-input>
+      </ion-row>
+      <div class="signup_warn">
+        <ion-text text-left color="danger" *ngIf="username.invalid && username.touched">
+          <p class="warn" [hidden]="!username.errors?.required" padding-start>姓名不能为空</p>
+        </ion-text>
+      </div>
+      <ion-row class="row">
+        <ion-label>学号</ion-label>
+      </ion-row>
+      <ion-row class="row">
+        <ion-input name = "stuNo" class="input-user" placeholder="请输入学号" [(ngModel)]="userInfor.sno" required #stuNo=ngModel></ion-input>
+      </ion-row>
+      <div class="signup_warn">
+        <ion-text text-left color="danger" *ngIf="stuNo.invalid && stuNo.touched">
+          <p class="warn" [hidden]="!stuNo.errors?.required" padding-start>学号不能为空</p>
+        </ion-text>
+      </div>
+      <ion-row class="row">
+        <ion-label>设置密码</ion-label>
+      </ion-row>
+      <ion-row class="row">
+        <ion-input class="input-user" type="password" placeholder="请输入密码" name="password" required
+        pattern="^(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,12}$" [(ngModel)]="userInfor.password" #password=ngModel></ion-input>
+      </ion-row>
+      <div class="signup_warn">
+        <ion-text text-left color="danger" *ngIf="password.invalid && password.touched">
+          <p class="warn" [hidden]="!password.errors?.required" padding-start>请输入密码</p>
+          <p class="warn" [hidden]="!password.errors?.pattern" padding-start>6至16位，由数字、英文、符号三种字符类型构成，至少包含两种类型字符</p>
+        </ion-text>
+      </div>
+      <ion-row class="row">
+        <ion-label>请选择你的身份</ion-label>
+      </ion-row>
+      <ion-row class="row">
+        <ion-list lines="none">
+        <ion-radio-group name="identity" [(ngModel)]="userInfor.identity" mode="md">
+          <ion-item class="identity-radio">
+            <ion-label>学生</ion-label>
+            <ion-radio slot="start" value="0"></ion-radio>
+          </ion-item>
+          <ion-item class="identity-radio">
+            <ion-label>老师</ion-label>
+            <ion-radio slot="start" value="1"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      </ion-row>
+      <ion-row class="row">
+        <ion-button color="secondary" type="submit" class="btn" [disabled]="fillForm.invalid"> 进入到云 </ion-button>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

@@ -16,7 +16,7 @@
     width:80%;
     margin:auto;
 }
-.btn-verify{
+.confirm{
     width:100%;
 }
 .img-tel{
@@ -24,4 +24,18 @@
 }
 ion-segment-button{
     background-color: rgba(225,225,225,0) !important;
+}
+
+.btn-verify{
+    height: 45px;
+    width: 40%;
+    margin: auto;
+    margin-left: 5px;
+}
+.verify-input{
+    border: solid 1px #50c8ff;
+    border-radius: 5px;
+    background: white;
+    height: 45px;
+    margin: auto;
 }
