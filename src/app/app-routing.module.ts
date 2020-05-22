@@ -52,13 +52,33 @@ const routes: Routes = [
     loadChildren: () => import('./layout/createlesson/createlesson.module').then( m => m.CreatelessonPageModule)
   },
   {
-    path: 'fill-infor',
-    loadChildren: () => import('./routes/passport/fill-infor/fill-infor.module').then( m => m.FillInforPageModule)
-  },
-  {
     path: 'gesture-lock',
     loadChildren: () => import('./layout/checkin/gesture-lock/gesture-lock.module').then( m => m.GestureLockPageModule)
   },
+  {
+    path: 'change-pass',
+    loadChildren: () => import('./routes/passport/change-pass/change-pass.module').then( m => m.ChangePassPageModule)
+  },
+  {
+    path: 'join-by-code',
+    loadChildren: () => import('./layout/joinByCode/join-by-code/join-by-code.module').then( m => m.JoinByCodePageModule)
+  },
+  {
+    path: 'confirm-join',
+    loadChildren: () => import('./layout/joinByCode/confirm-join/confirm-join.module').then( m => m.ConfirmJoinPageModule)
+  },
+  {
+    path: 'join-by-qr',
+    loadChildren: () => import('./layout/join-by-qr/join-by-qr.module').then( m => m.JoinByQRPageModule)
+  },
+  {
+    path: 'update-inf',
+    loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
+  },
+  // {
+  //   path: 'base-axios',
+  //   loadChildren: () => import('./shared/services/base-axios/base-axios.module').then( m => m.BaseAxiosPageModule)
+  // },
   // {
   //   path: 'user-inf',
   //   loadChildren: () => import('./layout/user/user-inf/user-inf.module').then( m => m.UserInfPageModule)
