@@ -6,13 +6,13 @@
 
 <ion-content>
   <ion-list>
-    <ion-item lines="none" style="padding: 9px 0px;">
+    <ion-item lines="none" style="padding: 9px 0px;" [routerLink]="['/update-inf']">
       <ion-thumbnail>
         <img src="../../../../assets/icon/lesson.png">
       </ion-thumbnail>
       <ion-label>
-        <h3>&nbsp;&nbsp;&nbsp;姓名&nbsp;&nbsp;电话号码</h3>
-        <p>&nbsp;&nbsp;&nbsp;经验值&nbsp;&nbsp;36</p>
+        <h3>&nbsp;&nbsp;&nbsp;{{user.email}}</h3>
+        <p>&nbsp;&nbsp;&nbsp;经验值&nbsp;&nbsp;{{user.exp}}</p>
       </ion-label>
     </ion-item>
   </ion-list>
@@ -20,44 +20,77 @@
   <ion-list lines="full">
     <ion-item-divider>
     </ion-item-divider>
-    <ion-item>
-      <ion-label>昵称</ion-label>
-      <ion-input  class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>工号</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>出生年月</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>性别</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>你所在的学校或院系</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
+    <ion-item [routerLink]="['/change-pass']">
+      <ion-label>修改密码</ion-label>
+      <ion-input class="my_inf" slot="end" type="text"></ion-input>
     </ion-item>
   </ion-list>
 
+
+  <!-- <form (ngSubmit)="onUpdate(updateForm)" #updateForm="ngForm" novalidate> -->
   <ion-list lines="full">
     <ion-item-divider>
     </ion-item-divider>
+    <ion-item slot="end">
+      <ion-label>姓名</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.name"></ion-input>
+    </ion-item>
+    <ion-item slot="end">
+      <ion-label>昵称</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.nickname"></ion-input>
+    </ion-item>
+
     <ion-item>
-      <ion-label>用户协议</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
+      <ion-label>工号</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.sno"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>隐私设置</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
+      <ion-label>出生年月</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.birth"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label>设置</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置">  </ion-input>
+    <ion-radio-group value="female" mode="md">
+      <ion-item>
+        <ion-label>性别</ion-label>
+        <ion-radio color="success" value="male"></ion-radio>
+        <ion-label>男</ion-label>
+        
+        <ion-radio color="tertiary" value="female"></ion-radio>
+        <ion-label>女</ion-label>
+        <!-- <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.sex"></ion-input> -->
+      </ion-item>
+      <!-- <ion-item>
+        <ion-label>男</ion-label>
+        <ion-radio slot="start" color="success" value="apple"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>女</ion-label>
+        <ion-radio slot="start" color="tertiary" value="grape"></ion-radio>
+      </ion-item> -->
+    </ion-radio-group>
+    <!-- <ion-item>
+      <ion-label>性别</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.sex"></ion-input>
+    </ion-item>-->
+    <!-- <ion-item> -->
+      <!-- <ion-button expand="block" onclick="openPicker(1,5,defaultColumnOptions)">Show Multi Column Picker</ion-button>
+      <ion-button expand="block" onclick="openPicker(2,5,multiColumnOptions)">Show Multi Column Picker</ion-button> -->
+      <!-- <ion-label>你所在的学校或院系</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.school"></ion-input> -->
+    <!-- </ion-item> -->
+    <ion-item lines="none">
     </ion-item>
   </ion-list>
-
+  <div style="text-align: center;">
+    <ion-button color="secondary" type="submit" class="btn" style="width:90%" (click)="updateInf()"> 保存 </ion-button>
+  </div>
+  <!-- </form> -->
+  <ion-list lines="full">
+    <ion-item-divider>
+    </ion-item-divider>
+    <ion-item class="logout-row" lines="none">
+      <ion-button class="logout-btn" style="width:90%" fill="clear" (click)="onLogout()">注销</ion-button>
+    </ion-item>
+    <ion-item-divider>
+    </ion-item-divider>
+  </ion-list>
 </ion-content>
