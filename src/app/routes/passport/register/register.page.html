@@ -1,37 +1,61 @@
-
-
 <ion-content>
   <div class="background">
     <form (ngSubmit)="onRegister(registerForm)" #registerForm="ngForm" novalidate>
-    <ion-grid>
-      <ion-row>
-        <ion-button expand="block" fill="clear" shape="round" [routerLink]="['']" >
-          <ion-icon  slot="start" name="chevron-back-outline"></ion-icon>
-          返回
-        </ion-button>
-      </ion-row>
-      <ion-row class="row" style="margin-top:80px;display: block;text-align: center;">
-        <ion-label style="font-size: 30px;">注册</ion-label>
-      </ion-row>
-      <ion-row class="row" style="margin-top:10px">
-        <ion-icon name="mail-outline"></ion-icon>
-        <ion-label>&nbsp;&nbsp;电子邮箱</ion-label>
-      </ion-row>
-      <ion-row class="row">
-        <ion-input name="email" type="text" class="input-user" placeholder="请输入电子邮箱" required
-        pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" [(ngModel)]="register_email" #email="ngModel">
-        </ion-input>
-      </ion-row>
-      <div class="signup_warn">
-        <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
-          <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
-          <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱号格式不正确</p>
-        </ion-text>
-      </div>
-      <ion-row class="row">
-        <ion-button color="secondary" class="btn-verify" type="submit" [disabled]="registerForm.invalid"> 获取验证码 </ion-button>
-      </ion-row>
-    </ion-grid>
-  </form>
+      <ion-grid>
+        <ion-row>
+          <ion-button expand="block" fill="clear" shape="round" [routerLink]="['']">
+            <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+            返回
+          </ion-button>
+        </ion-row>
+        <ion-row class="row" style="margin-top:30px;display: block;text-align: center;">
+          <ion-label style="font-size: 30px;">注册</ion-label>
+        </ion-row>
+        <ion-row class="row" style="margin-top:10px">
+          <ion-input name="email" type="text" class="input-user" placeholder="请输入邮箱" required
+            pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" [(ngModel)]="register_email" #email="ngModel">
+            <ion-icon name="mail-outline" class="input_icon"></ion-icon>
+          </ion-input>
+        </ion-row>
+        <div class="signup_warn">
+          <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
+            <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
+            <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱号格式不正确</p>
+          </ion-text>
+        </div>
+        <ion-row class="row">
+          <ion-input name="code" type="text" class="verify_text" [(ngModel)]="verify_code" placeholder="请输入验证码">
+            <ion-icon name="mail-open-outline" class="input_icon"></ion-icon>
+          </ion-input>
+          <ion-button color="secondary" (click)="onSendSMS()" [disabled]="!verifyCode.disable">{{verifyCode.verifyCodeTips}}</ion-button>
+        </ion-row>
+        <ion-row class="row">
+          <ion-input name='pwd1' type="password" class="input-user" placeholder="请输入密码" required
+          pattern="^(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,12}$" [(ngModel)]="password1" #pwd1="ngModel">
+            <ion-icon name="lock-closed-outline" class="input_icon"></ion-icon>
+          </ion-input>
+        </ion-row>
+        <div class="signup_warn">
+          <ion-text name='pwd2' text-left color="danger" *ngIf="pwd1.invalid && pwd1.touched">
+            <p class="warn" [hidden]="!pwd1.errors?.required" padding-start>请输入密码</p>
+            <p class="warn" [hidden]="!pwd1.errors?.pattern" padding-start>6至16位，由数字、英文、符号三种字符类型构成，至少包含两种类型字符</p>
+          </ion-text>
+        </div>
+         <ion-row class="row">
+          <ion-input name="pwd2" type="password" class="input-user" placeholder="请确认密码" [(ngModel)]="password2" #pwd2="ngModel">
+            <ion-icon name="checkmark-done-circle-outline" class="input_icon"></ion-icon>
+          </ion-input>
+        </ion-row>
+        <!-- <div class="signup_warn">
+          <ion-text text-left color="danger" *ngIf="pwd2.invalid && pwd2.touched">
+            <p class="warn" [hidden]="!pwd2.errors?.required" padding-start>请再次输入密码</p>
+            <p class="warn" [hidden]="!pwd2.errors?.pattern" padding-start>6至16位，由数字、英文、符号三种字符类型构成，至少包含两种类型字符</p>
+          </ion-text>
+        </div>  -->
+        <ion-row class="row">
+          <ion-button color="secondary" type="submit" class="btn btn-login" [disabled]="registerForm.invalid"> 注册 </ion-button>
+        </ion-row>
+      </ion-grid>
+    </form>
   </div>
 </ion-content>

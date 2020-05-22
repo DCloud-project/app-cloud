@@ -6,7 +6,8 @@
 }
 
 .input-user{
-    text-align: center;
+    // text-align: center;
+    text-indent: 5;
     border: solid 1px #50c8ff;
     border-radius: 5px;
     background: white;
@@ -15,6 +16,18 @@
     padding-top: 10px;
     width:80%;
     margin:auto;
+}
+.input_icon{
+    margin: 0px 5px;
+    color: #808080;
+}
+.verify_text{
+    // text-align: center;
+    border: solid 1px #50c8ff;
+    border-radius: 5px;
+    height: 80%;
+    margin: auto 0px;
+    background: white;
 }
 .btn-verify{
     width:100%;
