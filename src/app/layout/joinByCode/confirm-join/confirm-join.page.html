@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/join-by-code']">
+        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title color="medium">加入班课</ion-title>
+  </ion-toolbar>
+  <ion-card style="text-align: center;">
+    
+    <ion-card-header>
+      <img class="lesson_img" src="../../../../assets/icon/lesson.png">
+      <ion-card-subtitle>计算机专硕1班</ion-card-subtitle>
+      <ion-card-subtitle>工程实践</ion-card-subtitle>
+    </ion-card-header>
+    <!-- <ion-card-content>
+      Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the Wisconsin Territory in 1836.
+    </ion-card-content> -->
+  </ion-card>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item lines="full">
+      <ion-label>老师</ion-label>
+      <ion-input disabled>雷晶</ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label>类型</ion-label>
+      <ion-input disabled>学校课表班课</ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer style="text-align: center;">
+  <ion-button color="secondary" style="width: 90%;">
+    加入
+  </ion-button>
+</ion-footer>
