@@ -17,7 +17,7 @@
             <ion-row style="margin-top:20px;"></ion-row>
             <ion-row class="row" style="margin-top:10px">
               <ion-icon name="mail-outline"></ion-icon>
-              <ion-label>&nbsp;&nbsp;电子邮箱</ion-label>
+              <ion-label>&nbsp;&nbsp;邮箱</ion-label>
             </ion-row>
             <ion-row class="row">
               <ion-input name="email" type="text" class="input-user" placeholder="请输入电子邮箱" required
@@ -26,8 +26,8 @@
             </ion-row>
             <div class="signup_warn">
               <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
-                <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
-                <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱号格式不正确</p>
+                <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱</p>
+                <p class="warn" [hidden]="!email.errors?.pattern" padding-start>请输入正确的邮箱</p>
               </ion-text>
             </div>
             <ion-row class="row">
@@ -37,17 +37,17 @@
           <div *ngSwitchCase="'tab2'">
             <ion-row class="row" style="margin-top:30px">
               <ion-icon name="mail-outline"></ion-icon>
-              <ion-label>&nbsp;&nbsp;电子邮箱</ion-label>
+              <ion-label>&nbsp;&nbsp;邮箱</ion-label>
             </ion-row>
             <ion-row class="row">
-              <ion-input name="email" type="tel" class="input-user" placeholder="请输入电子邮箱" required
+              <ion-input name="email" type="tel" class="input-user" placeholder="请输入邮箱" required
               pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" [(ngModel)]="login.email" #email=ngModel>
               </ion-input>
             </ion-row>
             <div class="signup_warn">
               <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
                 <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
-                <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱号格式不正确</p>
+                <p class="warn" [hidden]="!email.errors?.pattern" padding-start>请输入正确的邮箱</p>
               </ion-text>
             </div>
             <ion-row class="row">
@@ -55,15 +55,15 @@
               <ion-label>&nbsp;&nbsp;密码</ion-label>
             </ion-row>
             <ion-row class="row">
-              <ion-input name="password" type="password" class="input-user" placeholder="请输入登录密码" required
-              pattern="^(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,12}$" [(ngModel)]="login.password" #password=ngModel></ion-input>
+              <ion-input name="password" type="password" class="input-user" placeholder="请输入密码"
+               [(ngModel)]="login.password" #password=ngModel></ion-input>
             </ion-row>
-            <div class="signup_warn">
+            <!-- <div class="signup_warn">
               <ion-text text-left color="danger" *ngIf="password.invalid && password.touched">
                 <p class="warn" [hidden]="!password.errors?.required" padding-start>请输入密码</p>
                 <p class="warn" [hidden]="!password.errors?.pattern" padding-start>6至16位，由数字、英文、符号三种字符类型构成，至少包含两种类型字符</p>
               </ion-text>
-            </div>
+            </div> -->
             <ion-row class="row">
               <ion-button color="secondary" type="submit" class="btn btn-login" [disabled]="loginForm.invalid"> 登录 </ion-button>
             </ion-row>
