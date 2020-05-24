@@ -78,6 +78,7 @@ export class LoginPage implements OnInit {
             //   return Promise.reject(error);
             // });
             this.router.navigateByUrl('\lesson-tabs');
+            localStorage.setItem("email", this.login.email);
             localStorage.setItem("isLogin", "1");
             this.setTime();
           } else {

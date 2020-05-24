@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
-import { PickerController } from '@ionic/angular';
+import { PickerController, AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-user-inf',
   templateUrl: './user-inf.page.html',
@@ -22,136 +22,153 @@ export class UserInfPage implements OnInit {
     birth: "1",
     exp: "1"
   };
+  selectedSchool: any;
+  selectedAcademy: string;
 
   constructor(public router: Router, public httpService: HttpServiceService,
     public http: HttpClient,
-    public pickerController:PickerController) { }
+    private alertController: AlertController,
+    public pickerController: PickerController) { }
 
   // pickerController = document.querySelector('ion-picker-controller');
-  defaultColumnOptions = [
-    [
-      'Dog',
-      'Cat',
-      'Bird',
-      'Lizard',
-      'Chinchilla'
-    ]
-  ]
-
-  multiColumnOptions = [
-    [
-      'Minified',
-      'Responsive',
-      'Full Stack',
-      'Mobile First',
-      'Serverless'
-    ],
-    [
-      'Tomato',
-      'Avocado',
-      'Onion',
-      'Potato',
-      'Artichoke'
-    ]
-  ]
+  school = [[]]
+  academy = [[]]
+  schoolList = {}
+  academyList = {}
+  public flag = 0;
+  public schoolChoosed = "未设置"
+  public academyChoosed = "未设置"
+  public academyId;
+  public schoolOptions = 0;
+  public academyOptions = 0;
   ngOnInit() {
     var params = {//后台所需参数
       email: localStorage.getItem("email"),
     };
     var api = '/user/info';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
-      console.log(response);
       if (response.status == 200) {
         this.user = response.data;
         this.user["email"] = localStorage.getItem("email");
+        //获取学校名称
+        var str = this.user.school.split("/");
+          var api = '/schools/getCode';//后台接口
+            this.httpService.get(api, {code: str[0]}).then(async (response: any) => {
+              this.schoolChoosed = response.data;
+            })
+            this.httpService.get(api, {code: str[1]}).then(async (response: any) => {
+              this.academyChoosed = response.data;
+            })
       }
+    })
+
+    //请求后台数据
+    this.school[0].length = 0;
+    var param = {
+      school: 1,
+    }
+    var api = '/schools';//后台接口
+    this.httpService.get(api, param).then(async (response: any) => {
+
+      this.schoolList = response.data;
+      for (var i = 0; i < response.data.length; i++) {
+        this.school[0].push(response.data[i].name);
+      }
+      this.schoolOptions = this.school[0].length;
     })
   }
 
   //编辑个人信息
   updateInf() {
     // if (form.valid) {
-      var params = {
-        email: this.user.email,
-        iamge: "0",
-        sno: this.user.sno,
-        school: this.user.school,
-        sex: this.user.sex,
-        nickname: this.user.nickname,
-        telphone:"172837628",
-        name: this.user.name,
-        birth: this.user.birth,
+    var params = {
+      email: this.user.email,
+      image: "0",
+      sno: this.user.sno,
+      school: this.user.school,
+      sex: this.user.sex,
+      nickname: this.user.nickname,
+      telphone: "0",
+      name: this.user.name,
+      birth: this.user.birth,
+    }
+    var api = '/user/info';//后台接口
+    this.httpService.put(api, params).then(async (response: any) => {
+      if (response.data.respCode == 1) {
+        let alert = await this.alertController.create({
+          header:'提示',
+          message: '修改成功！',
+          buttons: ['确认']
+        });
+        alert.present();
+        //修改成功，重新获取刷新页面
+        var param = {//后台所需参数
+          email: localStorage.getItem("email"),
+        };
+        var api = '/user/info';//后台接口
+        this.httpService.get(api, param).then(async (response: any) => {
+          if (response.status == 200) {
+            this.user = response.data;
+            this.user["email"] = localStorage.getItem("email");
+          }
+        })
       }
-      var api = '/user/info';//后台接口
-      this.httpService.put(api, params).then(async (response: any) => {
-        console.log(response);
-        // if (response.status == 200) {
-        //   //修改密码成功，跳转到登录页
-        //   this.user = response.data;
-        //   this.user["email"] = localStorage.getItem("email");
-        // }
-      })
+    })
     // }
   }
-  onLogout(){
+  onLogout() {
     localStorage.setItem("isLogin", "0");
     this.router.navigateByUrl('');
   }
-
-  // async openPicker(numColumns = 1, numOptions = 5, columnOptions = this.defaultColumnOptions){
-  //   const picker = this.pickerController.create({
-  //     columns: this.getColumns(numColumns, numOptions, columnOptions),
-  //     buttons: [
-  //       {
-  //         text: 'Cancel',
-  //         role: 'cancel'
-  //       },
-  //       {
-  //         text: 'Confirm',
-  //         handler: (value) => {
-  //           console.log(`Got Value ${value}`);
-  //         }
-  //       }
-  //     ]
-  //   });
-
-  //   (await picker).present();
-  // }
-
-  // getColumns(numColumns, numOptions, columnOptions) {
-  //   let columns = [];
-  //   for (let i = 0; i < numColumns; i++) {
-  //     columns.push({
-  //       name: `col-${i}`,
-  //       options: this.getColumnOptions(i, numOptions, columnOptions)
-  //     });
-  //   }
-
-  //   return columns;
-  // }
-
-  // getColumnOptions(columnIndex, numOptions, columnOptions) {
-  //   let options = [];
-  //   for (let i = 0; i < numOptions; i++) {
-  //     options.push({
-  //       text: columnOptions[columnIndex][i % numOptions],
-  //       value: i
-  //     })
-  //   }
-  //   return options;
-  // }
-  async  openPicker(numColumns = 1, numOptions = 5, multiColumnOptions) {
+  async  openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
     const picker = await this.pickerController.create({
-      columns: this.getColumns(numColumns, numOptions, multiColumnOptions),
+      columns: this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool),
       buttons: [
         {
-          text: 'Cancel',
+          text: '取消',
           role: 'cancel'
         },
         {
-          text: 'Confirm',
+          text: '确认',
           handler: (value) => {
-            console.log(`Got Value ${value}`);
+            var selected = this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool);
+            if (isSchool == 1) {
+              this.flag = 1;
+              this.academyId = selected[0].options[value.col.value].id;
+              this.schoolChoosed = value.col.text;
+              this.user.school = "";
+              this.selectedSchool = selected[0].options[value.col.value].code;
+              this.user.school += this.selectedSchool;
+              //获取学院列表
+              this.academy[0].length = 0;
+              var param = {
+                academy: this.academyId,
+              }
+              this.academyChoosed = '未设置';
+              var api = '/schools';//后台接口
+              this.httpService.get(api, param).then(async (response: any) => {
+                for (var i = 0; i < response.data.length; i++) {
+                  this.academy[0].push(response.data[i].name);
+                }
+                this.academyList = response.data;
+                this.academyOptions = this.academy[0].length;
+              })
+            } else {
+              this.flag++;//2
+              if (this.flag > 2) {
+                this.flag--;
+                this.user.school = this.selectedSchool;
+              }
+              if (this.user.school.length == 0) {
+                console.log("请先选择学校");
+              } else {
+                this.academyChoosed = value.col.text;
+                this.selectedAcademy = selected[0].options[value.col.value].code;
+                this.user.school += "/" + this.selectedAcademy;
+              }
+
+            }
+            console.log(this.user.school);
           }
         }
       ]
@@ -159,26 +176,50 @@ export class UserInfPage implements OnInit {
     await picker.present();
   }
 
-  getColumns(numColumns, numOptions, columnOptions) {
+  getColumns(numColumns, numOptions, columnOptions, isSchool) {
     let columns = [];
     for (let i = 0; i < numColumns; i++) {
       columns.push({
-        name: `col-${i}`,
-        options: this.getColumnOptions(i, numOptions, columnOptions)
+        name: `col`,
+        options: this.getColumnOptions(i, numOptions, columnOptions, isSchool)
       });
     }
     return columns;
   }
 
-  getColumnOptions(columnIndex, numOptions, columnOptions) {
+  getColumnOptions(columnIndex, numOptions, columnOptions, isSchool) {
     let options = [];
     for (let i = 0; i < numOptions; i++) {
-      options.push({
-        text: columnOptions[columnIndex][i % numOptions],
-        value: i
-      })
+      if (isSchool == 1) {
+        for (let j = 0; j < this.schoolOptions; j++) {
+          if (this.schoolList[j].name == columnOptions[columnIndex][i % numOptions]) {
+            options.push({
+              text: columnOptions[columnIndex][i % numOptions],
+              value: i,
+              code: this.schoolList[j].code,
+              id: this.schoolList[j].id
+            })
+          }
+        }
+      } else {
+        for (let j = 0; j < this.academyOptions; j++) {
+          if (this.academyList[j].name == columnOptions[columnIndex][i % numOptions]) {
+            options.push({
+              text: columnOptions[columnIndex][i % numOptions],
+              value: i,
+              code: this.academyList[j].code,
+              id: this.academyList[j].id
+            })
+          }
+        }
+      }
+
+      // options.push({
+      //   text: columnOptions[columnIndex][i % numOptions],
+      //   value: i,
+      // })
     }
     return options;
   }
-  
+
 }
