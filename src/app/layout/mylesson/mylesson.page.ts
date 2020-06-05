@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { SearchComponent } from '../../shared/components/search/search.component';
 import { HttpServiceService } from '../../shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink, Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
+import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-mylesson',
@@ -13,6 +14,7 @@ import { ActionSheetController } from '@ionic/angular';
 })
 
 export class MylessonPage implements OnInit {
+
   public tab = "tab1";
   public lessonName = '';
   public lessonNo = '';
@@ -20,13 +22,24 @@ export class MylessonPage implements OnInit {
   public result;
   api = '/courses';//后台接口
 
-  public lessonList = [];
+  public list = [];
+  public index = 0;
+  public lessonList = [{
+    no: "",
+    class: "",
+    term: "",
+    tname: "",
+    name: ""
+  }
+  ];
 
   constructor(public httpService: HttpServiceService,
     public http: HttpClient,
     public modalController: ModalController,
     public router: Router,
-    public actionSheetController: ActionSheetController) {
+    public actionSheetController: ActionSheetController,
+    public loadingController: LoadingController) {
+    this.getCreateLesson();
     this.params = {
       teacher_id: 2
     }
@@ -43,54 +56,73 @@ export class MylessonPage implements OnInit {
   }
 
   gotoCheckin() {
-    this.router.navigateByUrl('choose');
+    this.router.navigateByUrl('/choose');
   }
   ngOnInit() {
     //请求后台获取 我创建的班课列表
-    // this.httpService.get(this.api, this.params).then((response: any) => {
-    //   this.lessonList = response.data;
-    // })
-
-    // this.httpService.getAll(api).then((response: any) => {
-    //   console.log(response);//返回参数
-    // })
-    // this.httpService.post(api, this.params).then((response: any) => {
-    //   console.log(response);//返回参数
-    // })
-    // this.httpService.patch(api, this.params).then((response: any) => {
-    //   console.log(response);//返回参数
-    // })
-    // this.httpService.delete(api,this.params).then((response: any) => {
-    //   console.log(response);//返回参数
-    // })
-    //   this.httpService.put(this.api,this.params).then((response: any) => {
-    //   console.log(response);//返回参数
-    // })
+    this.getCreateLesson();
   }
-  getCreatLesson() {
-    // this.params = {
-    //   teacher_id: 2
-    // }
-    // this.httpService.get(this.api, this.params).then((response: any) => {
-    //   this.lessonList = response.data;
-    // })
-  }
+  //我创建的 user的教师id-->该教师对应的课程（登录时就应存该id）
+  async getCreateLesson() {
+    localStorage.setItem("isTeacher", '0');
 
-  getMyLesson() {
-    // this.params = {
-    //   student_id: 1
-    // }
-    // this.httpService.get(this.api, this.params).then((response: any) => {
-    //   this.lessonList = response.data;
-    // })
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+    
+    this.params = {
+      teacher_email: localStorage.getItem("email")
+    }
+    this.httpService.get(this.api, this.params).then(async (response: any) => {
+      await loading.dismiss();
+      this.lessonList = response.data;
+      if (this.lessonList.length > 5) {
+        for (var i = 0; i < 5; i++) {
+          this.list[i] = this.lessonList[i];
+        }
+        this.index = 5;
+      } else {
+        this.list = this.lessonList;
+      }
+    })
   }
 
-  get() {
-    console.log("tab" + this.tab);
+  //我加入的 user的学生id，该学生对应的课程
+  async getMyLesson() {
+    localStorage.setItem("isTeacher", '0');
+
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+
+    this.params = {
+      student_email: localStorage.getItem("email")
+    }
+    this.httpService.get(this.api, this.params).then(async (response: any) => {
+      await loading.dismiss();
+      this.lessonList = response.data;
+      if (this.lessonList.length > 5) {
+        for (var i = 0; i < 5; i++) {
+          this.list[i] = this.lessonList[i];
+        }
+        this.index = 5;
+      } else {
+        this.list = this.lessonList;
+      }
+
+    })
   }
+
+  // get() {
+  //   console.log("tab" + this.tab);
+  // }
   getCurrentLesson(index) {
+    // console.log(index);
     localStorage.setItem("lesson_name", this.lessonList[index].name);
     localStorage.setItem("lesson_no", this.lessonList[index].no);
+    // console.log(this.lessonList[index]);
     if (this.tab == 'tab1') {
       localStorage.setItem("isTeacher", '1');
     } else {
@@ -98,10 +130,6 @@ export class MylessonPage implements OnInit {
     }
 
   }
-
-  // addLesson() {
-
-  // }
   async addLesson() {
     const actionSheet = await this.actionSheetController.create({
       buttons: [
@@ -129,7 +157,28 @@ export class MylessonPage implements OnInit {
         }
       ]
     });
-
     await actionSheet.present();
   }
+
+  loadData(event) {
+
+    setTimeout(() => {
+      if (this.list.length == this.lessonList.length) {
+        event.target.disabled = true;
+        this.index = this.lessonList.length;
+      }
+      event.target.complete();
+      if (this.lessonList.length - this.list.length > 5) {
+        for (var i = this.index; i < this.index + 5; i++) {
+          this.list.push(this.lessonList[i]);
+        }
+        this.index = this.index + 5;
+      } else {
+        for (var i = this.index; i < this.lessonList.length; i++) {
+          this.list.push(this.lessonList[i]);
+        }
+      }
+    }, 500);
+  }
+
 }

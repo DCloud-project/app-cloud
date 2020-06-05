@@ -75,6 +75,18 @@ const routes: Routes = [
     path: 'update-inf',
     loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
   },
+  {
+    path: 'lesson-edit',
+    loadChildren: () => import('./layout/lesson-edit/lesson-edit.module').then( m => m.LessonEditPageModule)
+  },
+  {
+    path: 'lesson-detail-edit',
+    loadChildren: () => import('./layout/lesson-detail-edit/lesson-detail-edit.module').then( m => m.LessonDetailEditPageModule)
+  },
+  {
+    path: 'update-lesson',
+    loadChildren: () => import('./layout/update-lesson/update-lesson.module').then( m => m.UpdateLessonPageModule)
+  },
   // {
   //   path: 'base-axios',
   //   loadChildren: () => import('./shared/services/base-axios/base-axios.module').then( m => m.BaseAxiosPageModule)

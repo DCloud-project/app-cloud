@@ -51,6 +51,8 @@ export class LoginPage implements OnInit {
             this.router.navigateByUrl(`/verify/${this.login.email}`);
             localStorage.setItem("email", this.login.email);
             localStorage.setItem("isLogin", "1");
+            //获取该user的信息（teacher_id,student_id）
+            this.getInf(this.login.email);
             this.setTime();
           }
         })
@@ -80,6 +82,8 @@ export class LoginPage implements OnInit {
             this.router.navigateByUrl('\lesson-tabs');
             localStorage.setItem("email", this.login.email);
             localStorage.setItem("isLogin", "1");
+            //获取该user的信息（teacher_id,student_id）
+            this.getInf(this.login.email);
             this.setTime();
           } else {
             let alert = await this.alertController.create({
@@ -92,6 +96,19 @@ export class LoginPage implements OnInit {
         })
       }
     }
+  }
+
+  //获取个人信息
+  getInf(email){
+    var params = {//后台所需参数
+      email: email,
+    };
+    var api = '/user/info';//后台接口
+    this.httpService.get(api, params).then(async (response: any) => {
+      if (response.status == 200) {
+        console.log(response.data)
+      }
+    })
   }
 
   setTime() {
