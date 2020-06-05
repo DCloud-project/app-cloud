@@ -49,20 +49,35 @@ export class UserInfPage implements OnInit {
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
         this.user = response.data;
+        this.user["sex"] = response.data.sex.toString();
         this.user["email"] = localStorage.getItem("email");
         //获取学校名称
         var str = this.user.school.split("/");
-          var api = '/schools/getCode';//后台接口
-            this.httpService.get(api, {code: str[0]}).then(async (response: any) => {
-              this.schoolChoosed = response.data;
-            })
-            this.httpService.get(api, {code: str[1]}).then(async (response: any) => {
-              this.academyChoosed = response.data;
-            })
+        var api = '/schools/getCode';//后台接口
+        this.httpService.get(api, { code: str[0] }).then(async (response: any) => {
+          this.schoolChoosed = response.data;
+        })
+        this.httpService.get(api, { code: str[1] }).then(async (response: any) => {
+          this.academyChoosed = response.data;
+        })
+        //获取学院列表
+        this.academy[0].length = 0;
+        var param1 = {
+          schoolCode: str[0],//父级id
+        }
+        this.academyChoosed = '未设置';
+        var api = '/schools';//后台接口
+        this.httpService.get(api, param1).then(async (response: any) => {
+          for (var i = 0; i < response.data.length; i++) {
+            this.academy[0].push(response.data[i].name);
+          }
+          this.academyList = response.data;
+          this.academyOptions = this.academy[0].length;
+        })
       }
     })
 
-    //请求后台数据
+    //获取学校列表
     this.school[0].length = 0;
     var param = {
       school: 1,
@@ -76,6 +91,8 @@ export class UserInfPage implements OnInit {
       }
       this.schoolOptions = this.school[0].length;
     })
+
+
   }
 
   //编辑个人信息
@@ -96,7 +113,7 @@ export class UserInfPage implements OnInit {
     this.httpService.put(api, params).then(async (response: any) => {
       if (response.data.respCode == 1) {
         let alert = await this.alertController.create({
-          header:'提示',
+          header: '提示',
           message: '修改成功！',
           buttons: ['确认']
         });
@@ -109,6 +126,7 @@ export class UserInfPage implements OnInit {
         this.httpService.get(api, param).then(async (response: any) => {
           if (response.status == 200) {
             this.user = response.data;
+            this.user.sex = response.data.sex.toString();
             this.user["email"] = localStorage.getItem("email");
           }
         })
@@ -144,6 +162,7 @@ export class UserInfPage implements OnInit {
               var param = {
                 academy: this.academyId,
               }
+              console.log(param);
               this.academyChoosed = '未设置';
               var api = '/schools';//后台接口
               this.httpService.get(api, param).then(async (response: any) => {
@@ -161,12 +180,20 @@ export class UserInfPage implements OnInit {
               }
               if (this.user.school.length == 0) {
                 console.log("请先选择学校");
-              } else {
+              } else if(this.user.school.indexOf("/") == -1){
                 this.academyChoosed = value.col.text;
                 this.selectedAcademy = selected[0].options[value.col.value].code;
                 this.user.school += "/" + this.selectedAcademy;
-              }
+              }else{
+                // console.log(selected[0].options[value.col.value].code);
+                //更新后面的学院
+                var index = this.user.school.indexOf("/");
+                this.user.school = this.user.school.substr(0,index);
+                this.academyChoosed = value.col.text;
+                this.selectedAcademy = selected[0].options[value.col.value].code;
+                this.user.school += "/" + this.selectedAcademy;
 
+              }
             }
             console.log(this.user.school);
           }
