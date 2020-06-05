@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import {SearchComponent} from '../../../shared/components/search/search.component'
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
+import { SearchComponent } from '../../../shared/components/search/search.component'
+import { HttpServiceService } from 'src/app/shared/services/http-service.service';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { SearchMemberComponent } from 'src/app/shared/components/search-member/search-member.component';
 
 @Component({
   selector: 'app-member',
@@ -12,51 +16,97 @@ export class MemberPage implements OnInit {
     no: '',
     name: ''
   };
-  public isNo='1';
+  public isNo = '1';
   public member = [
     {
       name: '小丸子',
       sno: '190327991',
-      dept:'计算机专硕1班',
       sex: '1',
-      exp:'15'
-    },
-    {
-      name: '小丸子',
-      sno: '190327991',
-      dept:'计算机专硕1班',
-      sex: '1',
-      exp:'15'
-    },
-    {
-      name: '小丸子',
-      sno: '190327991',
-      dept:'计算机专硕1班',
-      sex: '1',
-      exp:'15'
+      exp: '15',
+      index: '',
     }
   ]
-  constructor(public modalController: ModalController) {
-    this.lesson.name = localStorage.getItem("lesson_name");
-    this.lesson.no = localStorage.getItem("lesson_no");
+  public isTeacher: any;
+  public memberNo: any;
+  public rank:any;
+  public my_exp:any;
+  constructor(public modalController: ModalController,
+    private router: Router,
+    public httpService: HttpServiceService,
+    public http: HttpClient,
+    private alertController: AlertController, 
+    private loadingController:LoadingController) {
+
   }
+
 
   ngOnInit() {
-
+    this.lesson.name = localStorage.getItem("lesson_name");
+    this.lesson.no = localStorage.getItem("lesson_no");
+    this.isTeacher = localStorage.getItem("isTeacher");
+    // console.log(this.isTeacher);
+    if (this.isTeacher == '1') {
+      this.orderByNo();
+      localStorage.setItem("isNo", "1");
+    } else {
+      this.orderByExp();
+    }
+    var params = {
+      code: localStorage.getItem("lesson_no"),
+      order: "0",//按经验值顺序显示
+      email:localStorage.getItem("email")
+    }
+    var api = '/courses/member';//后台接口
+    this.httpService.get(api, params).then(async (response: any) => {
+      this.rank = response.data.rank;
+      this.my_exp = response.data.exp;
+    })
   }
 
-  orderByNo(){
+  async orderByNo() {
     this.isNo = '0';
+    localStorage.setItem("isNo", "1");
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+
     //按学号排序List
+    var params = {
+      code: localStorage.getItem("lesson_no"),
+      order: "1"//按学号顺序显示
+    }
+    var api = '/courses/member';//后台接口
+    this.httpService.get(api, params).then(async (response: any) => {
+      await loading.dismiss();
+      this.member = response.data;
+      this.memberNo = this.member.length;
+    })
   }
-  orderByExp(){
+  async orderByExp() {
     this.isNo = '1';
+    localStorage.setItem("isNo", "0");
     //按经验值排序list
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();//加载
+
+    var params = {
+      code: localStorage.getItem("lesson_no"),
+      order: "0"//按经验值顺序显示
+    }
+    var api = '/courses/member';//后台接口
+    this.httpService.get(api, params).then(async (response: any) => {
+      await loading.dismiss();
+      this.member = response.data;
+      this.memberNo = this.member.length;
+    })
   }
-  async searchMember(){
+  async searchMember() {
     //弹出搜索模态框
     const modal = await this.modalController.create({
-      component: SearchComponent,
+      component: SearchMemberComponent,
       componentProps: {
         type: '按照姓名、学号检索'
       }
