@@ -8,8 +8,11 @@
 <ion-content>
   <ion-list lines="none" *ngFor="let item of lessonList">
     <ion-item [routerLink]="['/tabs']">
-      <ion-thumbnail>
+      <!-- <ion-thumbnail>
         <img src="../../../../assets/icon/lesson.png">
+      </ion-thumbnail> -->
+      <ion-thumbnail class="thum">
+        <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
       </ion-thumbnail>
       <ion-label>
         <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
