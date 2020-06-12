@@ -71,18 +71,18 @@ const routes: Routes = [
     path: 'join-by-qr',
     loadChildren: () => import('./layout/join-by-qr/join-by-qr.module').then( m => m.JoinByQRPageModule)
   },
-  {
-    path: 'update-inf',
-    loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
-  },
+  // {
+  //   path: 'update-inf',
+  //   loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
+  // },
   // {
   //   path: 'base-axios',
   //   loadChildren: () => import('./shared/services/base-axios/base-axios.module').then( m => m.BaseAxiosPageModule)
   // },
-  // {
-  //   path: 'user-inf',
-  //   loadChildren: () => import('./layout/user/user-inf/user-inf.module').then( m => m.UserInfPageModule)
-  // },
+  {
+    path: 'user-inf',
+    loadChildren: () => import('./layout/user/user-inf/user-inf.module').then( m => m.UserInfPageModule)
+  },
   // {
   //   path: 'mylesson',
   //   loadChildren: () => import('./layout/lesson/mylesson/mylesson.module').then( m => m.MylessonPageModule)
