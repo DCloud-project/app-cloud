@@ -12,7 +12,7 @@ export class HttpServiceService {
   }
 
   //axios方法
-  // commonUrl = 'http://7vtbvj.natappfree.cc';
+  // commonUrl = ' http://aij6ie.natappfree.cc';
   commonUrl = 'http://localhost:8080';
   // instance = axios.create({
   //   headers: { 'token': localStorage.getItem("token") }
@@ -25,7 +25,7 @@ export class HttpServiceService {
         if (localStorage.getItem("token")) {
           config.headers['token']=localStorage.getItem("token");
         }
-        console.log(config.headers);
+        // console.log(config.headers);
         return config;
       },(error) =>{
         console.log('错误参数')
@@ -141,8 +141,6 @@ export class HttpServiceService {
      if (localStorage.getItem("token")) {
        config.headers['token']=localStorage.getItem("token");
      }
-     console.log(config.headers);
-     console.log(config);
      return config;
    },(error) =>{
      console.log('错误参数')

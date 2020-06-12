@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item lines="none" style="padding: 9px 0px;" [routerLink]="['/update-inf']">
+    <ion-item lines="none" style="padding: 9px 0px;">
       <ion-thumbnail>
         <img src="../../../../assets/icon/lesson.png">
       </ion-thumbnail>
@@ -45,38 +45,32 @@
       <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.sno"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>出生年月</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.birth"></ion-input>
+      <!-- <ion-item> -->
+        <ion-label>出生年月</ion-label>
+        <ion-datetime slot="end" value="1990-02-19" placeholder="未设置" [(ngModel)]="user.birth"
+        displayFormat="YYYY-MM-DD" cancelText="取消" doneText="确认"></ion-datetime>
+      <!-- </ion-item> -->
+      <!-- <ion-label>出生年月</ion-label>
+      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.birth"></ion-input> -->
     </ion-item>
-    <ion-radio-group value="female" mode="md">
+    <ion-radio-group [(ngModel)]="user.sex" mode="md">
       <ion-item>
         <ion-label>性别</ion-label>
-        <ion-radio color="success" value="male"></ion-radio>
-        <ion-label>男</ion-label>
-        
-        <ion-radio color="tertiary" value="female"></ion-radio>
-        <ion-label>女</ion-label>
+        <ion-radio color="success" value="1" style="margin-left: 100px;"></ion-radio>
+        <ion-label style="margin-left: 15px;">男</ion-label>
+        <ion-radio color="tertiary" value="0" ></ion-radio>
+        <ion-label style="margin-left: 15px;">女</ion-label>
         <!-- <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.sex"></ion-input> -->
       </ion-item>
-      <!-- <ion-item>
-        <ion-label>男</ion-label>
-        <ion-radio slot="start" color="success" value="apple"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>女</ion-label>
-        <ion-radio slot="start" color="tertiary" value="grape"></ion-radio>
-      </ion-item> -->
     </ion-radio-group>
-    <!-- <ion-item>
-      <ion-label>性别</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.sex"></ion-input>
-    </ion-item>-->
-    <!-- <ion-item> -->
-      <!-- <ion-button expand="block" onclick="openPicker(1,5,defaultColumnOptions)">Show Multi Column Picker</ion-button>
-      <ion-button expand="block" onclick="openPicker(2,5,multiColumnOptions)">Show Multi Column Picker</ion-button> -->
-      <!-- <ion-label>你所在的学校或院系</ion-label>
-      <ion-input class="my_inf" slot="end" type="text" placeholder="未设置" [(ngModel)]="user.school"></ion-input> -->
-    <!-- </ion-item> -->
+    <ion-item style="border-top: solid 0.5px #afb2bd;" (click)="openPicker(1,schoolOptions,school,1)">
+      <ion-label>学校</ion-label>
+      <ion-label class="my_inf" slot="end">{{schoolChoosed}}</ion-label>
+    </ion-item>
+    <ion-item (click)="openPicker(1,academyOptions,academy,0)">
+      <ion-label>学院</ion-label>
+      <ion-label class="my_inf" slot="end">{{academyChoosed}}</ion-label>
+    </ion-item>
     <ion-item lines="none">
     </ion-item>
   </ion-list>
@@ -88,7 +82,7 @@
     <ion-item-divider>
     </ion-item-divider>
     <ion-item class="logout-row" lines="none">
-      <ion-button class="logout-btn" style="width:90%" fill="clear" (click)="onLogout()">注销</ion-button>
+      <ion-button class="logout-btn btn" style="width:90%" fill="clear" (click)="onLogout()">注销</ion-button>
     </ion-item>
     <ion-item-divider>
     </ion-item-divider>

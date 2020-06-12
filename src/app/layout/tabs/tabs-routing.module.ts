@@ -17,26 +17,26 @@ const routes: Routes = [
           }
         ]
       },
-      {
-        path: 'activities',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../lesson/activities/activities.module').then(m => m.ActivitiesPageModule)
-          }
-        ]
-      },
-      {
-        path: 'message',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../lesson/message/message.module').then(m => m.MessagePageModule)
-          }
-        ]
-      },
+      // {
+      //   path: 'activities',
+      //   children: [
+      //     {
+      //       path: '',
+      //       loadChildren: () =>
+      //         import('../lesson/activities/activities.module').then(m => m.ActivitiesPageModule)
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: 'message',
+      //   children: [
+      //     {
+      //       path: '',
+      //       loadChildren: () =>
+      //         import('../lesson/message/message.module').then(m => m.MessagePageModule)
+      //     }
+      //   ]
+      // },
       {
         path: 'detail',
         children: [
@@ -49,14 +49,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/activities',
+        redirectTo: '/tabs/member',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/activities',
+    redirectTo: '/tabs/member',
     pathMatch: 'full'
   }
 ];

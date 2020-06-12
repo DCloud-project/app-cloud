@@ -71,6 +71,22 @@ const routes: Routes = [
     path: 'join-by-qr',
     loadChildren: () => import('./layout/join-by-qr/join-by-qr.module').then( m => m.JoinByQRPageModule)
   },
+  {
+    path: 'update-inf',
+    loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
+  },
+  {
+    path: 'lesson-edit',
+    loadChildren: () => import('./layout/lesson-edit/lesson-edit.module').then( m => m.LessonEditPageModule)
+  },
+  {
+    path: 'lesson-detail-edit',
+    loadChildren: () => import('./layout/lesson-detail-edit/lesson-detail-edit.module').then( m => m.LessonDetailEditPageModule)
+  },
+  {
+    path: 'update-lesson',
+    loadChildren: () => import('./layout/update-lesson/update-lesson.module').then( m => m.UpdateLessonPageModule)
+  },
   // {
   //   path: 'update-inf',
   //   loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
