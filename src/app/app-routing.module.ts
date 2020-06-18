@@ -102,6 +102,10 @@ const routes: Routes = [
     path: 'checkin-result',
     loadChildren: () => import('./layout/checkin/checkin-result/checkin-result.module').then( m => m.CheckinResultPageModule)
   },
+  {
+    path: 'add-lesson-name',
+    loadChildren: () => import('./layout/add-lesson-name/add-lesson-name.module').then( m => m.AddLessonNamePageModule)
+  },
 
   // {
   //   path: 'mylesson',
