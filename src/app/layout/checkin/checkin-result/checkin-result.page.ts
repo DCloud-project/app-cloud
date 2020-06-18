@@ -1,6 +1,8 @@
+import { HttpServiceService } from 'src/app/shared/services/http-service.service';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { isNgTemplate } from '@angular/compiler';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-checkin-result',
@@ -9,41 +11,22 @@ import { ActionSheetController } from '@ionic/angular';
 })
 export class CheckinResultPage implements OnInit {
 
-  constructor(public actionSheetController: ActionSheetController) { }
-  public absenceList = [
-    {
-      name: "小明",
-      sno: "19898329",
-      id: "1",
-      checked: false
-    },
-    {
-      name: "小明",
-      sno: "19898329",
-      id: "2",
-      checked: false
-    }
-  ];
-  public attendanceList = [
-    {
-      name: "小明",
-      sno: "19898329",
-      id: "1",
-      checked: false
-    },
-    {
-      name: "小明",
-      sno: "19898329",
-      id: "2",
-      checked: false
-    }
-  ]
+  constructor(public actionSheetController: ActionSheetController,
+    public modalController: ModalController,
+    public router: Router,
+    public loadingController: LoadingController,
+    public httpService: HttpServiceService) { }
+  public absenceList = [];
+  public attendanceList = []
   public show = false;
   public checkText = "多选";
   public isSelectAllAbsence = false;
   public isSelectAllAttendance = false;
+  public attendanceTotal = 0;
+  public absenceTotal = 0;
+  public api = "/attendenceResult";
   ngOnInit() {
-
+    this.getData();
   }
   showCheck() {
 
@@ -56,17 +39,14 @@ export class CheckinResultPage implements OnInit {
     }
   }
   selectAllAbsence() {
-    console.log(this.isSelectAllAbsence);
-    this.isSelectAllAbsence=!this.isSelectAllAbsence;
+    this.isSelectAllAbsence = !this.isSelectAllAbsence;
 
     if (this.isSelectAllAbsence == true) {
       this.absenceList.forEach(item => {
         item.checked = true;
       });
       this.isSelectAllAbsence = false;
-      // console.log(this.isSelectAll)
     } else {
-      console.log("ooo")
       this.isSelectAllAbsence = true;
       this.absenceList.forEach(item => {
         item.checked = false;
@@ -77,7 +57,6 @@ export class CheckinResultPage implements OnInit {
   checkAbsence(item) {
     let sum = 0;
     this.absenceList.forEach(item1 => {
-      console.log(item1)
       if (item1.checked == true && item1 != item) {
         sum += 1;
       }
@@ -94,10 +73,10 @@ export class CheckinResultPage implements OnInit {
     } else {
       this.isSelectAllAbsence = false;
     }
-  
+
   }
   selectAllAttendance() {
-    this.isSelectAllAttendance=!this.isSelectAllAttendance;
+    this.isSelectAllAttendance = !this.isSelectAllAttendance;
 
     if (this.isSelectAllAttendance == true) {
       this.attendanceList.forEach(item => {
@@ -105,7 +84,6 @@ export class CheckinResultPage implements OnInit {
       });
       this.isSelectAllAttendance = false;
     } else {
-      console.log("ooo")
       this.isSelectAllAttendance = true;
       this.attendanceList.forEach(item => {
         item.checked = false;
@@ -116,7 +94,6 @@ export class CheckinResultPage implements OnInit {
   checkAttendance(item) {
     let sum = 0;
     this.attendanceList.forEach(item1 => {
-      console.log(item1)
       if (item1.checked == true && item1 != item) {
         sum += 1;
       }
@@ -133,7 +110,7 @@ export class CheckinResultPage implements OnInit {
     } else {
       this.isSelectAllAttendance = false;
     }
-  
+
   }
   deleteItem(item) {
     this.absenceList.splice(this.absenceList.indexOf(item), 1);
@@ -184,6 +161,26 @@ export class CheckinResultPage implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+  async getData() {
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+    var params = {
+      code: localStorage.getItem("lesson_no"),
+      attend_id: localStorage.getItem("attend_id")
+    }
+    this.httpService.patch(this.api, params).then(async (response: any) => {
+      await loading.dismiss();
+      this.absenceList = response.data[0];
+      this.absenceTotal = response.data[0][response.data[0].length - 1].total;
+      this.absenceList.splice(this.absenceList.length - 1)
+
+      this.attendanceList = response.data[1];
+      this.attendanceTotal = response.data[1][response.data[1].length - 1].total;
+      this.attendanceList.splice(this.attendanceList.length - 1)
+    })
   }
 
 }
