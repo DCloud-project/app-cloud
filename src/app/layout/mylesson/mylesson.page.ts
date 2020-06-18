@@ -55,7 +55,9 @@ export class MylessonPage implements OnInit {
     await modal.present();
   }
 
-  gotoCheckin() {
+  gotoCheckin(index) {
+    localStorage.setItem("lesson_name", this.lessonList[index].name);
+    localStorage.setItem("lesson_no", this.lessonList[index].no);
     this.router.navigateByUrl('/choose');
   }
   ngOnInit() {

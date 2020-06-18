@@ -1,85 +1,85 @@
 <!-- <ion-app> -->
-  <!-- <ion-backdrop style="z-index: 100;"></ion-backdrop> -->
+<!-- <ion-backdrop style="z-index: 100;"></ion-backdrop> -->
 <ion-header>
-  <ion-toolbar>
-    <ion-segment mode="md" [(ngModel)]="tab" style="background-color: rgba(225,225,225,0);">
-      <ion-segment-button value="tab1" (click)="getCreateLesson()">
-        <ion-label>我创建的</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="tab2" (click)="getMyLesson()">
-        <ion-label>我加入的</ion-label>
-      </ion-segment-button>
-      <!-- <div style="width:25%"> </div> -->
-    </ion-segment>
-    <ion-button (click)="addLesson()" fill="clear">
-      <ion-icon slot="icon-only" name="add"></ion-icon>
-    </ion-button>
-  </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar class="searchbar" *ngIf="tab=='tab1'" placeholder="搜索" (click)="search('create')"></ion-searchbar>
-    <ion-searchbar class="searchbar" *ngIf="tab=='tab2'" placeholder="搜索" (click)="search('join')"></ion-searchbar>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-segment mode="md" [(ngModel)]="tab" style="background-color: rgba(225,225,225,0);">
+            <ion-segment-button value="tab1" (click)="getCreateLesson()">
+                <ion-label>我创建的</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tab2" (click)="getMyLesson()">
+                <ion-label>我加入的</ion-label>
+            </ion-segment-button>
+            <!-- <div style="width:25%"> </div> -->
+        </ion-segment>
+        <ion-button (click)="addLesson()" fill="clear">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-searchbar class="searchbar" *ngIf="tab=='tab1'" placeholder="搜索" (click)="search('create')"></ion-searchbar>
+        <ion-searchbar class="searchbar" *ngIf="tab=='tab2'" placeholder="搜索" (click)="search('join')"></ion-searchbar>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div [ngSwitch]="tab">
-    <div *ngSwitchCase="'tab1'">
-      <ion-list id="list" lines="none" *ngFor="let item of list;let i = index">
-        <ion-item [routerLink]="['/tabs/member']" (click)="getCurrentLesson(i)">
-          <ion-thumbnail class="thum">
-            <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
-          </ion-thumbnail>
-          <ion-label>
-            <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
-            <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
-            <p>&nbsp;&nbsp;&nbsp;{{item.term}}</p>
-          </ion-label>
-          <ion-label style="margin-top: auto;">
-            <p style="color:#50c8ff">{{item.no}}</p>
-          </ion-label>
-        </ion-item>
+    <div [ngSwitch]="tab">
+        <div *ngSwitchCase="'tab1'">
+            <ion-list id="list" lines="none" *ngFor="let item of list;let i = index">
+                <ion-item [routerLink]="['/tabs/member']" (click)="getCurrentLesson(i)">
+                    <ion-thumbnail class="thum">
+                        <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
+                    </ion-thumbnail>
+                    <ion-label>
+                        <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
+                        <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
+                        <p>&nbsp;&nbsp;&nbsp;{{item.term}}</p>
+                    </ion-label>
+                    <ion-label style="margin-top: auto;">
+                        <p style="color:#50c8ff">{{item.no}}</p>
+                    </ion-label>
+                </ion-item>
 
-        <ion-item (click)="gotoCheckin()" style="border-bottom: solid 1px #808080b5;">
-          <ion-label style="text-align: -webkit-right;">
-            <ion-icon name="shield-checkmark-outline"></ion-icon>
-          </ion-label>
-          <ion-label style="text-align: -webkit-left;">
-            <p style="font-size: 12px;">
-              发起签到
-            </p>
-          </ion-label>
-        </ion-item>
+                <ion-item (click)="gotoCheckin(i)" style="border-bottom: solid 1px #808080b5;">
+                    <ion-label style="text-align: -webkit-right;">
+                        <ion-icon name="shield-checkmark-outline"></ion-icon>
+                    </ion-label>
+                    <ion-label style="text-align: -webkit-left;">
+                        <p style="font-size: 12px;">
+                            发起签到
+                        </p>
+                    </ion-label>
+                </ion-item>
 
-      </ion-list>
-      <ion-infinite-scroll threshold="10%" id="infinite-scroll" (ionInfinite)="loadData($event)">
-        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
-    </div>
-    <div *ngSwitchCase="'tab2'">
-      <ion-list lines="none" *ngFor="let item of list;let i = index" style="border-bottom: solid 1px gray;">
-        <ion-item [routerLink]="['/tabs/member']" (click)="getCurrentLesson(i)">
-          <!-- <ion-thumbnail>
+            </ion-list>
+            <ion-infinite-scroll threshold="10%" id="infinite-scroll" (ionInfinite)="loadData($event)">
+                <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading...">
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </div>
+        <div *ngSwitchCase="'tab2'">
+            <ion-list lines="none" *ngFor="let item of list;let i = index" style="border-bottom: solid 1px gray;">
+                <ion-item [routerLink]="['/tabs/member']" (click)="getCurrentLesson(i)">
+                    <!-- <ion-thumbnail>
             <img src="../../../../assets/icon/lesson.png">
           </ion-thumbnail> -->
-          <ion-thumbnail class="thum">
-            <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
-          </ion-thumbnail>
-          <ion-label>
-            <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
-            <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
-            <p>&nbsp;&nbsp;&nbsp;
-              <ion-icon name="shield-checkmark-outline"></ion-icon>
-              签到
-            </p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-      <ion-infinite-scroll threshold="10%" id="infinite-scroll" (ionInfinite)="loadData($event)">
-        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
+                    <ion-thumbnail class="thum">
+                        <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
+                    </ion-thumbnail>
+                    <ion-label>
+                        <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
+                        <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
+                        <p>&nbsp;&nbsp;&nbsp;
+                            <ion-icon name="shield-checkmark-outline"></ion-icon>
+                            签到
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+            <ion-infinite-scroll threshold="10%" id="infinite-scroll" (ionInfinite)="loadData($event)">
+                <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading...">
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </div>
     </div>
-  </div>
 </ion-content>
 <!-- </ion-app> -->
