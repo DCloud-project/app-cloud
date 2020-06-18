@@ -14,7 +14,7 @@ export class CreatelessonPage implements OnInit {
 
   lesson = {
     class: "",
-    name: "",
+    name: "请选择",
     term: "",
     school: "",
     isSchoolLesson: "",
@@ -28,13 +28,19 @@ export class CreatelessonPage implements OnInit {
   schoolList = {}
   academyList = {}
   public flag = 0;
-  public schoolChoosed = "未设置"
-  public academyChoosed = "未设置"
+  public schoolChoosed = "请选择"
+  public academyChoosed = "请选择"
   public academyId;
   public schoolOptions = 0;
   public academyOptions = 0;
   selectedSchool: any;
   selectedAcademy: string;
+  // courseList: any;
+  course = [[]];
+  tempCourse: any;
+  courseOptions: number;
+  mark: any;
+  temp: any;
 
   constructor(
     private router: Router,
@@ -52,14 +58,35 @@ export class CreatelessonPage implements OnInit {
         this.lesson.require = queryParams.property;
       } else if (queryParams.pageNum == '2') {
         this.lesson.process = queryParams.property;
-      } else if(queryParams.pageNum == '3'){
+      } else if (queryParams.pageNum == '3') {
         this.lesson.examination = queryParams.property;
+      } else {
+        console.log(queryParams.name);
+        // this.temp = queryParams.name;
+        if (queryParams.name != undefined) {
+          this.lesson.name = queryParams.name;
+          if (this.course[0][this.course.length - 1] != queryParams.name) {
+            this.course[0].push(this.lesson.name);
+            this.courseOptions++;
+          }
+
+        }
       }
     });
   }
 
   ngOnInit() {
     //请求后台数据
+    var api = '/courseManage';//后台接口
+    this.httpService.getAll(api).then(async (response: any) => {
+
+      // this.courseList = response.data;
+      for (var i = 0; i < response.data.length; i++) {
+        this.course[0].push(response.data[i].name);
+      }
+      this.courseOptions = this.course[0].length;
+    })
+
     this.school[0].length = 0;
     var param = {
       school: 1,
@@ -75,7 +102,7 @@ export class CreatelessonPage implements OnInit {
     })
   }
 
-  async  openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
+  async openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
     const picker = await this.pickerController.create({
       columns: this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool),
       buttons: [
@@ -186,7 +213,7 @@ export class CreatelessonPage implements OnInit {
         console.log(response.data);
         const alert = await this.alertController.create({
           header: '创建班课成功',
-          message: '班课号为'+response.data,
+          message: '班课号为' + response.data,
           buttons: [
             {
               text: '确认',
@@ -201,30 +228,52 @@ export class CreatelessonPage implements OnInit {
       })
 
     }
-    // console.log(this.lesson.class);
-    // if(this.lesson.class == ""){
-    //   let toast = await this.toastController.create({
-    //     message: '班课班级不能为空！',
-    //     duration: 2000
-    //   });
-    //   toast.present();
-    // }else if(this.lesson.name == ""){
-    //   let toast = await this.toastController.create({
-    //     message: '班课名称不能为空！',
-    //     duration: 2000
-    //   });
-    //   toast.present();
-    // }else if(this.lesson.term == ""){
-    //   let toast = await this.toastController.create({
-    //     message: '班课学期不能为空！',
-    //     duration: 2000
-    //   });
-    //   toast.present();
-    // }
     console.log(this.lesson);
-    //请求后台 将参数存入数据库course
+  }
+  async coursePicker(numColumns = 1, numOptions, columnOptions) {
 
-    //coursestudent也要存
+    const picker = await this.pickerController.create({
+      columns: this.getCourseColumns(numColumns, numOptions, columnOptions),
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel'
+        },
+        {
+          text: '确认',
+          handler: (value) => {
+            console.log(value.col.text);
+            this.lesson.name = value.col.text;
+          }
+        }
+      ]
+    });
+
+    await picker.present();
+  }
+
+  getCourseColumns(numColumns, numOptions, columnOptions) {
+    let columns = [];
+    for (let i = 0; i < numColumns; i++) {
+      columns.push({
+        name: `col`,
+        options: this.getCourseColumnOptions(i, numOptions, columnOptions)
+      });
+    }
+
+    return columns;
+  }
+
+  getCourseColumnOptions(columnIndex, numOptions, columnOptions) {
+    let options = [];
+    for (let i = 0; i < numOptions; i++) {
+      options.push({
+        text: columnOptions[columnIndex][i % numOptions],
+        value: i
+      })
+    }
+
+    return options;
   }
 
 }

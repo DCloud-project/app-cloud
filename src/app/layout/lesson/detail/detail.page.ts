@@ -48,6 +48,7 @@ export class DetailPage implements OnInit {
     public pickerController: PickerController,
     private alertController: AlertController
   ) {
+
   }
 
   ngOnInit() {
@@ -60,6 +61,18 @@ export class DetailPage implements OnInit {
         this.lesson.process = queryParams.property;
       } else if (queryParams.pageNum == '3') {
         this.lesson.test = queryParams.property;
+      }else{
+        console.log(queryParams);
+        this.lesson.name = queryParams.name;
+        this.lesson.tname = queryParams.tname;
+        this.lesson.term = queryParams.term;
+        this.lesson.class = queryParams.class;
+        // this.lesson.type = queryParams.type;
+        if (queryParams.type.toString() == "true") {
+          this.lesson.type = "学校课表班课";
+        } else {
+          this.lesson.type = "非学校课表班课";
+        }
       }
     });
     this.lesson.name = localStorage.getItem("lesson_name");

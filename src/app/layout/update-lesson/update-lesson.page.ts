@@ -29,15 +29,15 @@ export class UpdateLessonPage implements OnInit {
     public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
-    private router:Router 
-  ) { 
+    private router: Router
+  ) {
     this.getLesson();
   }
 
   ngOnInit() {
   }
 
-  getLesson(){
+  getLesson() {
     var params = {
       code: localStorage.getItem("lesson_no")
     }
@@ -46,20 +46,20 @@ export class UpdateLessonPage implements OnInit {
       this.lesson = response.data;
       console.log(response.data);
     })
-}
-  onUpdate(){
+  }
+  onUpdate() {
     var params = {
       code: localStorage.getItem("lesson_no"),
       class: this.lesson.class,
-      name:this.lesson.name,
-      tname:this.lesson.tname,
-      type:this.lesson.type
+      name: this.lesson.name,
+      tname: this.lesson.tname,
+      type: this.lesson.type
     }
-    console.log(params)
+    // console.log(params)
     var api = '/courses';
     this.httpService.patch(api, params).then(async (response: any) => {
-      console.log(response.data.respCode);
-      if(response.data.respCode == 1){
+      // console.log(response.data.respCode);
+      if (response.data.respCode == 1) {
         const alert = await this.alertController.create({
           header: '提示',
           message: '编辑成功！',
@@ -68,15 +68,24 @@ export class UpdateLessonPage implements OnInit {
               text: '确认',
               cssClass: 'secondary',
               handler: (blah) => {
+                this.router.navigate(['/tabs/detail'], {
+                  queryParams: {
+                    term: this.lesson.term,
+                    name: this.lesson.name,
+                    tname: this.lesson.tname,
+                    class:this.lesson.class,
+                    type: this.lesson.type
+                  }
+                })
                 // this.router.navigateByUrl('/tabs/detail');
-                location.replace('/tabs/detail');
+                // location.replace('/tabs/detail');
                 // location.reload();
               }
             }
           ]
         });
         await alert.present();
-      // })
+        // })
       }
       // this.getLesson();
       // this.lesson = response.data;
