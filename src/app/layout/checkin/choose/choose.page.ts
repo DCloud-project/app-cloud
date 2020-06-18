@@ -1,5 +1,6 @@
+import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { CheckinComponent } from '../../../shared/components/checkin/checkin.component'
 import { Router } from '@angular/router'
 
@@ -9,33 +10,14 @@ import { Router } from '@angular/router'
   styleUrls: ['./choose.page.scss'],
 })
 export class ChoosePage implements OnInit {
-
-  public record = [
-    {
-      date:'2020-02-29',
-      day:'星期六',
-      time:'11:57',
-      event:'签到',
-      checkNum:'2',
-      total:'2'
-    },
-    {
-      date:'2020-02-29',
-      day:'星期六',
-      time:'11:57',
-      event:'签到',
-      checkNum:'2',
-      total:'2'
-    }, {
-      date:'2020-02-29',
-      day:'星期六',
-      time:'11:57',
-      event:'签到',
-      checkNum:'2',
-      total:'2'
-    }
-  ]
-  constructor(public modalController: ModalController, public router: Router) { }
+  api = '/attendence';//后台接口
+  public params={};
+  public record = []
+  constructor(public modalController: ModalController,
+     public router: Router,
+     public loadingController: LoadingController,
+     public httpService: HttpServiceService) { 
+     }
 
   async checkExplain() {
     console.log("签到方式说明");
@@ -47,7 +29,7 @@ export class ChoosePage implements OnInit {
     await modal.present();
   }
   gotoClick() {
-    console.log("dddd");
+    this.startCheck();
     this.router.navigateByUrl('click');
   }
 
@@ -60,7 +42,47 @@ export class ChoosePage implements OnInit {
   }
 
   ngOnInit() {
+    this.getCheckHistory();
   }
+  async startCheck() {
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+    this.params = {
+      code: localStorage.getItem("lesson_no"),
+      local: "12,13"
+    }
+    this.httpService.post(this.api, this.params).then(async (response: any) => {
+      await loading.dismiss();
+      localStorage.setItem("attend_id",response.data);
+    })
+  }
+  async getCheckHistory(){
+    this.params = {
+      code: localStorage.getItem("lesson_no")
+    }
+    this.httpService.patch(this.api, this.params).then(async (response: any) => {
+      console.log(response.data)
+      this.record=response.data;
+      // var w1 = this.getMyDay(new Date("2019-05-16"));
+    })
+  }
+  getMyDay(date){
+    date=new Date(date)
+    var week;
+    if(date.getDay()==0) week="周日";
+    if(date.getDay()==1) week="周一";
+    if(date.getDay()==2) week="周二";
+    if(date.getDay()==3) week="周三";
+    if(date.getDay()==4) week="周四";
+    if(date.getDay()==5) week="周五";
+    if(date.getDay()==6) week="周六";
+    return week;
+}
+checkHistoryDetail(){
+  this.router.navigateByUrl("checkin-result")
+}
 
 
 

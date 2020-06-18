@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/tabs/member']">
+                <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title style="text-align:center;margin-right: 30px;">签到</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="my-circle" (click)="checkin()">
+        <p style="position: relative;top: 40%;margin: 0px;font-size: 16px;">签到</p>
+    </div>
+    <ion-item-divider class="row-text">
+        <ion-label>历史签到记录</ion-label>
+        <ion-note slot="end" color="tertiary" style="padding: 10px 0 0 0;font-size: 15px;margin-right: 10px;">{{percent}}</ion-note>
+        <ion-checkbox slot="end" color="primary" (click)="selectAllAbsence()" [(ngModel)]="isSelectAllAbsence" *ngIf="show==true" style="margin-left:0px;margin-right: 17px;"></ion-checkbox>
+    </ion-item-divider>
+    <ion-list>
+        <!-- <ion-item-sliding > -->
+        <ion-item *ngFor="let item of checkHistory">
+            <ion-label>
+                <h2>{{item.time.substring(0,11)}}{{getMyDay(item.time.substring(0,11))}} 签到</h2>
+                <h3>{{item.time.substring(11,19)}}</h3>
+            </ion-label>
+            <ion-note slot="end" color="danger" style="font-size: 15px;margin-top: 4px;">{{item.type}}</ion-note>
+        </ion-item>
+
+    </ion-list>
+
+</ion-content>

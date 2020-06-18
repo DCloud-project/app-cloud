@@ -1,5 +1,6 @@
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController, LoadingController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { SearchComponent } from '../../../shared/components/search/search.component'
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
@@ -28,19 +29,20 @@ export class MemberPage implements OnInit {
   ]
   public isTeacher: any;
   public memberNo: any;
-  public rank:any;
-  public my_exp:any;
+  public rank: any;
+  public my_exp: any;
   constructor(public modalController: ModalController,
     private router: Router,
     public httpService: HttpServiceService,
     public http: HttpClient,
-    private alertController: AlertController, 
-    private loadingController:LoadingController) {
-
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    public toastController: ToastController) {
   }
-
-
   ngOnInit() {
+   this.getdata();
+  }
+  async getdata(){
     this.lesson.name = localStorage.getItem("lesson_name");
     this.lesson.no = localStorage.getItem("lesson_no");
     this.isTeacher = localStorage.getItem("isTeacher");
@@ -54,7 +56,7 @@ export class MemberPage implements OnInit {
     var params = {
       code: localStorage.getItem("lesson_no"),
       order: "0",//按经验值顺序显示
-      email:localStorage.getItem("email")
+      email: localStorage.getItem("email")
     }
     var api = '/courses/member';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
@@ -62,7 +64,6 @@ export class MemberPage implements OnInit {
       this.my_exp = response.data.exp;
     })
   }
-
   async orderByNo() {
     this.isNo = '0';
     localStorage.setItem("isNo", "1");
@@ -112,6 +113,9 @@ export class MemberPage implements OnInit {
       }
     });
     await modal.present();
+  }
+  gotoCheck() {
+    this.router.navigateByUrl('student-checkin');
   }
 
 }

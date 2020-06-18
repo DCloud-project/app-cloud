@@ -3,38 +3,30 @@
         <ion-buttons>
             <ion-back-button color="medium" text=""></ion-back-button>
         </ion-buttons>
-        <ion-title color="medium">签到中</ion-title>
+        <ion-title color="medium" style="text-align:center;">签到中</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <p>latitude={{latitude}}</p>
-    <p>longitude={{longitude}}</p>
-    <p>{{address.latitude}}</p>
+    <div class="my-circle">
+        <h3 style="position: relative;top: 15%;">签到中</h3>
+        <h5 style="margin-top: 30px;">{{checkinNum}}/{{totalNum}}</h5>
+    </div>
+
 </ion-content>
 
 <ion-footer>
-    <ion-list lines="full">
-        <ion-item class="text-pos">
-            <ion-label>0/45</ion-label>
-        </ion-item>
-        <ion-item>
-            <ion-button class="text-pos click-btn" fill="clear" slot="start">放弃</ion-button>
-            <ion-button class="text-pos click-btn" fill="clear" slot="end">结束</ion-button>
-        </ion-item>
-    </ion-list>
-
-    <!-- <ion-grid>
-    <ion-row style="text-align: center;">
-      <ion-label>0/45</ion-label>
-    </ion-row>
-    <ion-row>
-      <ion-col class="col-btn">
-        <ion-button fill="clear">放弃</ion-button>
-      </ion-col>
-      <ion-col class="col-btn">
-        <ion-button fill="clear">结束</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
+    <ion-grid>
+        <ion-row>
+            <ion-col class="col-btn" (click)="giveup()">
+                <ion-button fill="clear">放弃</ion-button>
+            </ion-col>
+            <ion-col>
+                <div></div>
+            </ion-col>
+            <ion-col class="col-btn" (click)="endCheckin()">
+                <ion-button fill="clear">结束</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-footer>

@@ -1,201 +1,206 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/lesson-tabs']">
-        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title color="medium">{{lesson.name}}</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/lesson-tabs']">
+                <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title color="medium" style="text-align:center;margin-right: 30px;">{{lesson.name}}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="isTeacher=='1'">
-  <ion-segment mode="md" [(ngModel)]="tab">
-    <ion-segment-button value="tab1">
-      <ion-label>全部</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="tab2">
-      <ion-label>未开始</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="tab3">
-      <ion-label>进行中</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="tab4">
-      <ion-label>已结束</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <div *ngIf="isTeacher=='1'">
+        <ion-segment mode="md" [(ngModel)]="tab">
+            <ion-segment-button value="tab1">
+                <ion-label>全部</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tab2">
+                <ion-label>未开始</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tab3">
+                <ion-label>进行中</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tab4">
+                <ion-label>已结束</ion-label>
+            </ion-segment-button>
+        </ion-segment>
 
-  <div [ngSwitch]="tab">
-    <div *ngSwitchCase="'tab1'">
-      <ion-list *ngFor="let item of activities">
-        <div style="margin-top:5px"></div>
-        <ion-item lines="none">
-          <ion-thumbnail>
-            <img src="../../../../assets/icon/lesson.png">
-          </ion-thumbnail>
-          <ion-label>
-            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
-          </ion-label>
-        </ion-item>
-        <div class="more-inf">
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p>{{item.totalMember}}人参与</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:50%">
-            <ion-label>
-              <p style="color: #ed576b;">{{item.exp}}经验</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p style="color: #ed576b;"><ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
-            </ion-label>
-          </div>
+        <div [ngSwitch]="tab">
+            <div *ngSwitchCase="'tab1'">
+                <ion-list *ngFor="let item of activities">
+                    <div style="margin-top:5px"></div>
+                    <ion-item lines="none">
+                        <ion-thumbnail>
+                            <img src="../../../../assets/icon/lesson.png">
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
+                        </ion-label>
+                    </ion-item>
+                    <div class="more-inf">
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p>{{item.totalMember}}人参与</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:50%">
+                            <ion-label>
+                                <p style="color: #ed576b;">{{item.exp}}经验</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p style="color: #ed576b;">
+                                    <ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
+                            </ion-label>
+                        </div>
+                    </div>
+                </ion-list>
+            </div>
+            <div *ngSwitchCase="'tab2'">
+                <ion-list *ngFor="let item of activities">
+                    <div style="margin-top:5px"></div>
+                    <ion-item lines="none">
+                        <ion-thumbnail>
+                            <img src="../../../../assets/icon/lesson.png">
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
+                        </ion-label>
+                    </ion-item>
+                    <div class="more-inf">
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p>{{item.totalMember}}人参与</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:50%">
+                            <ion-label>
+                                <p style="color: #ed576b;">{{item.exp}}经验</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p style="color: #ed576b;">
+                                    <ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
+                            </ion-label>
+                        </div>
+                    </div>
+                </ion-list>
+            </div>
+            <div *ngSwitchCase="'tab3'">
+                <ion-list *ngFor="let item of activities">
+                    <div style="margin-top:5px"></div>
+                    <ion-item lines="none">
+                        <ion-thumbnail>
+                            <img src="../../../../assets/icon/lesson.png">
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
+                        </ion-label>
+                    </ion-item>
+                    <div class="more-inf">
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p>{{item.totalMember}}人参与</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:50%">
+                            <ion-label>
+                                <p style="color: #ed576b;">{{item.exp}}经验</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p style="color: #ed576b;">
+                                    <ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
+                            </ion-label>
+                        </div>
+                    </div>
+                </ion-list>
+            </div>
+            <div *ngSwitchCase="'tab4'">
+                <ion-list *ngFor="let item of activities">
+                    <div style="margin-top:5px"></div>
+                    <ion-item lines="none">
+                        <ion-thumbnail>
+                            <img src="../../../../assets/icon/lesson.png">
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
+                        </ion-label>
+                    </ion-item>
+                    <div class="more-inf">
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p>{{item.totalMember}}人参与</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:50%">
+                            <ion-label>
+                                <p style="color: #ed576b;">{{item.exp}}经验</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p style="color: #ed576b;">
+                                    <ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
+                            </ion-label>
+                        </div>
+                    </div>
+                </ion-list>
+            </div>
         </div>
-      </ion-list>
     </div>
-    <div *ngSwitchCase="'tab2'">
-      <ion-list *ngFor="let item of activities">
-        <div style="margin-top:5px"></div>
-        <ion-item lines="none">
-          <ion-thumbnail>
-            <img src="../../../../assets/icon/lesson.png">
-          </ion-thumbnail>
-          <ion-label>
-            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
-          </ion-label>
-        </ion-item>
-        <div class="more-inf">
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p>{{item.totalMember}}人参与</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:50%">
-            <ion-label>
-              <p style="color: #ed576b;">{{item.exp}}经验</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p style="color: #ed576b;"><ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
-            </ion-label>
-          </div>
-        </div>
-      </ion-list>
-    </div>
-    <div *ngSwitchCase="'tab3'">
-      <ion-list *ngFor="let item of activities">
-        <div style="margin-top:5px"></div>
-        <ion-item lines="none">
-          <ion-thumbnail>
-            <img src="../../../../assets/icon/lesson.png">
-          </ion-thumbnail>
-          <ion-label>
-            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
-          </ion-label>
-        </ion-item>
-        <div class="more-inf">
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p>{{item.totalMember}}人参与</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:50%">
-            <ion-label>
-              <p style="color: #ed576b;">{{item.exp}}经验</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p style="color: #ed576b;"><ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
-            </ion-label>
-          </div>
-        </div>
-      </ion-list>
-    </div>
-    <div *ngSwitchCase="'tab4'">
-      <ion-list *ngFor="let item of activities">
-        <div style="margin-top:5px"></div>
-        <ion-item lines="none">
-          <ion-thumbnail>
-            <img src="../../../../assets/icon/lesson.png">
-          </ion-thumbnail>
-          <ion-label>
-            <h2>&nbsp;&nbsp;&nbsp;{{item.name}}</h2>
-          </ion-label>
-        </ion-item>
-        <div class="more-inf">
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p>{{item.totalMember}}人参与</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:50%">
-            <ion-label>
-              <p style="color: #ed576b;">{{item.exp}}经验</p>
-            </ion-label>
-          </div>
-          <div class="label-inf" style="width:25%">
-            <ion-label>
-              <p style="color: #ed576b;"><ion-icon name="caret-forward-outline"></ion-icon>{{item.state}}</p>
-            </ion-label>
-          </div>
-        </div>
-      </ion-list>
-    </div>
-  </div>
-  </div>
 
-  <div *ngIf="isTeacher=='0'">
-    <ion-segment mode="md" [(ngModel)]="tab">
-      <ion-segment-button value="tab1">
-        <ion-label>全部</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="tab3">
-        <ion-label>进行中</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="tab4">
-        <ion-label>已结束</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  
-    <div [ngSwitch]="tab">
-      <div *ngSwitchCase="'tab1'">
-        <ion-list>
-          <div style="margin-top:10px"></div>
-          <ion-item lines="none">
-            <ion-thumbnail>
-              <img src="../../../../assets/icon/lesson.png">
-            </ion-thumbnail>
-            <ion-label>
-              <h2>&nbsp;&nbsp;&nbsp;任务名称</h2>
-            </ion-label>
-          </ion-item>
-          <div class="more-inf">
-            <div class="label-inf" style="width:25%">
-              <ion-label>
-                <p>6人参与</p>
-              </ion-label>
+    <div *ngIf="isTeacher=='0'">
+        <ion-segment mode="md" [(ngModel)]="tab">
+            <ion-segment-button value="tab1">
+                <ion-label>全部</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tab3">
+                <ion-label>进行中</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tab4">
+                <ion-label>已结束</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+        <div [ngSwitch]="tab">
+            <div *ngSwitchCase="'tab1'">
+                <ion-list>
+                    <div style="margin-top:10px"></div>
+                    <ion-item lines="none">
+                        <ion-thumbnail>
+                            <img src="../../../../assets/icon/lesson.png">
+                        </ion-thumbnail>
+                        <ion-label>
+                            <h2>&nbsp;&nbsp;&nbsp;任务名称</h2>
+                        </ion-label>
+                    </ion-item>
+                    <div class="more-inf">
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p>6人参与</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:50%">
+                            <ion-label>
+                                <p>10经验</p>
+                            </ion-label>
+                        </div>
+                        <div class="label-inf" style="width:25%">
+                            <ion-label>
+                                <p>
+                                    <ion-icon name="caret-forward-outline"></ion-icon>已超时</p>
+                            </ion-label>
+                        </div>
+                    </div>
+                </ion-list>
             </div>
-            <div class="label-inf" style="width:50%">
-              <ion-label>
-                <p>10经验</p>
-              </ion-label>
-            </div>
-            <div class="label-inf" style="width:25%">
-              <ion-label>
-                <p><ion-icon name="caret-forward-outline"></ion-icon>已超时</p>
-              </ion-label>
-            </div>
-          </div>
-        </ion-list>
-      </div>
-      <div *ngSwitchCase="'tab3'">output3</div>
-      <div *ngSwitchCase="'tab4'">output4</div>
-    </div>
+            <div *ngSwitchCase="'tab3'">output3</div>
+            <div *ngSwitchCase="'tab4'">output4</div>
+        </div>
     </div>
 </ion-content>

@@ -1,53 +1,53 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/lesson-tabs']">
-        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>{{lesson.name}}</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/lesson-tabs']">
+                <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title style="text-align:center;margin-right: 30px;">{{lesson.name}}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div style="margin-top:10px"></div>
-  <ion-list lines="none">
-    <div class="message">
-    <ion-item>
-      <ion-thumbnail class="rect" style="background-color:#ed9c57">
-        <ion-icon color="light" name="people-outline"></ion-icon>
-      </ion-thumbnail>
-      <ion-label> 
-        <h3>&nbsp;&nbsp;&nbsp;班课消息</h3>
-        <p>&nbsp;&nbsp;&nbsp;上课啦上课啦</p>
-       </ion-label>
-       <ion-label style="margin-bottom:auto;text-align:right">
-         <p>时间</p>
-       </ion-label>
-     </ion-item>
-    </div>
-    <div >
-     <ion-item class="message">
-      <ion-thumbnail class="rect" style="background-color:#ed576b;">
-        <ion-icon color="light" name="mail-outline"></ion-icon>
-      </ion-thumbnail>
-      <ion-label> 
-        <h3>&nbsp;&nbsp;&nbsp;班课通知</h3>
-        <p>&nbsp;&nbsp;&nbsp;暂无消息</p>
-       </ion-label>
-     </ion-item>
-</div>
-<div class="message">
-     <ion-item>
-      <ion-thumbnail class="rect" style="background-color:#3dc2ff;">
-        <ion-icon color="light" name="cloud-outline" ></ion-icon>
-      </ion-thumbnail>
-      <ion-label> 
-        <h3>&nbsp;&nbsp;&nbsp;小云消息</h3>
-        <p>&nbsp;&nbsp;&nbsp;暂无消息</p>
-       </ion-label>
-     </ion-item>
-    </div>
-  </ion-list>
+    <div style="margin-top:10px"></div>
+    <ion-list lines="none">
+        <div class="message">
+            <ion-item>
+                <ion-thumbnail class="rect" style="background-color:#ed9c57">
+                    <ion-icon color="light" name="people-outline"></ion-icon>
+                </ion-thumbnail>
+                <ion-label>
+                    <h3>&nbsp;&nbsp;&nbsp;班课消息</h3>
+                    <p>&nbsp;&nbsp;&nbsp;上课啦上课啦</p>
+                </ion-label>
+                <ion-label style="margin-bottom:auto;text-align:right">
+                    <p>时间</p>
+                </ion-label>
+            </ion-item>
+        </div>
+        <div>
+            <ion-item class="message">
+                <ion-thumbnail class="rect" style="background-color:#ed576b;">
+                    <ion-icon color="light" name="mail-outline"></ion-icon>
+                </ion-thumbnail>
+                <ion-label>
+                    <h3>&nbsp;&nbsp;&nbsp;班课通知</h3>
+                    <p>&nbsp;&nbsp;&nbsp;暂无消息</p>
+                </ion-label>
+            </ion-item>
+        </div>
+        <div class="message">
+            <ion-item>
+                <ion-thumbnail class="rect" style="background-color:#3dc2ff;">
+                    <ion-icon color="light" name="cloud-outline"></ion-icon>
+                </ion-thumbnail>
+                <ion-label>
+                    <h3>&nbsp;&nbsp;&nbsp;小云消息</h3>
+                    <p>&nbsp;&nbsp;&nbsp;暂无消息</p>
+                </ion-label>
+            </ion-item>
+        </div>
+    </ion-list>
 
 </ion-content>

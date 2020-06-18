@@ -1,30 +1,29 @@
-.text-pos {
-    text-align: center;
-}
-
-.col-btn {
-    text-align: center;
-}
-
-.click-btn {
-    width: 50%;
-}
-
 .my-circle {
-    min-width: 120px;
-    height: 120px;
+    width: 70px;
+    height: 70px;
     text-align: center;
     line-height: 20px;
     color: #fff;
     background-color: #3dc2ff;
     display: block;
-    position: absolute;
+    position: relative;
     font-style: initial;
-    left: 35%;
-    top: 40%;
-    border-radius: 120px; //让边框变成圆形
+    left: 44%;
+    top: 2%;
+    border-radius: 70px; //让边框变成圆形
     padding: 0 3px;
     z-index: 1000;
     font-size: 11px;
     box-shadow: rgba(100, 206, 239, 0.74) 2px 3px 14px; //让边框带有阴影
+}
+
+.row-text {
+    background: #80808026;
+    width: 100%;
+    height: 40px;
+    margin-top: 30px;
+}
+
+.row-label {
+    margin: 10px 0px 0px 10px;
 }

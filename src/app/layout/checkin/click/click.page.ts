@@ -1,7 +1,8 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
-import { LoadingController } from '@ionic/angular';
-declare var BMap:any
+import { LoadingController, AlertController } from '@ionic/angular';
+declare var BMap: any
 @Component({
   selector: 'app-click',
   templateUrl: './click.page.html',
@@ -10,64 +11,54 @@ declare var BMap:any
 export class ClickPage implements OnInit {
   params = {}
   public result;
-  public address=[];
-  public latitude;
-  public longitude;
+  public address = [];
+  public latitude: any;
+  public longitude: any;
   api = '/attendence';//后台接口
+  public attnId: any;
+  public checkinNum = 0;
+  public totalNum = 0;
+  public interval: any;
   constructor(public httpService: HttpServiceService,
-    public loadingController: LoadingController) {
-      // this.startCheck()
-      // this.params = {
-      //   code: 8542144,
-      //   local:"12,13"
-      // }
+    public loadingController: LoadingController,
+    public router: Router,
+    public alertController: AlertController) {
+    // this.startCheck()
+    // this.params = {
+    //   code: 8542144,
+    //   local:"12,13"
+    // }
   }
 
   ngOnInit() {
-    this.startCheck()
+    this.funcTest()
     // this.getAddr()
-    this.getLocation()
+
+    // this.funcTest()
+    // this.getLocation()
   }
-  getLocation()
-{
-  console.log("sdhsjdh")
-    if (navigator.geolocation)
-    {
-        navigator.geolocation.getCurrentPosition(this.showPosition);
+  getLocation() {
+    console.log("sdhsjdh")
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.showPosition);
     }
-    else{
-     
+    else {
+
       console.log("Geolocation is not supported by this browser.");
     }
-}
-showPosition(position)
-{
-  this.latitude=position.coords.latitude;
-  this.longitude=position.coords.longitude;
-    console.log("Latitude: " + position.coords.latitude +
-        "<br />Longitude: " + position.coords.longitude);
-}
-
-  async startCheck(){
-    const loading = await this.loadingController.create({
-      message: 'Please wait...',
-    });
-    await loading.present();
-    this.params = {
-      code: localStorage.getItem("lesson_no"),
-      local:"12,13"
-    }
-    this.httpService.post(this.api, this.params).then(async (response: any) => {
-      await loading.dismiss();
-      console.log(response.data);
-     
-
-    })
   }
+  showPosition(position) {
+    this.latitude = position.coords.latitude;
+    this.longitude = position.coords.longitude;
+    console.log("Latitude: " + position.coords.latitude +
+      "<br />Longitude: " + position.coords.longitude);
+  }
+
+
   getAddr() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        function(position) {//获取位置信息成功GPS坐标
+        function (position) {//获取位置信息成功GPS坐标
           this.address.latitude = position.coords.latitude;
           this.address.longitude = position.coords.longitude;
           this.address.mPoint = new BMap.Point(this.address.longitude, this.address.latitude);
@@ -75,7 +66,7 @@ showPosition(position)
           this.changeCoord();
 
         },
-        function(error) {  //获取位置信息失败
+        function (error) {  //获取位置信息失败
           console.log("定位失败")
           switch (error.code) {
             case error.PERMISSION_DENIED:
@@ -87,7 +78,7 @@ showPosition(position)
             case error.TIMEOUT:
               console.log('定位请求超时！');
               break;
-            
+
           }
         },
         {
@@ -102,9 +93,9 @@ showPosition(position)
       console.log('您的设备不支持GPS定位！');
     }
   };
-  changeCoord () {
-    setTimeout(function(){
-      BMap.Convertor.translate(this.address.mPoint,0,function (point) {//坐标转换完之后的回调函数
+  changeCoord() {
+    setTimeout(function () {
+      BMap.Convertor.translate(this.address.mPoint, 0, function (point) {//坐标转换完之后的回调函数
         this.address.mPoint = point;
         this.address.latitude = point.lat;
         this.address.longitude = point.lng;
@@ -112,4 +103,89 @@ showPosition(position)
       });
     }, 1000);
   };
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '取消签到!',
+      message: '确定要取消签到吗？',
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: '确定',
+          handler: () => {
+            var params = {
+              attend_id: localStorage.getItem("attend_id"),
+              type: 0
+            }
+            this.httpService.delete(this.api, params).then(async (response: any) => {
+              console.log(response.data)
+              clearInterval(this.interval)
+              this.router.navigateByUrl('choose')
+            })
+
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
+  giveup() {
+    this.presentAlertConfirm()
+  }
+  async endCheckin() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '结束签到!',
+      message: '确定要结束签到吗？',
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: '确定',
+          handler: () => {
+            var params = {
+              attend_id: localStorage.getItem("attend_id"),
+              type: 1
+            }
+            this.httpService.delete(this.api, params).then(async (response: any) => {
+              console.log(response.data)
+              clearInterval(this.interval)
+              this.router.navigateByUrl('checkin-result');
+            })
+
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  getCheckResult = function () {
+    var params = {
+      attend_id: localStorage.getItem("attend_id"),
+      code: localStorage.getItem("lesson_no")
+    }
+    this.httpService.put(this.api, params).then(async (response: any) => {
+      console.log(response.data.count)
+      this.checkinNum = response.data.count;
+      this.totalNum = response.data.total;
+    })
+  }
+  funcTest() {
+    //每隔3秒执行一次
+    this.interval = setInterval(() => {
+      this.getCheckResult();
+    }, 3000);
+
+  }
+}

@@ -66,13 +66,13 @@ export class MylessonPage implements OnInit {
   }
   //我创建的 user的教师id-->该教师对应的课程（登录时就应存该id）
   async getCreateLesson() {
-    localStorage.setItem("isTeacher", '0');
+    localStorage.setItem("isTeacher", '1');
 
     const loading = await this.loadingController.create({
       message: 'Please wait...',
     });
     await loading.present();
-    
+
     this.params = {
       teacher_email: localStorage.getItem("email")
     }
@@ -121,16 +121,14 @@ export class MylessonPage implements OnInit {
   //   console.log("tab" + this.tab);
   // }
   getCurrentLesson(index) {
-    // console.log(index);
     localStorage.setItem("lesson_name", this.lessonList[index].name);
     localStorage.setItem("lesson_no", this.lessonList[index].no);
-    // console.log(this.lessonList[index]);
     if (this.tab == 'tab1') {
       localStorage.setItem("isTeacher", '1');
     } else {
       localStorage.setItem("isTeacher", '0');
     }
-
+    this.router.navigateByUrl("/tabs/member")
   }
   async addLesson() {
     const actionSheet = await this.actionSheetController.create({

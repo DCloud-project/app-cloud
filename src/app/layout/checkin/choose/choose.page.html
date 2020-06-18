@@ -1,11 +1,11 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/tabs/member']">
+            <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/lesson-tabs/mylesson']">
                 <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title color="medium">签到</ion-title>
+        <ion-title color="medium" style="text-align:center;margin-right: 30px;">签到</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -25,25 +25,25 @@
                 <h6 style="color:#ed9c57">一键签到</h6>
             </ion-col>
             <!-- <ion-col class="col-img" (click)="gotoGesture()">
-        <img class="checkinImg" src="../../../../assets/icon/gesture.png" alt="">
-        <h6 style="color:#b41bc7">手势签到</h6>
-      </ion-col>
-      <ion-col class="col-img" (click)="gotoManual()">
-        <img class="checkinImg" src="../../../../assets/icon/manual.png" alt="">
-        <h6 style="color:#51b110">人工签到</h6>
-      </ion-col> -->
+                <img class="checkinImg" src="../../../../assets/icon/gesture.png" alt="">
+                <h6 style="color:#b41bc7">手势签到</h6>
+            </ion-col> -->
+            <ion-col class="col-img" (click)="gotoManual()">
+                <img class="checkinImg" src="../../../../assets/icon/manual.png" alt="">
+                <h6 style="color:#51b110">人工签到</h6>
+            </ion-col>
         </ion-row>
         <ion-row class="row-text">
             <ion-label class="row-label">历史签到记录</ion-label>
         </ion-row>
     </ion-grid>
     <ion-list lines="full">
-        <ion-item *ngFor="let item of record">
+        <ion-item *ngFor="let item of record" (click)="checkHistoryDetail()">
             <ion-label slot="start">
-                <h4>{{item.date}} {{item.day}} {{item.event}}</h4>
-                <p>{{item.time}}</p>
+                <h4>{{item.time.substring(0,11)}} {{getMyDay(item.time.substring(0,11))}} 签到</h4>
+                <p>{{item.time.substring(11,19)}}</p>
             </ion-label>
-            <ion-label slot="end">{{item.checkNum}}人/{{item.total}}人</ion-label>
+            <ion-label slot="end">{{item.count}}人/{{item.total}}人</ion-label>
         </ion-item>
     </ion-list>
 

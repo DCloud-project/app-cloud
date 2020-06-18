@@ -98,10 +98,15 @@ const routes: Routes = [
   {
     path: 'user-inf',
     loadChildren: () => import('./layout/user/user-inf/user-inf.module').then( m => m.UserInfPageModule)
-  },  {
+  },
+  {
     path: 'checkin-result',
     loadChildren: () => import('./layout/checkin/checkin-result/checkin-result.module').then( m => m.CheckinResultPageModule)
-  },
+  },  {
+    path: 'student-checkin',
+    loadChildren: () => import('./layout/checkin/student-checkin/student-checkin.module').then( m => m.StudentCheckinPageModule)
+  }
+
 
   // {
   //   path: 'mylesson',
