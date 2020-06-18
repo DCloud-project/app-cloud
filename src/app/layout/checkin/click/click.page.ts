@@ -11,8 +11,8 @@ export class ClickPage implements OnInit {
   params = {}
   public result;
   public address=[];
-  public latitude=0;
-  public longitude=0;
+  public latitude;
+  public longitude;
   api = '/attendence';//后台接口
   constructor(public httpService: HttpServiceService,
     public loadingController: LoadingController) {
@@ -25,7 +25,8 @@ export class ClickPage implements OnInit {
 
   ngOnInit() {
     this.startCheck()
-    this.getAddr()
+    // this.getAddr()
+    this.getLocation()
   }
   getLocation()
 {
@@ -35,11 +36,14 @@ export class ClickPage implements OnInit {
         navigator.geolocation.getCurrentPosition(this.showPosition);
     }
     else{
+     
       console.log("Geolocation is not supported by this browser.");
     }
 }
 showPosition(position)
 {
+  this.latitude=position.coords.latitude;
+  this.longitude=position.coords.longitude;
     console.log("Latitude: " + position.coords.latitude +
         "<br />Longitude: " + position.coords.longitude);
 }
