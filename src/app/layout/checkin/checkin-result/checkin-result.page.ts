@@ -112,9 +112,6 @@ export class CheckinResultPage implements OnInit {
     }
 
   }
-  deleteItem(item) {
-    this.absenceList.splice(this.absenceList.indexOf(item), 1);
-  }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: '设置',
@@ -132,20 +129,22 @@ export class CheckinResultPage implements OnInit {
         handler: () => {
           console.log('Share clicked');
         }
-      }, {
-        text: '设为迟到',
-        icon: 'alarm-outline',
-        handler: () => {
-          console.log('Favorite clicked');
-        }
       },
+      //  {
+      //   text: '设为迟到',
+      //   icon: 'alarm-outline',
+      //   handler: () => {
+      //     console.log('Favorite clicked');
+      //   }
+      // },
+      // {
+      //   text: '设为早退',
+      //   icon: 'exit-outline',
+      //   handler: () => {
+      //     console.log('Favorite clicked');
+      //   }
+      // }, 
       {
-        text: '设为早退',
-        icon: 'exit-outline',
-        handler: () => {
-          console.log('Favorite clicked');
-        }
-      }, {
         text: '设为已签到',
         icon: 'heart-outline',
         handler: () => {
@@ -181,6 +180,27 @@ export class CheckinResultPage implements OnInit {
       this.attendanceTotal = response.data[1][response.data[1].length - 1].total;
       this.attendanceList.splice(this.attendanceList.length - 1)
     })
+  }
+
+  setState(){
+
+  }
+  setAllState(){
+    var sum=0;
+    console.log("000");
+    this.absenceList.forEach(item => {
+      if(item.checked==true){
+        sum+=1;
+      }
+    });
+    this.attendanceList.forEach(item => {
+      if(item.checked==true){
+        sum+=1;
+      }
+    });
+    if(this.isSelectAllAttendance==true||this.isSelectAllAbsence==true||sum>0){
+      console.log("ok")
+    }
   }
 
 }
