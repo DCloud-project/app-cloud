@@ -11,14 +11,17 @@ import { Router } from '@angular/router'
 })
 export class ChoosePage implements OnInit {
   api = '/attendence';//后台接口
-  public params={};
+  public params = {};
   public record = []
   constructor(public modalController: ModalController,
-     public router: Router,
-     public loadingController: LoadingController,
-     public httpService: HttpServiceService) { 
-     }
-
+    public router: Router,
+    public loadingController: LoadingController,
+    public httpService: HttpServiceService) {
+  }
+  ionViewWillEnter() {
+    //这两个方法在将要进入界面的时候会触发,相当于是局部刷新,整个页面不会跟着刷新
+    this.getCheckHistory();
+  }
   async checkExplain() {
     console.log("签到方式说明");
     //弹出说明模态框
@@ -38,7 +41,12 @@ export class ChoosePage implements OnInit {
   }
 
   gotoManual() {
-    this.router.navigateByUrl('manual');
+    this.router.navigate(['/checkin-result'], {
+      queryParams: {
+        type: 1
+      }
+    })
+    // this.router.navigateByUrl('checkin-result');
   }
 
   ngOnInit() {
@@ -55,34 +63,35 @@ export class ChoosePage implements OnInit {
     }
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
-      localStorage.setItem("attend_id",response.data);
+      localStorage.setItem("attend_id", response.data);
     })
   }
-  async getCheckHistory(){
+
+  async getCheckHistory() {
     this.params = {
       code: localStorage.getItem("lesson_no")
     }
     this.httpService.patch(this.api, this.params).then(async (response: any) => {
       console.log(response.data)
-      this.record=response.data;
-      // var w1 = this.getMyDay(new Date("2019-05-16"));
+      this.record = response.data;
     })
   }
-  getMyDay(date){
-    date=new Date(date)
+  getMyDay(date) {
+    date = new Date(date)
     var week;
-    if(date.getDay()==0) week="周日";
-    if(date.getDay()==1) week="周一";
-    if(date.getDay()==2) week="周二";
-    if(date.getDay()==3) week="周三";
-    if(date.getDay()==4) week="周四";
-    if(date.getDay()==5) week="周五";
-    if(date.getDay()==6) week="周六";
+    if (date.getDay() == 0) week = "周日";
+    if (date.getDay() == 1) week = "周一";
+    if (date.getDay() == 2) week = "周二";
+    if (date.getDay() == 3) week = "周三";
+    if (date.getDay() == 4) week = "周四";
+    if (date.getDay() == 5) week = "周五";
+    if (date.getDay() == 6) week = "周六";
     return week;
-}
-checkHistoryDetail(){
-  this.router.navigateByUrl("checkin-result")
-}
+  }
+  checkHistoryDetail(item) {
+    localStorage.setItem("attend_id", item.attend_id);
+    this.router.navigateByUrl("checkin-result")
+  }
 
 
 
