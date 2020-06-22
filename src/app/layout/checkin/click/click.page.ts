@@ -2,7 +2,8 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { LoadingController, AlertController } from '@ionic/angular';
-declare var BMap: any
+declare var BMap;
+declare var BMapLib;
 @Component({
   selector: 'app-click',
   templateUrl: './click.page.html',
@@ -33,9 +34,6 @@ export class ClickPage implements OnInit {
   ngOnInit() {
     this.funcTest()
     // this.getAddr()
-
-    // this.funcTest()
-    // this.getLocation()
   }
   getLocation() {
     console.log("sdhsjdh")
