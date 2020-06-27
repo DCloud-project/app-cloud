@@ -1,22 +1,26 @@
-.row{
-    height:50px;
+.row {
+    height: 50px;
     width: 100%;
 }
-.btn-exit{
-border: solid 1px red;
+
+.btn-exit {
+    border: solid 1px red;
 }
-.lesson-row{
-    margin:auto;
-    width:100%;
+
+.lesson-row {
+    margin: auto;
+    width: 100%;
     margin-top: 20px;
     width: 90%;
     border-radius: 10px;
 }
-.lesson-btn{
+
+.lesson-btn {
     margin: auto;
-    width:80%;
-    height: -webkit-fill-available;
+    width: 80%;
+    // height: -webkit-fill-available;
 }
+
 // .end-lesson{
 //     border:solid 1px red;
 //     border-radius: 10px;

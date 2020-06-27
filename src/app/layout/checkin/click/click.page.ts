@@ -33,77 +33,7 @@ export class ClickPage implements OnInit {
 
   ngOnInit() {
     this.funcTest()
-    // this.getAddr()
-    // this.funcTest()
-    // this.getLocation()
   }
-  // getLocation() {
-  //   console.log("sdhsjdh")
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(this.showPosition);
-  //   }
-  //   else {
-
-  //     console.log("Geolocation is not supported by this browser.");
-  //   }
-  // }
-  // showPosition(position) {
-  //   this.latitude = position.coords.latitude;
-  //   this.longitude = position.coords.longitude;
-  //   console.log("Latitude: " + position.coords.latitude +
-  //     "<br />Longitude: " + position.coords.longitude);
-  // }
-
-
-  // getAddr() {
-  //   if (navigator.geolocation) {
-  //     console.log(navigator.geolocation);
-  //     navigator.geolocation.getCurrentPosition(
-  //       function (position) {//获取位置信息成功GPS坐标
-  //         this.address.latitude = position.coords.latitude;
-  //         this.address.longitude = position.coords.longitude;
-  //         this.address.mPoint = new BMap.Point(this.address.longitude, this.address.latitude);
-  //         console.log(this.address)
-  //         this.changeCoord();
-
-  //       },
-  //       function (error) {  //获取位置信息失败
-  //         console.log("定位失败")
-  //         switch (error.code) {
-  //           case error.PERMISSION_DENIED:
-  //             console.log('请打开设备定位功能！');
-  //             break;
-  //           case error.POSITION_UNAVAILABLE:
-  //             console.log('定位信息不可用！');
-  //             break;
-  //           case error.TIMEOUT:
-  //             console.log('定位请求超时！');
-  //             break;
-
-  //         }
-  //       },
-  //       {
-  //         // 指示浏览器获取高精度的位置，默认为false
-  //         enableHighAccuracy: true,
-  //         // 指定获取地理位置的超时时间，默认不限时，单位为毫秒
-  //         timeout: 5000,
-  //         // 最长有效期，在重复获取地理位置时，此参数指定多久再次获取位置。
-  //         maximumAge: 3000
-  //       });
-  //   } else {
-  //     console.log('您的设备不支持GPS定位！');
-  //   }
-  // };
-  // changeCoord() {
-  //   setTimeout(function () {
-  //     BMap.Convertor.translate(this.address.mPoint, 0, function (point) {//坐标转换完之后的回调函数
-  //       this.address.mPoint = point;
-  //       this.address.latitude = point.lat;
-  //       this.address.longitude = point.lng;
-
-  //     });
-  //   }, 1000);
-  // };
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',

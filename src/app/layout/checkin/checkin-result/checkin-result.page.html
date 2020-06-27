@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button color="medium" expand="block" fill="clear" shape="round" [routerLink]="['/choose']">
+            <ion-button color="medium" expand="block" fill="clear" shape="round" (click)="goback()">
                 <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -13,14 +13,14 @@
 </ion-header>
 
 <ion-content>
-    <ion-item-divider>
+    <!-- <ion-item-divider>
         <ion-searchbar style="width: 80%;float: left;"></ion-searchbar>
         <ion-button style="margin: 10px 0 0 10px;float:left;width: 15%;">搜索</ion-button>
-    </ion-item-divider>
+    </ion-item-divider> -->
     <ion-item-divider class="row-text">
         <ion-label>缺勤列表</ion-label>
         <ion-note slot="end" color="tertiary" style="padding: 10px 0 0 0;font-size: 15px;margin-right: 10px;">{{absenceTotal}}人</ion-note>
-        <ion-checkbox slot="end" color="primary" (click)="selectAllAbsence()" [(ngModel)]="isSelectAllAbsence" *ngIf="show==true" style="margin-left:0px;margin-right: 17px;"></ion-checkbox>
+        <ion-checkbox slot="end" color="primary" (click)="selectAllAbsence()" [(ngModel)]="isSelectAllAbsence" *ngIf="show==true&&absenceTotal!=0" style="margin-left:0px;margin-right: 17px;"></ion-checkbox>
     </ion-item-divider>
     <ion-list can-swipe="listCanSwipe">
         <!-- <ion-item-sliding > -->
@@ -41,7 +41,7 @@
     <ion-item-divider class="row-text">
         <ion-label>出勤列表</ion-label>
         <ion-note slot="end" color="tertiary" style="padding: 10px 0 0 0;font-size: 15px;margin-right: 10px;">{{attendanceTotal}}人</ion-note>
-        <ion-checkbox slot="end" color="primary" (click)="selectAllAttendance()" [(ngModel)]="isSelectAllAttendance" *ngIf="show==true" style="margin-left:0px;margin-right: 17px;"></ion-checkbox>
+        <ion-checkbox slot="end" color="primary" (click)="selectAllAttendance()" [(ngModel)]="isSelectAllAttendance" *ngIf="show==true&&attendanceTotal!=0" style="margin-left:0px;margin-right: 17px;"></ion-checkbox>
     </ion-item-divider>
     <ion-list can-swipe="listCanSwipe">
         <!-- <ion-item-sliding > -->
@@ -60,6 +60,6 @@
     </ion-list>
 
 </ion-content>
-<ion-footer *ngIf="show==true" (click)="setAllState()">
-    <p style="color: #3685d8;text-align: center;">设置状态</p>
+<ion-footer *ngIf="show==true">
+    <p style="color: #3685d8;text-align: center;" (click)="setAllState()">设置状态</p>
 </ion-footer>

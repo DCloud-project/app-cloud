@@ -25,7 +25,8 @@
                 <h2>{{item.time.substring(0,11)}}{{getMyDay(item.time.substring(0,11))}} 签到</h2>
                 <h3>{{item.time.substring(11,19)}}</h3>
             </ion-label>
-            <ion-note slot="end" color="danger" style="font-size: 15px;margin-top: 4px;">{{item.type}}</ion-note>
+            <ion-note slot="end" color="danger" style="font-size: 15px;margin-top: 4px;" *ngIf="item.type!='已签到'">{{item.type}}</ion-note>
+            <ion-note slot="end" color="success" style="font-size: 15px;margin-top: 4px;" *ngIf="item.type=='已签到'">{{item.type}}</ion-note>
         </ion-item>
 
     </ion-list>

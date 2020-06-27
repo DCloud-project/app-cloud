@@ -12,7 +12,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class StudentCheckinPage implements OnInit {
 
   public checkHistory = [];
-  public percent=0;
+  public percent = 0;
   constructor(public modalController: ModalController,
     public httpService: HttpServiceService,
     public http: HttpClient,
@@ -22,6 +22,10 @@ export class StudentCheckinPage implements OnInit {
     private geolocation: Geolocation) { }
 
   ngOnInit() {
+    this.getHistory();
+  }
+  ionViewWillEnter() {
+    //这两个方法在将要进入界面的时候会触发,相当于是局部刷新,整个页面不会跟着刷新
     this.getHistory();
   }
   async presentToast(message) {
@@ -72,22 +76,22 @@ export class StudentCheckinPage implements OnInit {
     }
     this.httpService.put(api, params).then(async (response: any) => {
       this.checkHistory = response.data;
-      this.percent=this.checkHistory[this.checkHistory.length-1].per
-      this.checkHistory.splice(this.checkHistory.length-1)
+      this.percent = this.checkHistory[this.checkHistory.length - 1].per
+      this.checkHistory.splice(this.checkHistory.length - 1)
     })
   }
-  getMyDay(date){
-    date=new Date(date)
+  getMyDay(date) {
+    date = new Date(date)
     var week;
-    if(date.getDay()==0) week="周日";
-    if(date.getDay()==1) week="周一";
-    if(date.getDay()==2) week="周二";
-    if(date.getDay()==3) week="周三";
-    if(date.getDay()==4) week="周四";
-    if(date.getDay()==5) week="周五";
-    if(date.getDay()==6) week="周六";
+    if (date.getDay() == 0) week = "周日";
+    if (date.getDay() == 1) week = "周一";
+    if (date.getDay() == 2) week = "周二";
+    if (date.getDay() == 3) week = "周三";
+    if (date.getDay() == 4) week = "周四";
+    if (date.getDay() == 5) week = "周五";
+    if (date.getDay() == 6) week = "周六";
     return week;
-}
+  }
 
 
 }
