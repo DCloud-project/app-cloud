@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { JoinByQRPageRoutingModule } from './join-by-qr-routing.module';
+import { QrScannerPageRoutingModule } from './qr-scanner-routing.module';
 
-import { JoinByQRPage } from './join-by-qr.page';
+import { QrScannerPage } from './qr-scanner.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    JoinByQRPageRoutingModule
+    QrScannerPageRoutingModule
   ],
-  declarations: [JoinByQRPage]
+  declarations: [QrScannerPage]
 })
-export class JoinByQRPageModule {}
+export class QrScannerPageModule {}

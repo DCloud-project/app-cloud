@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { JoinByQRPage } from './join-by-qr.page';
+import { QrScannerPage } from './qr-scanner.page';
 
-describe('JoinByQRPage', () => {
-  let component: JoinByQRPage;
-  let fixture: ComponentFixture<JoinByQRPage>;
+describe('QrScannerPage', () => {
+  let component: QrScannerPage;
+  let fixture: ComponentFixture<QrScannerPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JoinByQRPage ],
+      declarations: [ QrScannerPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(JoinByQRPage);
+    fixture = TestBed.createComponent(QrScannerPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -14,6 +14,7 @@ import {HttpServiceService} from '../app/shared/services/http-service.service';/
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { QQSDK, QQShareOptions } from '@ionic-native/qqsdk/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     InAppBrowser,
     QQSDK,
     Geolocation,
+    QRScanner,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

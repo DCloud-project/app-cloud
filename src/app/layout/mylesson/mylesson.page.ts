@@ -148,7 +148,7 @@ export class MylessonPage implements OnInit {
         {
           text: '使用二维码加入班课',
           handler: () => {
-            this.router.navigateByUrl('join-by-qr');
+            this.router.navigateByUrl('qr-scanner');
           }
         },
         {

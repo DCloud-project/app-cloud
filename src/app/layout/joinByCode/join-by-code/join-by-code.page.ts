@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +16,7 @@ export class JoinByCodePage implements OnInit {
     private router: Router,
     public httpService: HttpServiceService,
     public http: HttpClient,
-    private alertController: AlertController,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {

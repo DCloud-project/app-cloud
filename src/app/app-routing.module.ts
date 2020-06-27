@@ -60,10 +60,6 @@ const routes: Routes = [
     loadChildren: () => import('./layout/joinByCode/confirm-join/confirm-join.module').then( m => m.ConfirmJoinPageModule)
   },
   {
-    path: 'join-by-qr',
-    loadChildren: () => import('./layout/join-by-qr/join-by-qr.module').then( m => m.JoinByQRPageModule)
-  },
-  {
     path: 'update-inf',
     loadChildren: () => import('./layout/user/update-inf/update-inf.module').then( m => m.UpdateInfPageModule)
   },
@@ -103,6 +99,16 @@ const routes: Routes = [
     path: 'add-lesson-name',
     loadChildren: () => import('./layout/add-lesson-name/add-lesson-name.module').then( m => m.AddLessonNamePageModule)
   },
+  {
+    path: 'create-success',
+    loadChildren: () => import('./layout/create-success/create-success.module').then( m => m.CreateSuccessPageModule)
+  },
+  {
+    path: 'qr-scanner',
+    loadChildren: () => import('./layout/qr-scanner/qr-scanner.module').then( m => m.QrScannerPageModule)
+  },
+
+
 
 
   // {

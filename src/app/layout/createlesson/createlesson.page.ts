@@ -61,7 +61,7 @@ export class CreatelessonPage implements OnInit {
       } else if (queryParams.pageNum == '3') {
         this.lesson.examination = queryParams.property;
       } else {
-        console.log(queryParams.name);
+        // console.log(queryParams.name);
         // this.temp = queryParams.name;
         if (queryParams.name != undefined) {
           this.lesson.name = queryParams.name;
@@ -210,16 +210,17 @@ export class CreatelessonPage implements OnInit {
       params["email"] = localStorage.getItem("email");
       var api = '/courses';//后台接口
       this.httpService.post(api, params).then(async (response: any) => {
-        console.log(response.data);
+        // console.log(response.data);
+        localStorage.setItem("create-code",response.data)
         const alert = await this.alertController.create({
-          header: '创建班课成功',
-          message: '班课号为' + response.data,
+          // header: '创建班课成功',
+          message: '创建班课成功！',
           buttons: [
             {
               text: '确认',
               cssClass: 'secondary',
               handler: (blah) => {
-                this.router.navigateByUrl('/lesson-tabs');
+                this.router.navigateByUrl('/create-success');
               }
             }
           ]
