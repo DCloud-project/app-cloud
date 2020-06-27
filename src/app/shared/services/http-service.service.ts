@@ -12,7 +12,7 @@ export class HttpServiceService {
   }
 
   //axios方法
-  commonUrl = 'http://s2ssiv.natappfree.cc';
+  commonUrl = 'http://6cebjp.natappfree.cc';
   // commonUrl = 'http://localhost:8080';
   // instance = axios.create({
   //   headers: { 'token': localStorage.getItem("token") }
@@ -75,6 +75,22 @@ export class HttpServiceService {
         });
     })
   }
+
+  postAll(api) {
+    return new Promise((resolve, reject) => {
+      this.setToken();
+      axios({
+        method: 'post',
+        url: this.commonUrl + api
+      }).then(function (response) {
+        resolve(response);
+      })
+        .catch(function (error) {
+          reject(error);
+        });
+    })
+  }
+
   put(api, params) {
     this.setToken();
     return new Promise((resolve, reject) => {
@@ -83,7 +99,7 @@ export class HttpServiceService {
         url: this.commonUrl + api,
         data: params,
       }).then(function (response) {
-        console.log(response);
+        // console.log(response);
         resolve(response);
       })
         .catch(function (error) {

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-student-checkin',
@@ -17,7 +18,8 @@ export class StudentCheckinPage implements OnInit {
     public http: HttpClient,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    public toastController: ToastController) { }
+    public toastController: ToastController,
+    private geolocation: Geolocation) { }
 
   ngOnInit() {
     this.getHistory();
@@ -30,11 +32,12 @@ export class StudentCheckinPage implements OnInit {
     toast.present();
   }
   async checkin() {
+
     var api = '/attendenceResult';//后台接口
     var params = {
       student_email: localStorage.getItem("email"),
       code: localStorage.getItem("lesson_no"),
-      local: "1111"
+      local: this.getLocation()
     }
     const loading = await this.loadingController.create({
       message: 'Please wait...',
@@ -49,6 +52,18 @@ export class StudentCheckinPage implements OnInit {
       }
     })
   }
+
+  getLocation(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+      var latitude = resp.coords.latitude;
+      var longitude = resp.coords.longitude;
+      return latitude + "," + longitude;
+      //获得系统参数
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+  }
+
   async getHistory() {
     var api = '/attendenceResult';//后台接口
     var params = {

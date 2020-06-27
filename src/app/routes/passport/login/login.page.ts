@@ -4,7 +4,8 @@ import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import axios from 'axios'
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { QQSDK, QQShareOptions } from '@ionic-native/qqsdk/ngx';
 
 
 @Component({
@@ -20,15 +21,22 @@ export class LoginPage implements OnInit {
     email: '',
     password: ''
   }
-  constructor(public httpService: HttpServiceService, public http: HttpClient, public router: Router, public alertController: AlertController) {
-  //登录状态为1时自动登录
-  // if (localStorage.getItem("isLogin") == "1") {
-  //   if(this.isOverTime()){
-  //     this.router.navigateByUrl('\lesson-tabs');
-  //   }
-  // }
+  constructor(public httpService: HttpServiceService,
+    public http: HttpClient, public router: Router,
+    public alertController: AlertController,
+    private iab: InAppBrowser,
+    private qq: QQSDK) {
+    //登录状态为1时自动登录
+    // if (localStorage.getItem("isLogin") == "1") {
+    //   if(this.isOverTime()){
+    //     this.router.navigateByUrl('\lesson-tabs');
+    //   }
+    // }
   }
 
+  ngOnInit() {
+
+  }
   async onLogin(form: NgForm) {
     if (form.valid) {
       var params;
@@ -99,7 +107,7 @@ export class LoginPage implements OnInit {
   }
 
   //获取个人信息
-  getInf(email){
+  getInf(email) {
     var params = {//后台所需参数
       email: email,
     };
@@ -130,7 +138,7 @@ export class LoginPage implements OnInit {
     //时间差的毫秒数 
     let date3 = endDate.getTime() - new Date(startDate).getTime();
     //计算出相差天数
-    var days=Math.floor(date3/(24*3600*1000));
+    var days = Math.floor(date3 / (24 * 3600 * 1000));
     // //计算出小时数
     // var leave1=date3%(24*3600*1000)    //计算天数后剩余的毫秒数
     // var hours=Math.floor(leave1/(3600*1000))
@@ -142,14 +150,54 @@ export class LoginPage implements OnInit {
     // var seconds=Math.round(leave3/1000)
     // alert(" 相差 "+days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
 
-    if(days>30){
+    if (days > 30) {
       return false;
-    }else{
+    } else {
       return true;
     }
-    
+
   }
-  ngOnInit() {
+
+  
+
+  loginByQQ() {
+    // var api = "/getQQCode";
+
+    // this.httpService.getAll(api).then(async (response: any) => {
+    //   console.log(response.data.url);
+    //   const browser = this.iab.create(response.data.url);
+    // })
+    const options: QQShareOptions = {
+      client: this.qq.ClientType.QQ,
+      scene: this.qq.Scene.QQ,
+      title: 'This is a title for cordova-plugin-qqsdk',
+      url: 'https://cordova.apache.org/',
+      image: 'https://cordova.apache.org/static/img/cordova_bot.png',
+      description: 'This is  Cordova QQ share description',
+      flashUrl:  'http://stream20.qqmusic.qq.com/30577158.mp3',
+    }
+    
+    const clientOptions: QQShareOptions = {
+      client: this.qq.ClientType.QQ,
+    }
+    
+    const shareTextOptions: QQShareOptions = {
+      client: this.qq.ClientType.QQ,
+      text: 'This is Share Text',
+      scene: this.qq.Scene.QQ,
+    }
+    
+    this.qq.ssoLogin(clientOptions)
+       .then(result => {
+          // Success
+          console.log('token is ' + result.access_token);
+          console.log('userid is ' + result.userid);
+          console.log('expires_time is ' + new Date(parseInt(result.expires_time)) + ' TimeStamp is ' + result.expires_time);
+       })
+       .catch(error => {
+         console.log(clientOptions);
+          console.log(error); // Failed
+       });
     
   }
 

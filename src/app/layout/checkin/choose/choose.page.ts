@@ -1,8 +1,9 @@
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
-import { CheckinComponent } from '../../../shared/components/checkin/checkin.component'
-import { Router } from '@angular/router'
+import { CheckinComponent } from '../../../shared/components/checkin/checkin.component';
+import { Router } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-choose',
@@ -16,7 +17,8 @@ export class ChoosePage implements OnInit {
   constructor(public modalController: ModalController,
      public router: Router,
      public loadingController: LoadingController,
-     public httpService: HttpServiceService) { 
+     public httpService: HttpServiceService,
+     private geolocation: Geolocation) { 
      }
 
   async checkExplain() {
@@ -33,6 +35,17 @@ export class ChoosePage implements OnInit {
     this.router.navigateByUrl('click');
   }
 
+  getLocation(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+      var latitude = resp.coords.latitude;
+      var longitude = resp.coords.longitude;
+      // console.log(latitude + "," + longitude);
+      return latitude + "," + longitude;
+      //获得系统参数
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+  }
   gotoGesture() {
     this.router.navigateByUrl('gesture');
   }
@@ -45,13 +58,15 @@ export class ChoosePage implements OnInit {
     this.getCheckHistory();
   }
   async startCheck() {
+    // this.getLocation();
     const loading = await this.loadingController.create({
       message: 'Please wait...',
     });
     await loading.present();
     this.params = {
       code: localStorage.getItem("lesson_no"),
-      local: "12,13"
+      // local: "12,13"
+      local:this.getLocation()
     }
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();

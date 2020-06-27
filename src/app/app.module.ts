@@ -11,6 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule,HttpClientJsonpModule} from '@angular/common/http';//请求数据的模块
 import {HttpServiceService} from '../app/shared/services/http-service.service';//引入请求数据的服务
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { QQSDK, QQShareOptions } from '@ionic-native/qqsdk/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +23,9 @@ import {HttpServiceService} from '../app/shared/services/http-service.service';/
     StatusBar,
     SplashScreen,
     HttpServiceService,
+    InAppBrowser,
+    QQSDK,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

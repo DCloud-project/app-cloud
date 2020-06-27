@@ -74,6 +74,14 @@
         <ion-row class="row" style="display: block;text-align: center;">
           <ion-label color="secondary" [routerLink]="['/register']">注册到云账号</ion-label>
         </ion-row>
+        <ion-row class="row">
+          <ion-col></ion-col>
+          <ion-col></ion-col>
+          <ion-col (click)="loginByQQ()"><img style="width:80%" src="../../../../assets/icon/QQ.png"></ion-col>
+          <!-- <ion-col (click)="loginByWeixin()"><img style="width:70%" src="../../../../assets/icon/weixin.png"></ion-col> -->
+          <ion-col></ion-col>
+          <ion-col></ion-col>
+        </ion-row>
       </ion-grid>
     </form>
   </div>

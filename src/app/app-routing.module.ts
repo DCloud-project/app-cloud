@@ -40,20 +40,12 @@ const routes: Routes = [
     loadChildren: () => import('./layout/checkin/click/click.module').then( m => m.ClickPageModule)
   },
   {
-    path: 'gesture',
-    loadChildren: () => import('./layout/checkin/gesture/gesture.module').then( m => m.GesturePageModule)
-  },
-  {
     path: 'manual',
     loadChildren: () => import('./layout/checkin/manual/manual.module').then( m => m.ManualPageModule)
   },
   {
     path: 'createlesson',
     loadChildren: () => import('./layout/createlesson/createlesson.module').then( m => m.CreatelessonPageModule)
-  },
-  {
-    path: 'gesture-lock',
-    loadChildren: () => import('./layout/checkin/gesture-lock/gesture-lock.module').then( m => m.GestureLockPageModule)
   },
   {
     path: 'change-pass',
