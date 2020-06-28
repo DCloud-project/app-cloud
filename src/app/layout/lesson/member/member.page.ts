@@ -18,19 +18,12 @@ export class MemberPage implements OnInit {
     name: ''
   };
   public isNo = '1';
-  public member = [
-    {
-      name: '小丸子',
-      sno: '190327991',
-      sex: '1',
-      exp: '15',
-      index: '',
-    }
-  ]
+  public member = [];
   public isTeacher: any;
-  public memberNo: any;
+  public memberNo: any = 0;
   public rank: any;
   public my_exp: any;
+  public flag: any = '0';
   constructor(public modalController: ModalController,
     private router: Router,
     public httpService: HttpServiceService,
@@ -40,13 +33,12 @@ export class MemberPage implements OnInit {
     public toastController: ToastController) {
   }
   ngOnInit() {
-   this.getdata();
+    this.getdata();
   }
-  async getdata(){
+  async getdata() {
     this.lesson.name = localStorage.getItem("lesson_name");
     this.lesson.no = localStorage.getItem("lesson_no");
     this.isTeacher = localStorage.getItem("isTeacher");
-    // console.log(this.isTeacher);
     if (this.isTeacher == '1') {
       this.orderByNo();
       localStorage.setItem("isNo", "1");
@@ -80,8 +72,22 @@ export class MemberPage implements OnInit {
     var api = '/courses/member';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
       await loading.dismiss();
-      this.member = response.data;
-      this.memberNo = this.member.length;
+      if (response.data.respCode == "该课程没有学生") {
+        this.flag = '0';
+      } else {
+        this.flag = '1';
+        this.member = response.data;
+        this.memberNo = this.member.length;
+      }
+
+    }).catch(async function (error) {
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: '警告',
+        message: '请求失败！',
+        buttons: ['确认']
+      });
+      await alert.present();
     })
   }
   async orderByExp() {
@@ -99,9 +105,23 @@ export class MemberPage implements OnInit {
     }
     var api = '/courses/member';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
+      console.log(response.data)
       await loading.dismiss();
-      this.member = response.data;
-      this.memberNo = this.member.length;
+      if (response.data.respCode == "该课程没有学生") {
+        this.flag = '0';
+      } else {
+        this.flag = '1';
+        this.member = response.data;
+        this.memberNo = this.member.length;
+      }
+    }).catch(async function (error) {
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: '警告',
+        message: '请求失败！',
+        buttons: ['确认']
+      });
+      await alert.present();
     })
   }
   async searchMember() {

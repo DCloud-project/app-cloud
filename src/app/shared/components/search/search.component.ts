@@ -15,7 +15,8 @@ export class SearchComponent implements OnInit {
   lessonType: string = '我创建的';
   public isTeacher = '1';
   public content = '';
-  public lessonList = []
+  public lessonList = [];
+  public flag='0';
 
   constructor(public navParams: NavParams, public router: Router,
     public httpService: HttpServiceService,
@@ -45,10 +46,35 @@ export class SearchComponent implements OnInit {
     }
 
     this.httpService.get(api, params).then((response: any) => {
+      if(response.data.length==0){
+        this.flag = '0';
+      }else{
+        this.flag = '1';
+      }
       this.lessonList = response.data;
     })
   }
 
   ngOnInit() { }
+
+  getCurrentLesson(index) {
+    this.dissmissSearch();
+    console.log(this.lessonList[index])
+    localStorage.setItem("lesson_name", this.lessonList[index].name);
+    localStorage.setItem("lesson_no", this.lessonList[index].no);
+    if (this.isTeacher == "1") {
+      localStorage.setItem("isTeacher", '1');
+    } else {
+      localStorage.setItem("isTeacher", '0');
+    }
+    this.router.navigateByUrl("/tabs/member")
+  }
+
+  gotoCheckin(index){
+    this.dissmissSearch();
+    localStorage.setItem("lesson_name", this.lessonList[index].name);
+    localStorage.setItem("lesson_no", this.lessonList[index].no);
+    this.router.navigateByUrl('/choose');
+  }
 
 }

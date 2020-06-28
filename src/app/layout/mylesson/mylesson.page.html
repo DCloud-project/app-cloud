@@ -16,7 +16,8 @@
         </ion-button>
     </ion-toolbar>
     <ion-toolbar>
-        <ion-searchbar class="searchbar" *ngIf="tab=='tab1'" placeholder="搜索" (click)="search('create')"></ion-searchbar>
+        <ion-searchbar class="searchbar" *ngIf="tab=='tab1'" placeholder="搜索" (click)="search('create')">
+        </ion-searchbar>
         <ion-searchbar class="searchbar" *ngIf="tab=='tab2'" placeholder="搜索" (click)="search('join')"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
@@ -27,40 +28,41 @@
             <ion-list id="list" lines="none" *ngFor="let item of list;let i = index">
                 <ion-item-divider style="padding-left:0px">
                     <ion-item style="width:100%">
-                        <ion-thumbnail class="thum" (click)="getCurrentLesson(i)">
-                            <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
-                        </ion-thumbnail>
-                        <ion-label (click)="getCurrentLesson(i)">
-                            <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
-                            <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
-                            <p>&nbsp;&nbsp;&nbsp;{{item.term}}</p>
-                        </ion-label>
-                        <ion-label style="margin-top: auto;padding-left:10px">
-                            <p (click)="getCurrentLesson(i)" style="color:#50c8ff">{{item.no}}</p>
-                            <ion-label style="text-align: -webkit-right;float: left;" (click)="gotoCheckin(i)">
-                                <ion-icon name="shield-checkmark-outline"></ion-icon>
-                            </ion-label>
-                            <ion-label style="text-align: -webkit-left;" (click)="gotoCheckin(i)">
-                                <p style="font-size: 12px;">
-                                    发起签到
-                                </p>
-                            </ion-label>
-                        </ion-label>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col size="2">
+                                    <ion-thumbnail class="thum" (click)="getCurrentLesson(i)">
+                                        <ion-icon class="thum-icon" color="light" name="cloud-circle-outline">
+                                        </ion-icon>
+                                    </ion-thumbnail>
+                                </ion-col>
+                                <ion-col size="6.5">
+                                    <ion-label (click)="getCurrentLesson(i)">
+                                        <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
+                                        <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
+                                        <p>&nbsp;&nbsp;&nbsp;{{item.term}}</p>
+                                    </ion-label>
+                                </ion-col>
+                                <ion-col size="3.5">
+                                    <ion-label style="margin-top: auto;padding-left:10px">
+                                        <p>&nbsp;&nbsp;</p>
+                                        <p (click)="getCurrentLesson(i)" style="color:#50c8ff">{{item.no}}</p>
+                                        <ion-label style="text-align: -webkit-right;float: left;"
+                                            (click)="gotoCheckin(i)">
+                                            <ion-icon name="shield-checkmark-outline"></ion-icon>
+                                        </ion-label>
+                                        <ion-label style="text-align: -webkit-left;" (click)="gotoCheckin(i)">
+                                            <p style="font-size: 12px;">
+                                                发起签到
+                                            </p>
+                                        </ion-label>
+                                    </ion-label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
                         <!-- <ion-icon name="chevron-forward-outline" style="color:#a09f9f"></ion-icon> -->
                     </ion-item>
                 </ion-item-divider>
-
-
-                <!-- <ion-item (click)="gotoCheckin(i)" style="border-bottom: solid 1px #808080b5;">
-                    <ion-label style="text-align: -webkit-right;">
-                        <ion-icon name="shield-checkmark-outline"></ion-icon>
-                    </ion-label>
-                    <ion-label style="text-align: -webkit-left;">
-                        <p style="font-size: 12px;">
-                            发起签到
-                        </p>
-                    </ion-label>
-                </ion-item> -->
 
             </ion-list>
             <ion-infinite-scroll threshold="10%" id="infinite-scroll" (ionInfinite)="loadData($event)">
@@ -69,24 +71,34 @@
             </ion-infinite-scroll>
         </div>
         <div *ngSwitchCase="'tab2'">
-            <ion-list lines="none" *ngFor="let item of list;let i = index">
+            <ion-list lines="none" *ngFor="let item of list1;let i = index">
                 <ion-item-divider style="padding-left:0px">
                     <!-- <ion-item [routerLink]=" [ '/tabs/member'] " (click)="getCurrentLesson(i) "> -->
-                    <ion-item (click)="getCurrentLesson(i)">
-                        <!-- <ion-thumbnail>
-            <img src="../../../../assets/icon/lesson.png ">
-          </ion-thumbnail> -->
-                        <ion-thumbnail class="thum ">
-                            <ion-icon class="thum-icon " color="light " name="cloud-circle-outline"></ion-icon>
-                        </ion-thumbnail>
-                        <ion-label>
-                            <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
-                            <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
-                            <p>&nbsp;&nbsp;&nbsp;
-                                <ion-icon name="shield-checkmark-outline"></ion-icon>
-                                签到
-                            </p>
-                        </ion-label>
+                    <ion-item>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col size="2">
+                                    <ion-thumbnail class="thum" (click)="getCurrentLesson(i)">
+                                        <ion-icon class="thum-icon " color="light " name="cloud-circle-outline">
+                                        </ion-icon>
+                                    </ion-thumbnail>
+                                </ion-col>
+                                <ion-col size="7">
+                                    <ion-label (click)="getCurrentLesson(i)">
+                                        <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
+                                        <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
+                                    </ion-label>
+                                </ion-col>
+                                <ion-col size="3">
+                                    <ion-label [routerLink]="['/student-checkin']" style="text-align: -webkit-right;">
+                                        <p [routerLink]="['/student-checkin']">
+                                            <ion-icon name="shield-checkmark-outline"></ion-icon>
+                                            签到
+                                        </p>
+                                    </ion-label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
                     </ion-item>
                 </ion-item-divider>
             </ion-list>

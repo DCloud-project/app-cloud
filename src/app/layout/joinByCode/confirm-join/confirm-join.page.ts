@@ -40,13 +40,20 @@ export class ConfirmJoinPage implements OnInit {
       if (response.status == 200) {
         if(response.data.respCode=="您已加入本班课，请勿重复加入！"){
           const alert = await this.alertController.create({
-            // header: '',
+            header: '警告',
             message: '您已加入本班课，请勿重复加入！',
             buttons: ['确认']
           });
           await alert.present();
-        }
-        if (response.data.respCode == "1") {
+        }else if(response.data.respCode=="不能加入自己创建的班课！"){
+          const alert = await this.alertController.create({
+            header: '警告',
+            message: '不能加入自己创建的班课！',
+            buttons: ['确认']
+          });
+          await alert.present();
+          
+        }else if (response.data.respCode == "1") {
           const alert = await this.alertController.create({
             // header: '',
             message: '加入班课成功!',

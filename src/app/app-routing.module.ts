@@ -107,18 +107,6 @@ const routes: Routes = [
     path: 'qr-scanner',
     loadChildren: () => import('./layout/qr-scanner/qr-scanner.module').then( m => m.QrScannerPageModule)
   },
-
-
-
-
-  // {
-  //   path: 'mylesson',
-  //   loadChildren: () => import('./layout/lesson/mylesson/mylesson.module').then( m => m.MylessonPageModule)
-  // },
-  // {
-  //   path: 'member',
-  //   loadChildren: () => import('./layout/member/member.module').then( m => m.MemberPageModule)
-  // },
  
 ];
 @NgModule({

@@ -61,18 +61,20 @@ export class DetailPage implements OnInit {
         this.lesson.process = queryParams.property;
       } else if (queryParams.pageNum == '3') {
         this.lesson.test = queryParams.property;
-      }else{
-        console.log(queryParams);
-        this.lesson.name = queryParams.name;
-        this.lesson.tname = queryParams.tname;
-        this.lesson.term = queryParams.term;
-        this.lesson.class = queryParams.class;
-        // this.lesson.type = queryParams.type;
-        if (queryParams.type.toString() == "true") {
-          this.lesson.type = "学校课表班课";
-        } else {
-          this.lesson.type = "非学校课表班课";
+      } else {
+        if (JSON.stringify(queryParams) != "{}") {
+          this.lesson.name = queryParams.name;
+          this.lesson.tname = queryParams.tname;
+          this.lesson.term = queryParams.term;
+          this.lesson.class = queryParams.class;
+          // this.lesson.type = queryParams.type;
+          if (queryParams.type == "true") {
+            this.lesson.type = "学校课表班课";
+          } else {
+            this.lesson.type = "非学校课表班课";
+          }
         }
+
       }
     });
     this.lesson.name = localStorage.getItem("lesson_name");
@@ -80,78 +82,87 @@ export class DetailPage implements OnInit {
     this.isTeacher = localStorage.getItem("isTeacher");
     this.getLesson();
   }
-  async  openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
-    const picker = await this.pickerController.create({
-      columns: this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool),
-      buttons: [
-        {
-          text: '取消',
-          role: 'cancel'
-        },
-        {
-          text: '确认',
-          handler: (value) => {
-            var selected = this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool);
-            if (isSchool == 1) {
-              this.flag = 1;
-              this.academyId = selected[0].options[value.col.value].id;
-              this.schoolChoosed = value.col.text;
-              this.lesson.school = "";
-              this.selectedSchool = selected[0].options[value.col.value].code;
-              this.lesson.school += this.selectedSchool;
-              //获取学院列表
-              this.academy[0].length = 0;
-              var param = {
-                academy: this.academyId,
-              }
-              this.academyChoosed = '未设置';
-              var api = '/schools';//后台接口
-              this.httpService.get(api, param).then(async (response: any) => {
-                for (var i = 0; i < response.data.length; i++) {
-                  this.academy[0].push(response.data[i].name);
+  async openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
+    if (isSchool != 1 && this.lesson.school.length == 0) {
+      const alert = await this.alertController.create({
+        header: '警告',
+        message: '请先选择学校！',
+        buttons: ['确认']
+      });
+      await alert.present();
+    } else {
+      const picker = await this.pickerController.create({
+        columns: this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool),
+        buttons: [
+          {
+            text: '取消',
+            role: 'cancel'
+          },
+          {
+            text: '确认',
+            handler: (value) => {
+              var selected = this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool);
+              if (isSchool == 1) {
+                this.flag = 1;
+                this.academyId = selected[0].options[value.col.value].id;
+                this.schoolChoosed = value.col.text;
+                this.lesson.school = "";
+                this.selectedSchool = selected[0].options[value.col.value].code;
+                this.lesson.school += this.selectedSchool;
+                //获取学院列表
+                this.academy[0].length = 0;
+                var param = {
+                  academy: this.academyId,
                 }
-                this.academyList = response.data;
-                this.academyOptions = this.academy[0].length;
+                this.academyChoosed = '未设置';
+                var api = '/schools';//后台接口
+                this.httpService.get(api, param).then(async (response: any) => {
+                  for (var i = 0; i < response.data.length; i++) {
+                    this.academy[0].push(response.data[i].name);
+                  }
+                  this.academyList = response.data;
+                  this.academyOptions = this.academy[0].length;
+                })
+              } else {
+                this.flag++;//2
+                if (this.flag > 2) {
+                  this.flag--;
+                  this.lesson.school = this.selectedSchool;
+                }
+                if (this.lesson.school.length == 0) {
+                  console.log("请先选择学校");
+                } else if (this.lesson.school.indexOf("/") == -1) {//不含"/""
+                  this.academyChoosed = value.col.text;
+                  this.selectedAcademy = selected[0].options[value.col.value].code;
+                  this.lesson.school += "/" + this.selectedAcademy;
+                } else {
+                  // console.log(selected[0].options[value.col.value].code);
+                  //更新后面的学院
+                  var index = this.lesson.school.indexOf("/");
+                  this.lesson.school = this.lesson.school.substr(0, index);
+                  this.academyChoosed = value.col.text;
+                  this.selectedAcademy = selected[0].options[value.col.value].code;
+                  this.lesson.school += "/" + this.selectedAcademy;
+
+                }
+
+              }
+              console.log(this.lesson.school);
+              //更新
+              var params_update = {
+                code: localStorage.getItem("lesson_no"),
+                school: this.lesson.school
+              }
+              var api_update = '/courses';
+              this.httpService.patch(api_update, params_update).then(async (response: any) => {
+                console.log(response);
               })
-            } else {
-              this.flag++;//2
-              if (this.flag > 2) {
-                this.flag--;
-                this.lesson.school = this.selectedSchool;
-              }
-              if (this.lesson.school.length == 0) {
-                console.log("请先选择学校");
-              } else if(this.lesson.school.indexOf("/") == -1){//不含"/""
-                this.academyChoosed = value.col.text;
-                this.selectedAcademy = selected[0].options[value.col.value].code;
-                this.lesson.school += "/" + this.selectedAcademy;
-              }else{
-                // console.log(selected[0].options[value.col.value].code);
-                //更新后面的学院
-                var index = this.lesson.school.indexOf("/");
-                this.lesson.school = this.lesson.school.substr(0,index);
-                this.academyChoosed = value.col.text;
-                this.selectedAcademy = selected[0].options[value.col.value].code;
-                this.lesson.school += "/" + this.selectedAcademy;
-
-              }
-
             }
-            console.log(this.lesson.school);
-            //更新
-            var params_update = {
-              code: localStorage.getItem("lesson_no"),
-              school: this.lesson.school
-            }
-            var api_update = '/courses';
-            this.httpService.patch(api_update, params_update).then(async (response: any) => {
-              console.log(response);
-            })
           }
-        }
-      ]
-    });
-    await picker.present();
+        ]
+      });
+      await picker.present();
+    }
   }
 
   getColumns(numColumns, numOptions, columnOptions, isSchool) {
@@ -218,8 +229,8 @@ export class DetailPage implements OnInit {
       this.lesson = response.data;
       console.log(response.data);
       // console.log(this.lesson);
-      if (this.lesson.school == null) {
-        this.lesson.school = "未设置";
+      if (this.lesson.school == null || this.lesson.school == "") {
+        this.schoolChoosed = "未设置";
       } else {
         //获取学校名称
         var str = this.lesson.school.split("/");
@@ -230,6 +241,7 @@ export class DetailPage implements OnInit {
         this.httpService.get(api, { code: str[1] }).then(async (response: any) => {
           this.academyChoosed = response.data;
         })
+
         //获取学院列表
         this.academy[0].length = 0;
         var param1 = {

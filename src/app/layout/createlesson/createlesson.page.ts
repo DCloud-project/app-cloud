@@ -15,7 +15,7 @@ export class CreatelessonPage implements OnInit {
   lesson = {
     class: "",
     name: "请选择",
-    term: "",
+    term: "未设置",
     school: "",
     isSchoolLesson: "",
     require: "未设置",
@@ -38,6 +38,8 @@ export class CreatelessonPage implements OnInit {
   // courseList: any;
   course = [[]];
   tempCourse: any;
+  term = [[]];
+  termOptions = 16;
   courseOptions: number;
   mark: any;
   temp: any;
@@ -69,13 +71,13 @@ export class CreatelessonPage implements OnInit {
             this.course[0].push(this.lesson.name);
             this.courseOptions++;
           }
-
         }
       }
     });
   }
 
   ngOnInit() {
+    this.getTime();
     //请求后台数据
     var api = '/courseManage';//后台接口
     this.httpService.getAll(api).then(async (response: any) => {
@@ -103,59 +105,68 @@ export class CreatelessonPage implements OnInit {
   }
 
   async openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
-    const picker = await this.pickerController.create({
-      columns: this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool),
-      buttons: [
-        {
-          text: '取消',
-          role: 'cancel'
-        },
-        {
-          text: '确认',
-          handler: (value) => {
-            var selected = this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool);
-            if (isSchool == 1) {
-              this.flag = 1;
-              this.academyId = selected[0].options[value.col.value].id;
-              this.schoolChoosed = value.col.text;
-              this.lesson.school = "";
-              this.selectedSchool = selected[0].options[value.col.value].code;
-              this.lesson.school += this.selectedSchool;
-              //获取学院列表
-              this.academy[0].length = 0;
-              var param = {
-                academy: this.academyId,
-              }
-              this.academyChoosed = '未设置';
-              var api = '/schools';//后台接口
-              this.httpService.get(api, param).then(async (response: any) => {
-                for (var i = 0; i < response.data.length; i++) {
-                  this.academy[0].push(response.data[i].name);
+    if (isSchool != 1 && this.lesson.school.length == 0) {
+      const alert = await this.alertController.create({
+        header: '警告',
+        message: '请先选择学校！',
+        buttons: ['确认']
+      });
+      await alert.present();
+    } else {
+      const picker = await this.pickerController.create({
+        columns: this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool),
+        buttons: [
+          {
+            text: '取消',
+            role: 'cancel'
+          },
+          {
+            text: '确认',
+            handler: (value) => {
+              var selected = this.getColumns(numColumns, numOptions, multiColumnOptions, isSchool);
+              if (isSchool == 1) {
+                this.flag = 1;
+                this.academyId = selected[0].options[value.col.value].id;
+                this.schoolChoosed = value.col.text;
+                this.lesson.school = "";
+                this.selectedSchool = selected[0].options[value.col.value].code;
+                this.lesson.school += this.selectedSchool;
+                //获取学院列表
+                this.academy[0].length = 0;
+                var param = {
+                  academy: this.academyId,
                 }
-                this.academyList = response.data;
-                this.academyOptions = this.academy[0].length;
-              })
-            } else {
-              this.flag++;//2
-              if (this.flag > 2) {
-                this.flag--;
-                this.lesson.school = this.selectedSchool;
-              }
-              if (this.lesson.school.length == 0) {
-                console.log("请先选择学校");
+                this.academyChoosed = '未设置';
+                var api = '/schools';//后台接口
+                this.httpService.get(api, param).then(async (response: any) => {
+                  for (var i = 0; i < response.data.length; i++) {
+                    this.academy[0].push(response.data[i].name);
+                  }
+                  this.academyList = response.data;
+                  this.academyOptions = this.academy[0].length;
+                })
               } else {
-                this.academyChoosed = value.col.text;
-                this.selectedAcademy = selected[0].options[value.col.value].code;
-                this.lesson.school += "/" + this.selectedAcademy;
-              }
+                this.flag++;//2
+                if (this.flag > 2) {
+                  this.flag--;
+                  this.lesson.school = this.selectedSchool;
+                }
+                if (this.lesson.school.length == 0) {
+                  console.log("请先选择学校");
+                } else {
+                  this.academyChoosed = value.col.text;
+                  this.selectedAcademy = selected[0].options[value.col.value].code;
+                  this.lesson.school += "/" + this.selectedAcademy;
+                }
 
+              }
+              console.log(this.lesson.school);
             }
-            console.log(this.lesson.school);
           }
-        }
-      ]
-    });
-    await picker.present();
+        ]
+      });
+      await picker.present();
+    }
   }
 
   getColumns(numColumns, numOptions, columnOptions, isSchool) {
@@ -211,7 +222,7 @@ export class CreatelessonPage implements OnInit {
       var api = '/courses';//后台接口
       this.httpService.post(api, params).then(async (response: any) => {
         // console.log(response.data);
-        localStorage.setItem("create-code",response.data)
+        localStorage.setItem("create-code", response.data)
         const alert = await this.alertController.create({
           // header: '创建班课成功',
           message: '创建班课成功！',
@@ -231,6 +242,67 @@ export class CreatelessonPage implements OnInit {
     }
     console.log(this.lesson);
   }
+
+  getTime() {
+    let myDate = new Date();
+    //获取当前年
+    var year = myDate.getFullYear();
+    for (var i = 0; i < 5; i++) {
+      var start = year + i -2;
+      var end = start + 1;
+      this.term[0].push(start + "-" + end + "-01");
+      this.term[0].push(start + "-" + end + "-02");
+      this.term[0].push(start + "-" + end + "-小");
+    }
+    this.term[0].push("不设置学期")
+  }
+
+  async termPicker(numColumns = 1, numOptions, columnOptions) {
+
+    const picker = await this.pickerController.create({
+      columns: this.getTermColumns(numColumns, numOptions, columnOptions),
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel'
+        },
+        {
+          text: '确认',
+          handler: (value) => {
+            console.log(value.col.text);
+            this.lesson.term = value.col.text;
+          }
+        }
+      ]
+    });
+
+    await picker.present();
+  }
+
+  getTermColumns(numColumns, numOptions, columnOptions) {
+    let columns = [];
+    for (let i = 0; i < numColumns; i++) {
+      columns.push({
+        name: `col`,
+        options: this.getTermColumnOptions(i, numOptions, columnOptions)
+      });
+    }
+
+    return columns;
+  }
+
+  getTermColumnOptions(columnIndex, numOptions, columnOptions) {
+    let options = [];
+    for (let i = 0; i < numOptions; i++) {
+      options.push({
+        text: columnOptions[columnIndex][i % numOptions],
+        value: i
+      })
+    }
+
+    return options;
+  }
+
   async coursePicker(numColumns = 1, numOptions, columnOptions) {
 
     const picker = await this.pickerController.create({
@@ -243,7 +315,7 @@ export class CreatelessonPage implements OnInit {
         {
           text: '确认',
           handler: (value) => {
-            console.log(value.col.text);
+            // console.log(value.col.text);
             this.lesson.name = value.col.text;
           }
         }

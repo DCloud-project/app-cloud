@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-success',
@@ -8,20 +9,35 @@ import { Component, OnInit } from '@angular/core';
 export class CreateSuccessPage implements OnInit {
   // 生成二维码定义变量
   lessonCode = '';
-  userName: string;
   createdCode: string;  //要生成的二维码内容变量
+  flag='0';
+  public value='1';
 
-  constructor() { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
-    this.lessonCode = localStorage.getItem("create-code")
-    this.createCode();
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      // console.log(queryParams);
+      if (queryParams.lessonNo) {
+        console.log("111");
+        this.flag = '1';
+        this.lessonCode = queryParams.lessonNo;
+        this.createdCode = queryParams.lessonNo;
+      }else{
+        console.log("222");
+        this.flag='0';
+        this.lessonCode = localStorage.getItem("create-code");
+        this.createdCode = localStorage.getItem("create-code");
+      }
+    });
+    // this.createCode();
   }
 
-  createCode() {
-    this.lessonCode = localStorage.getItem('create-code');
-    // this.userName = localStorage.getItem('userName');
-    this.createdCode = this.lessonCode;  
-  }
+  // createCode() {
+  //   this.lessonCode = localStorage.getItem('create-code');
+  //   this.createdCode = this.lessonCode;  
+  // }
 
 }

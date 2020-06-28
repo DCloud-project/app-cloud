@@ -3,7 +3,7 @@ import { ModalController, LoadingController } from '@ionic/angular';
 import { SearchComponent } from '../../shared/components/search/search.component';
 import { HttpServiceService } from '../../shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { IonInfiniteScroll } from '@ionic/angular';
 
@@ -23,6 +23,7 @@ export class MylessonPage implements OnInit {
   api = '/courses';//后台接口
 
   public list = [];
+  public list1 = [];
   public index = 0;
   public lessonList = [{
     no: "",
@@ -38,11 +39,9 @@ export class MylessonPage implements OnInit {
     public modalController: ModalController,
     public router: Router,
     public actionSheetController: ActionSheetController,
-    public loadingController: LoadingController) {
-    this.getCreateLesson();
-    this.params = {
-      teacher_id: 2
-    }
+    public loadingController: LoadingController,
+    private activatedRoute: ActivatedRoute,) {
+
   }
   async search(type) {
     //弹出搜索模态框
@@ -63,6 +62,17 @@ export class MylessonPage implements OnInit {
   ngOnInit() {
     //请求后台获取 我创建的班课列表
     this.getCreateLesson();
+    this.params = {
+      teacher_id: 2
+    }
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      // this.property = queryParams.property;
+      // this.pageNum = queryParams.pageNum;
+      if (queryParams.flush == '1') {
+        console.log("flush");
+        this.getCreateLesson();
+      }
+    });
   }
   //我创建的 user的教师id-->该教师对应的课程（登录时就应存该id）
   async getCreateLesson() {
@@ -87,6 +97,14 @@ export class MylessonPage implements OnInit {
       } else {
         this.list = this.lessonList;
       }
+    }).catch(async function (error) {
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: '警告',
+        message: '请求失败！',
+        buttons: ['确认']
+      });
+      await alert.present();
     })
   }
 
@@ -107,13 +125,20 @@ export class MylessonPage implements OnInit {
       this.lessonList = response.data;
       if (this.lessonList.length > 5) {
         for (var i = 0; i < 5; i++) {
-          this.list[i] = this.lessonList[i];
+          this.list1[i] = this.lessonList[i];
         }
         this.index = 5;
       } else {
-        this.list = this.lessonList;
+        this.list1 = this.lessonList;
       }
-
+    }).catch(async function (error) {
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: '警告',
+        message: '请求失败！',
+        buttons: ['确认']
+      });
+      await alert.present();
     })
   }
 
@@ -161,24 +186,44 @@ export class MylessonPage implements OnInit {
   }
 
   loadData(event) {
-
-    setTimeout(() => {
-      if (this.list.length == this.lessonList.length) {
-        event.target.disabled = true;
-        this.index = this.lessonList.length;
-      }
-      event.target.complete();
-      if (this.lessonList.length - this.list.length > 5) {
-        for (var i = this.index; i < this.index + 5; i++) {
-          this.list.push(this.lessonList[i]);
+    if(localStorage.getItem("isTeacher")=="1"){
+      setTimeout(() => {
+        if (this.list.length == this.lessonList.length) {
+          event.target.disabled = true;
+          this.index = this.lessonList.length;
         }
-        this.index = this.index + 5;
-      } else {
-        for (var i = this.index; i < this.lessonList.length; i++) {
-          this.list.push(this.lessonList[i]);
+        event.target.complete();
+        if (this.lessonList.length - this.list.length > 5) {
+          for (var i = this.index; i < this.index + 5; i++) {
+            this.list.push(this.lessonList[i]);
+          }
+          this.index = this.index + 5;
+        } else {
+          for (var i = this.index; i < this.lessonList.length; i++) {
+            this.list.push(this.lessonList[i]);
+          }
         }
-      }
-    }, 500);
+      }, 500);
+    }else{
+      setTimeout(() => {
+        if (this.list1.length == this.lessonList.length) {
+          event.target.disabled = true;
+          this.index = this.lessonList.length;
+        }
+        event.target.complete();
+        if (this.lessonList.length - this.list1.length > 5) {
+          for (var i = this.index; i < this.index + 5; i++) {
+            this.list1.push(this.lessonList[i]);
+          }
+          this.index = this.index + 5;
+        } else {
+          for (var i = this.index; i < this.lessonList.length; i++) {
+            this.list1.push(this.lessonList[i]);
+          }
+        }
+      }, 500);
+    }
+    
   }
 
 }

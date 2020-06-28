@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, PickerController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,17 +24,22 @@ export class UpdateLessonPage implements OnInit {
     test: '未设置'
 
   };
+  term = [[]];
+  termOptions = 16;
 
   constructor(
     public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    public pickerController: PickerController
   ) {
-    this.getLesson();
+    
   }
 
   ngOnInit() {
+    this.getLesson();
+    this.getTime();
   }
 
   getLesson() {
@@ -53,7 +58,8 @@ export class UpdateLessonPage implements OnInit {
       class: this.lesson.class,
       name: this.lesson.name,
       tname: this.lesson.tname,
-      type: this.lesson.type
+      type: this.lesson.type,
+      term:this.lesson.term
     }
     // console.log(params)
     var api = '/courses';
@@ -91,5 +97,66 @@ export class UpdateLessonPage implements OnInit {
       // this.lesson = response.data;
     })
   }
+
+  getTime() {
+    let myDate = new Date();
+    //获取当前年
+    var year = myDate.getFullYear();
+    for (var i = 0; i < 5; i++) {
+      var start = year + i -2;
+      var end = start + 1;
+      this.term[0].push(start + "-" + end + "-01");
+      this.term[0].push(start + "-" + end + "-02");
+      this.term[0].push(start + "-" + end + "-小");
+    }
+    this.term[0].push("不设置学期")
+  }
+
+  async termPicker(numColumns = 1, numOptions, columnOptions) {
+
+    const picker = await this.pickerController.create({
+      columns: this.getTermColumns(numColumns, numOptions, columnOptions),
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel'
+        },
+        {
+          text: '确认',
+          handler: (value) => {
+            console.log(value.col.text);
+            this.lesson.term = value.col.text;
+          }
+        }
+      ]
+    });
+
+    await picker.present();
+  }
+
+  getTermColumns(numColumns, numOptions, columnOptions) {
+    let columns = [];
+    for (let i = 0; i < numColumns; i++) {
+      columns.push({
+        name: `col`,
+        options: this.getTermColumnOptions(i, numOptions, columnOptions)
+      });
+    }
+
+    return columns;
+  }
+
+  getTermColumnOptions(columnIndex, numOptions, columnOptions) {
+    let options = [];
+    for (let i = 0; i < numOptions; i++) {
+      options.push({
+        text: columnOptions[columnIndex][i % numOptions],
+        value: i
+      })
+    }
+
+    return options;
+  }
+
 
 }

@@ -11,9 +11,6 @@
         <!-- <div style="width:100%；height：100px;color:blue"></div> -->
         <ion-card>
             <ion-item>
-                <!-- <ion-thumbnail>
-      <img src="../../../../assets/icon/lesson.png">
-    </ion-thumbnail> -->
                 <ion-thumbnail class="thum">
                     <ion-icon class="thum-icon" color="light" name="cloud-circle-outline"></ion-icon>
                 </ion-thumbnail>
@@ -35,11 +32,19 @@
     <ion-list *ngIf="isTeacher == '1'" lines="full">
         <ion-item lines="none">
             <ion-label slot="start">
-                <p>课程号</p>
+                <p>班课号</p>
             </ion-label>
             <ion-label slot="end">
                 <p>{{lesson.no}}</p>
             </ion-label>
+        </ion-item>
+        <ion-item lines="none" routerLink="/create-success" [queryParams]="{lessonNo:lesson.no} ">
+            <ion-label slot="start">
+                <p>班课二维码</p>
+            </ion-label>
+            <!-- <ion-label slot="end"> -->
+                <ion-icon slot="end" name="qr-code-outline" style="color: gray;"></ion-icon>
+            <!-- </ion-label> -->
         </ion-item>
         <ion-item lines="none">
             <ion-label slot="start">

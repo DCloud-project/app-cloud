@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class SearchMemberComponent implements OnInit {
 
   public searchMember = []
-  public memberNo:any;
+  public memberNo:any = 0;
   constructor(public navParams:NavParams,
     public httpService: HttpServiceService,
     public http: HttpClient,) { }
