@@ -82,14 +82,14 @@
                                         </ion-icon>
                                     </ion-thumbnail>
                                 </ion-col>
-                                <ion-col size="8">
+                                <ion-col size="7">
                                     <ion-label (click)="getCurrentLesson(i)">
                                         <h3>&nbsp;&nbsp;&nbsp;{{item.name}}</h3>
                                         <p>&nbsp;&nbsp;&nbsp;{{item.tname}}&nbsp;&nbsp;{{item.class}}</p>
                                     </ion-label>
                                 </ion-col>
-                                <ion-col size="2">
-                                    <ion-label [routerLink]="['/student-checkin']" style="text-align: -webkit-right;">
+                                <ion-col size="3">
+                                    <ion-label [routerLink]="['/student-checkin']" style="text-align: -webkit-right;float: left;">
                                         <h3>&nbsp;&nbsp;&nbsp;</h3>
                                         <p [routerLink]="['/student-checkin']">
                                             <ion-icon name="shield-checkmark-outline"></ion-icon>
