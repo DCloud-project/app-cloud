@@ -14,13 +14,13 @@ export class UserInfPage implements OnInit {
     image: "1",
     role: "",
     sno: "",
-    school: "1",
-    sex: "1",
-    telphone: "1",
-    nickname: "1",
-    name: "1",
-    birth: "1",
-    exp: "1"
+    school: "0",
+    sex: "0",
+    telphone: "0",
+    nickname: "0",
+    name: "0",
+    birth: "0",
+    exp: "0"
   };
   selectedSchool: any;
   selectedAcademy: string;
@@ -28,8 +28,8 @@ export class UserInfPage implements OnInit {
   constructor(public router: Router, public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
-    public pickerController: PickerController) { 
-    }
+    public pickerController: PickerController) {
+  }
 
   // pickerController = document.querySelector('ion-picker-controller');
   school = [[]]
@@ -49,11 +49,25 @@ export class UserInfPage implements OnInit {
     var api = '/user/info';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
+        console.log(response.data);
         this.user = response.data;
         this.user["sex"] = response.data.sex.toString();
         this.user["email"] = localStorage.getItem("email");
         //获取学校名称
         console.log(this.user.school);
+        if (response.data.name == 0) {
+          this.user.name = "";
+        }
+        if (response.data.nickname == 0) {
+          this.user.nickname = "";
+        }
+        if (response.data.sno == 0) {
+          this.user.sno = "";
+        }
+        if (response.data.telphone == 0) {
+          this.user.telphone = "";
+        }
+
         if (this.user.school == null || this.user.school == "") {
           this.schoolChoosed = "未设置";
         } else {
@@ -61,25 +75,29 @@ export class UserInfPage implements OnInit {
           var api = '/schools/getCode';//后台接口
           this.httpService.get(api, { code: str[0] }).then(async (response: any) => {
             this.schoolChoosed = response.data;
+            if (this.schoolChoosed != "未设置") {
+              //获取学院列表
+              this.academy[0].length = 0;
+              var param1 = {
+                schoolCode: str[0],//父级id
+              }
+              this.academyChoosed = '未设置';
+
+              var api = '/schools';//后台接口
+              this.httpService.get(api, param1).then(async (response: any) => {
+                for (var i = 0; i < response.data.length; i++) {
+                  this.academy[0].push(response.data[i].name);
+                }
+                this.academyList = response.data;
+                this.academyOptions = this.academy[0].length;
+              })
+            }
           })
           this.httpService.get(api, { code: str[1] }).then(async (response: any) => {
             this.academyChoosed = response.data;
           })
-          //获取学院列表
-          this.academy[0].length = 0;
-          var param1 = {
-            schoolCode: str[0],//父级id
-          }
-          this.academyChoosed = '未设置';
 
-          var api = '/schools';//后台接口
-          this.httpService.get(api, param1).then(async (response: any) => {
-            for (var i = 0; i < response.data.length; i++) {
-              this.academy[0].push(response.data[i].name);
-            }
-            this.academyList = response.data;
-            this.academyOptions = this.academy[0].length;
-          })
+
         }
       }
     })
@@ -112,10 +130,11 @@ export class UserInfPage implements OnInit {
       school: this.user.school,
       sex: this.user.sex,
       nickname: this.user.nickname,
-      telphone: "0",
+      telphone: this.user.telphone,
       name: this.user.name,
       birth: this.user.birth,
     }
+    console.log(params);
     var api = '/user/info';//后台接口
     this.httpService.put(api, params).then(async (response: any) => {
       if (response.data.respCode == 1) {
@@ -135,6 +154,18 @@ export class UserInfPage implements OnInit {
             this.user = response.data;
             this.user.sex = response.data.sex.toString();
             this.user["email"] = localStorage.getItem("email");
+            if (response.data.name == 0) {
+              this.user.name = "";
+            }
+            if (response.data.nickname == 0) {
+              this.user.nickname = "";
+            }
+            if (response.data.sno == 0) {
+              this.user.sno = "";
+            }
+            if (response.data.telphone == 0) {
+              this.user.telphone = "";
+            }
           }
         })
       }

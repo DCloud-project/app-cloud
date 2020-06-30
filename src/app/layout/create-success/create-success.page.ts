@@ -21,13 +21,9 @@ export class CreateSuccessPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       // console.log(queryParams);
       if (queryParams.lessonNo) {
-        console.log("111");
-        this.flag = '1';
         this.lessonCode = queryParams.lessonNo;
         this.createdCode = queryParams.lessonNo;
       }else{
-        console.log("222");
-        this.flag='0';
         this.lessonCode = localStorage.getItem("create-code");
         this.createdCode = localStorage.getItem("create-code");
       }

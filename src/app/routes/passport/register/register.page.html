@@ -20,7 +20,7 @@
         <div class="signup_warn">
           <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
             <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
-            <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱号格式不正确</p>
+            <p class="warn" [hidden]="!email.errors?.pattern" padding-start>您输入的邮箱格式不正确</p>
           </ion-text>
         </div>
         <ion-row class="row">

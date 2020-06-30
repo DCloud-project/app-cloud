@@ -15,14 +15,14 @@
         <ion-label> 验证码已发送到{{email}} </ion-label>
       </ion-row>
       <ion-row class="row" style="margin-top:10px">
-        <ion-input class="verify-input" placeholder=" 请输入验证码" name="code" type="number" required pattern="^\d{6}$"
+        <ion-input class="verify-input" placeholder=" 请输入6位验证码" name="code" type="number" required 
         [(ngModel)]="verify_code" #code="ngModel"></ion-input>
         <ion-button class="btn-verify" color="secondary" (click)="onSendSMS()" [disabled]="!verifyCode.disable">{{verifyCode.verifyCodeTips}}</ion-button>
       </ion-row>
       <div class="signup_warn">
         <ion-text text-left color="danger" *ngIf="code.invalid && code.touched">
           <p class="warn" [hidden]="!code.errors?.required" padding-start>请输入验证码</p>
-          <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入6位验证码</p>
+          <!-- <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入6位验证码</p> -->
         </ion-text>
       </div>
       <ion-row class="row">

@@ -34,6 +34,7 @@ export class ConfirmJoinPage implements OnInit {
       email: localStorage.getItem("email"),
       code: localStorage.getItem("joinCode")
     }
+    console.log(params);
     var api = '/courses';//后台接口
     this.httpService.post(api, params).then(async (response: any) => {
       console.log(response);

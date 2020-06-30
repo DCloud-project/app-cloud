@@ -1,0 +1,45 @@
+<ion-content>
+  <div class="background">
+    <form (ngSubmit)="onVerify(verifyForm)" #verifyForm="ngForm" novalidate>
+      <ion-grid>
+        <ion-row>
+          <ion-button expand="block" fill="clear" shape="round" [routerLink]="['']">
+            <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+            返回
+          </ion-button>
+        </ion-row>
+        <ion-row class="row" style="margin-top:30px;display: block;text-align: center;">
+          <ion-label style="font-size: 20px;">通过邮箱找回密码</ion-label>
+        </ion-row>
+        <ion-row style="margin-top:20px;"></ion-row>
+        <!-- <ion-row class="row" style="margin-top:10px">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-label>&nbsp;&nbsp;邮箱</ion-label>
+        </ion-row> -->
+        <!-- <ion-row class="row">
+          <ion-input name="email" type="text" class="input-user" placeholder="请输入邮箱" required
+            pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" [(ngModel)]="emailVerify" #email="ngModel">
+          </ion-input>
+        </ion-row> -->
+        <ion-row class="row" style="margin-top:10px">
+          <ion-input name="email" type="text" class="input-user" [(ngModel)]="emailVerify" placeholder="请输入邮箱" required
+            pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" >
+            <ion-icon name="mail-outline" class="input_icon"></ion-icon>
+          </ion-input>
+        </ion-row>
+        <ion-row class="row">
+          <ion-input name="code" type="text" class="verify_text" [(ngModel)]="verify_code" placeholder="请输入验证码"
+          >
+            <ion-icon name="mail-open-outline" class="input_icon"></ion-icon>
+          </ion-input>
+          <ion-button color="secondary" (click)="onSendSMS()" [disabled]="!verifyCode.disable">{{verifyCode.verifyCodeTips}}</ion-button>
+        </ion-row>
+        <ion-row class="row">
+          <ion-button color="secondary" class="btn-verify" type="submit"> 确认
+          </ion-button>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+
+</ion-content>

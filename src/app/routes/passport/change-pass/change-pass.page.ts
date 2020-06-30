@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -19,6 +19,7 @@ export class ChangePassPage implements OnInit {
   }
   constructor(private toastController:ToastController,
     public httpService: HttpServiceService, 
+    public alertController: AlertController,
     public http: HttpClient,
     public router: Router) { }
 
@@ -43,7 +44,20 @@ export class ChangePassPage implements OnInit {
         console.log(response);
         if(response.data.respCode == 1){
           //修改密码成功，跳转到登录页
-          this.router.navigateByUrl('');
+          let alert = await this.alertController.create({
+            header: '提示',
+            message: '设置新密码成功，点击确定返回登录页！',
+            buttons: [{
+              text: '确定',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                //修改密码成功，跳转到登录页
+                this.router.navigateByUrl('');
+              }
+            }
+          ]
+          });
+          alert.present();
         }
       })
       

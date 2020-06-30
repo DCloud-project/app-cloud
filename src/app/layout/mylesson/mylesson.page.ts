@@ -26,6 +26,7 @@ export class MylessonPage implements OnInit {
   public list1 = [];
   public index = 0;
   public endflag='0';
+  public flag = '0';
   public lessonList = [{
     no: "",
     class: "",
@@ -43,6 +44,17 @@ export class MylessonPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public loadingController: LoadingController,
     private activatedRoute: ActivatedRoute) {
+  }
+
+  doRefresh(event) {
+    if(this.tab == 'tab1'){
+      this.forTeacher();
+    }else{
+      this.forStudent();
+    }
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
   
   async search(type) {
@@ -64,20 +76,25 @@ export class MylessonPage implements OnInit {
   ngOnInit() {
     //请求后台获取 我创建的班课列表
     this.getCreateLesson();
-    this.params = {
-      teacher_id: 2
-    }
+    // this.params = {
+    //   teacher_id: 2
+    // }
     this.activatedRoute.queryParams.subscribe(queryParams => {
-      // this.property = queryParams.property;
-      // this.pageNum = queryParams.pageNum;
       if (queryParams.flush == '1') {
-        console.log("flush");
         this.getCreateLesson();
       }
     });
   }
+  ionViewWillEnter() {
+    this.getCreateLesson();
+  }
+
   //我创建的 user的教师id-->该教师对应的课程（登录时就应存该id）
-  async getCreateLesson() {
+  getCreateLesson() {
+    this.flag = '0';
+    this.forTeacher();
+  }
+  async forTeacher(){
     localStorage.setItem("isTeacher", '1');
 
     const loading = await this.loadingController.create({
@@ -91,6 +108,9 @@ export class MylessonPage implements OnInit {
     this.httpService.get(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
       this.lessonList = response.data;
+      if(this.lessonList.length != 0){
+        this.flag = '1';
+      }
       if (this.lessonList.length > this.listThreshold) {
         for (var i = 0; i < this.listThreshold; i++) {
           this.list[i] = this.lessonList[i];
@@ -111,7 +131,12 @@ export class MylessonPage implements OnInit {
   }
 
   //我加入的 user的学生id，该学生对应的课程
-  async getMyLesson() {
+  getMyLesson() {
+    this.flag = '0';
+    this.forStudent();
+  }
+
+  async forStudent(){
     localStorage.setItem("isTeacher", '0');
 
     const loading = await this.loadingController.create({
@@ -125,6 +150,9 @@ export class MylessonPage implements OnInit {
     this.httpService.get(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
       this.lessonList = response.data;
+      if(this.lessonList.length != 0){
+        this.flag = '1';
+      }
       if (this.lessonList.length > this.listThreshold) {
         for (var i = 0; i < this.listThreshold; i++) {
           this.list1[i] = this.lessonList[i];

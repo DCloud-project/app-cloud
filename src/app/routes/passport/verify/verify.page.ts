@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { HttpServiceService } from '../../../shared/services/http-service.service';
 
 @Component({
   selector: 'app-verify',
@@ -12,14 +13,17 @@ export class VerifyPage implements OnInit {
 
   public email: any = '';
   public verify_code:string = '';
-  public return_code:string = '123456';
+  public return_code:string = '1';
   randomnum = null;
   verifyCode: any = {
     verifyCodeTips: "获取验证码",
     countdown: 60,
     disable: true
   }
-  constructor(private router: Router, private activatedRoute: ActivatedRoute,private alertController:AlertController) { }
+  constructor(private router: Router, 
+    public httpService: HttpServiceService,
+    private activatedRoute: ActivatedRoute,
+    private alertController:AlertController) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(param => {
@@ -34,12 +38,7 @@ export class VerifyPage implements OnInit {
       console.log("返回的验证码为" + this.return_code);
       if(this.verify_code == this.return_code){//相同
         localStorage.setItem("email",this.email);
-        if(localStorage.getItem("isLogin") == "true"){
-          this.router.navigateByUrl('/lesson-tabs');
-        }else{
-          this.router.navigateByUrl('/fill-infor');
-        }
-        
+        this.router.navigateByUrl('/lesson-tabs');
       }else{//不同，弹出提示框
         let alert = await this.alertController.create({
           header: '提示',
@@ -60,13 +59,12 @@ export class VerifyPage implements OnInit {
       };
       console.log("发给后台参数" + params.email);
       //获取邮箱，将邮箱发给后台，请求后台返回验证码
-      /*
       var api = '/sendCode';//后台接口
       this.httpService.post(api, params).then((response: any) => {
         console.log(response);//返回参数
-        this.return_code = 返回的验证码
+        this.return_code = response.data;
       })
-      */
+      
     }
     this.verifyCode.disable = false;
     this.settime();

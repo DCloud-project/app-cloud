@@ -40,14 +40,13 @@
               <ion-label>&nbsp;&nbsp;邮箱</ion-label>
             </ion-row>
             <ion-row class="row">
-              <ion-input name="email" type="tel" class="input-user" placeholder="请输入邮箱" required
-              pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" [(ngModel)]="login.email" #email=ngModel>
+              <ion-input name="email" type="tel" class="input-user" placeholder="请输入邮箱" required [(ngModel)]="login.email" #email=ngModel>
               </ion-input>
             </ion-row>
             <div class="signup_warn">
               <ion-text text-left color="danger" *ngIf="email.invalid && email.touched">
-                <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱地址</p>
-                <p class="warn" [hidden]="!email.errors?.pattern" padding-start>请输入正确的邮箱</p>
+                <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱/手机号/用户名</p>
+                <!-- <p class="warn" [hidden]="!email.errors?.pattern" padding-start>请输入正确的邮箱</p> -->
               </ion-text>
             </div>
             <ion-row class="row">
@@ -67,6 +66,9 @@
             <ion-row class="row">
               <ion-button color="secondary" type="submit" class="btn btn-login" [disabled]="loginForm.invalid"> 登录 </ion-button>
             </ion-row>
+            <ion-row class="row" style="display: block;text-align: center;">
+              <ion-label color="secondary" [routerLink]="['/find-by-email']">忘记密码？</ion-label>
+            </ion-row>
           </div>
 
 
@@ -74,13 +76,13 @@
         <ion-row class="row" style="display: block;text-align: center;">
           <ion-label color="secondary" [routerLink]="['/register']">注册到云账号</ion-label>
         </ion-row>
-        <ion-row class="row">
+        <!-- <ion-row class="row">
           <ion-col></ion-col>
           <ion-col></ion-col>
           <ion-col (click)="loginByQQ()"><img style="width:80%" src="../../../../assets/icon/QQ.png"></ion-col>
           <ion-col></ion-col>
           <ion-col></ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
     </form>
   </div>

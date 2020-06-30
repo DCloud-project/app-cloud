@@ -8,9 +8,29 @@
     
 }
 
+// .input-user{
+//     text-align: center;
+//     border: solid 1px #50c8ff;
+//     border-radius: 5px;
+//     background: white;
+// }
+// .row{
+//     padding-top: 10px;
+//     width:80%;
+//     margin:auto;
+// }
+// .btn-login{
+//     width:100%;
+// }
+.img-tel{
+    height: 28px;
+}
+ion-segment-button{
+    background-color: rgba(225,225,225,0) !important;
+}
+
 .input-user{
     // text-align: center;
-    text-indent: 5;
     border: solid 1px #50c8ff;
     border-radius: 5px;
     background: white;
@@ -20,10 +40,14 @@
     width:80%;
     margin:auto;
 }
+.btn-verify{
+    width:100%;
+}
 .input_icon{
     margin: 0px 5px;
     color: #808080;
 }
+
 .verify_text{
     // text-align: center;
     border: solid 1px #50c8ff;
@@ -31,13 +55,4 @@
     height: 80%;
     margin: auto 0px;
     background: white;
-}
-.btn-verify{
-    width:100%;
-}
-.img-tel{
-    height: 28px;
-}
-ion-segment-button{
-    background-color: rgba(225,225,225,0) !important;
 }

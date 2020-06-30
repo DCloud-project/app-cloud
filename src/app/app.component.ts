@@ -134,7 +134,9 @@ export class AppComponent {
       //   this.navController.back();
       //   this.navController.back();
       // }
-      else{
+      else if(this.router.url === '/create-success'){
+        this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
+      }else{
         this.navController.back();//返回上一界面
       }
     })

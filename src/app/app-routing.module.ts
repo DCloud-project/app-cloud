@@ -106,7 +106,15 @@ const routes: Routes = [
   {
     path: 'qr-scanner',
     loadChildren: () => import('./layout/qr-scanner/qr-scanner.module').then( m => m.QrScannerPageModule)
+  },  {
+    path: 'forget-password',
+    loadChildren: () => import('./routes/passport/forget-password/forget-password.module').then( m => m.ForgetPasswordPageModule)
   },
+  {
+    path: 'find-by-email',
+    loadChildren: () => import('./routes/passport/find-by-email/find-by-email.module').then( m => m.FindByEmailPageModule)
+  },
+
  
 ];
 @NgModule({

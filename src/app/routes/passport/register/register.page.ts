@@ -17,8 +17,8 @@ export class RegisterPage implements OnInit {
   public register_email: string = '';
   public password1: string = '';
   public password2: string = '';
-  public verify_code: string = '111';
-  public return_code: string = '111';
+  public verify_code: string = '';
+  public return_code: string = '1';
   verifyCode: any = {
     verifyCodeTips: "获取验证码",
     countdown: 60,
@@ -52,12 +52,13 @@ export class RegisterPage implements OnInit {
                 this.router.navigateByUrl('/lesson-tabs');
                 localStorage.setItem("email", this.register_email);
                 localStorage.setItem("isLogin", "1");
-              }else{
-                let toast = await this.toastController.create({
-                  message: '注册失败！',
-                  duration: 2000
+              }else if(response.data.respCode == '账号已存在'){
+                let alert = await this.alertController.create({
+                  header: '提示',
+                  message: '账号已存在',
+                  buttons: ['确定']
                 });
-                toast.present();
+                alert.present();
               }
             })
 
@@ -81,8 +82,6 @@ export class RegisterPage implements OnInit {
   onSendSMS() {
     //点击按钮后请求后台数据 开始倒计时
     if (this.verifyCode.disable == true) {
-      console.log("验证码");
-      this.return_code = '11111'
       console.log(this.verify_code);
       var params = {//后台所需参数
         email: this.register_email,
