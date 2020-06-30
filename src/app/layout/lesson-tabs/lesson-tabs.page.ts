@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-lesson-tabs',
@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LessonTabsPage implements OnInit {
 
-  constructor() { }
+  constructor() {
+     }
 
   ngOnInit() {
   }
-
 }

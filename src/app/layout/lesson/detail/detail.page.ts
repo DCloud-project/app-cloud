@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { PickerController, AlertController } from '@ionic/angular';
+import { PickerController, AlertController, Platform } from '@ionic/angular';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
   selector: 'app-detail',
@@ -46,12 +47,13 @@ export class DetailPage implements OnInit {
     public http: HttpClient,
     private activatedRoute: ActivatedRoute,
     public pickerController: PickerController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private statusBar: StatusBar,
   ) {
-
   }
 
   ngOnInit() {
+    // this.statusBar.backgroundColorByHexString('#3dc2ff;'); //状态栏的样式设置
     this.activatedRoute.queryParams.subscribe(queryParams => {
       // this.property = queryParams.property;
       // this.pageNum = queryParams.pageNum;
@@ -82,6 +84,10 @@ export class DetailPage implements OnInit {
     this.isTeacher = localStorage.getItem("isTeacher");
     this.getLesson();
   }
+
+  // ionViewDidLeave(){
+  //   this.statusBar.backgroundColorByHexString('#ffffff'); //状态栏的样式设置
+  // }
   async openPicker(numColumns = 1, numOptions, multiColumnOptions, isSchool) {
     if (isSchool != 1 && this.lesson.school.length == 0) {
       const alert = await this.alertController.create({

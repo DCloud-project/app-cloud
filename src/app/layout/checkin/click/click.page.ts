@@ -94,9 +94,9 @@ export class ClickPage implements OnInit {
               type: 1
             }
             this.httpService.delete(this.api, params).then(async (response: any) => {
-              console.log(response.data)
+              // console.log(response.data)
               clearInterval(this.interval)
-              this.router.navigateByUrl('checkin-result');
+              this.router.navigateByUrl('checkin-result', { replaceUrl: true });
             })
 
           }

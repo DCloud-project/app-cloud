@@ -11,23 +11,31 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule,HttpClientJsonpModule} from '@angular/common/http';//请求数据的模块
 import {HttpServiceService} from '../app/shared/services/http-service.service';//引入请求数据的服务
+import {BackButtonService} from '../app/shared/services/back-button.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { QQSDK, QQShareOptions } from '@ionic-native/qqsdk/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+import { AppMinimize } from '@ionic-native/app-minimize/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,HttpClientJsonpModule],
+  imports: [BrowserModule,FormsModule, IonicModule.forRoot({mode:'ios',backButtonText:"返回"}), AppRoutingModule,HttpClientModule,HttpClientJsonpModule],
   providers: [
     StatusBar,
     SplashScreen,
     HttpServiceService,
+    BackButtonService,
     InAppBrowser,
     QQSDK,
     Geolocation,
     QRScanner,
+    AppMinimize,
+    BackgroundMode,
+    Keyboard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

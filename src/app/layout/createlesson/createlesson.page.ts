@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, PickerController, ToastController } from '@ionic/angular';
+import { AlertController, PickerController, ToastController, Platform } from '@ionic/angular';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -51,7 +51,8 @@ export class CreatelessonPage implements OnInit {
     public http: HttpClient,
     private alertController: AlertController,
     private toastController: ToastController,
-    public pickerController: PickerController
+    public pickerController: PickerController,
+    public platform: Platform
   ) {
     activatedRoute.queryParams.subscribe(queryParams => {
       // this.property = queryParams.property;

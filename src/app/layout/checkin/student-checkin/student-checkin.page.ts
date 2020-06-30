@@ -13,6 +13,8 @@ export class StudentCheckinPage implements OnInit {
 
   public checkHistory = [];
   public percent = 0;
+  latitude: string;
+  longitude: string;
   constructor(public modalController: ModalController,
     public httpService: HttpServiceService,
     public http: HttpClient,
@@ -41,7 +43,7 @@ export class StudentCheckinPage implements OnInit {
     var params = {
       student_email: localStorage.getItem("email"),
       code: localStorage.getItem("lesson_no"),
-      local: this.getLocation()
+      local: this.latitude + "," + this.longitude
     }
     const loading = await this.loadingController.create({
       message: 'Please wait...',
@@ -59,9 +61,9 @@ export class StudentCheckinPage implements OnInit {
 
   getLocation(){
     this.geolocation.getCurrentPosition().then((resp) => {
-      var latitude = resp.coords.latitude;
-      var longitude = resp.coords.longitude;
-      return latitude + "," + longitude;
+      this.latitude = JSON.stringify(resp.coords.latitude);
+      this.longitude = JSON.stringify(resp.coords.longitude);
+      this.checkin();
       //获得系统参数
      }).catch((error) => {
        console.log('Error getting location', error);

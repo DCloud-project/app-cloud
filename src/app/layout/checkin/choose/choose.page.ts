@@ -13,13 +13,15 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class ChoosePage implements OnInit {
   api = '/attendence';//后台接口
   public params = {};
-  public record = []
+  public record = [];
+  public latitude = '';
+  public longitude = '';
   constructor(public modalController: ModalController,
-     public router: Router,
-     public loadingController: LoadingController,
-     public httpService: HttpServiceService,
-     private geolocation: Geolocation) { 
-     }
+    public router: Router,
+    public loadingController: LoadingController,
+    public httpService: HttpServiceService,
+    private geolocation: Geolocation) {
+  }
   async checkExplain() {
     console.log("签到方式说明");
     //弹出说明模态框
@@ -30,20 +32,19 @@ export class ChoosePage implements OnInit {
     await modal.present();
   }
   gotoClick() {
-    this.startCheck();
+    this.getLocation();
     this.router.navigateByUrl('click');
   }
 
-  getLocation(){
+  getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
-      var latitude = resp.coords.latitude;
-      var longitude = resp.coords.longitude;
-      // console.log(latitude + "," + longitude);
-      return latitude + "," + longitude;
+      this.latitude = JSON.stringify(resp.coords.latitude);
+      this.longitude = JSON.stringify(resp.coords.longitude);
+      this.startCheck();
       //获得系统参数
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
   gotoGesture() {
     this.router.navigateByUrl('gesture');
@@ -61,8 +62,11 @@ export class ChoosePage implements OnInit {
   ngOnInit() {
     this.getCheckHistory();
   }
+  ionViewWillEnter() {
+    this.getCheckHistory()
+  }
+
   async startCheck() {
-    // this.getLocation();
     const loading = await this.loadingController.create({
       message: 'Please wait...',
     });
@@ -70,7 +74,7 @@ export class ChoosePage implements OnInit {
     this.params = {
       code: localStorage.getItem("lesson_no"),
       // local: "12,13"
-      local:this.getLocation()
+      local: this.latitude + "," + this.longitude
     }
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();

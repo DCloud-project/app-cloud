@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, Platform } from '@ionic/angular';
 import { SearchComponent } from '../../shared/components/search/search.component';
 import { HttpServiceService } from '../../shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
-import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-mylesson',
@@ -21,10 +20,12 @@ export class MylessonPage implements OnInit {
   params = {}
   public result;
   api = '/courses';//后台接口
+  public listThreshold = 8;
 
   public list = [];
   public list1 = [];
   public index = 0;
+  public endflag='0';
   public lessonList = [{
     no: "",
     class: "",
@@ -33,6 +34,7 @@ export class MylessonPage implements OnInit {
     name: ""
   }
   ];
+  
 
   constructor(public httpService: HttpServiceService,
     public http: HttpClient,
@@ -40,9 +42,9 @@ export class MylessonPage implements OnInit {
     public router: Router,
     public actionSheetController: ActionSheetController,
     public loadingController: LoadingController,
-    private activatedRoute: ActivatedRoute,) {
-
+    private activatedRoute: ActivatedRoute) {
   }
+  
   async search(type) {
     //弹出搜索模态框
     const modal = await this.modalController.create({
@@ -89,11 +91,11 @@ export class MylessonPage implements OnInit {
     this.httpService.get(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
       this.lessonList = response.data;
-      if (this.lessonList.length > 5) {
-        for (var i = 0; i < 5; i++) {
+      if (this.lessonList.length > this.listThreshold) {
+        for (var i = 0; i < this.listThreshold; i++) {
           this.list[i] = this.lessonList[i];
         }
-        this.index = 5;
+        this.index = this.listThreshold;
       } else {
         this.list = this.lessonList;
       }
@@ -123,11 +125,11 @@ export class MylessonPage implements OnInit {
     this.httpService.get(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
       this.lessonList = response.data;
-      if (this.lessonList.length > 5) {
-        for (var i = 0; i < 5; i++) {
+      if (this.lessonList.length > this.listThreshold) {
+        for (var i = 0; i < this.listThreshold; i++) {
           this.list1[i] = this.lessonList[i];
         }
-        this.index = 5;
+        this.index = this.listThreshold;
       } else {
         this.list1 = this.lessonList;
       }
@@ -157,6 +159,7 @@ export class MylessonPage implements OnInit {
   }
   async addLesson() {
     const actionSheet = await this.actionSheetController.create({
+      mode:"ios",
       buttons: [
         {
           text: '创建班课',
@@ -193,13 +196,14 @@ export class MylessonPage implements OnInit {
           this.index = this.lessonList.length;
         }
         event.target.complete();
-        if (this.lessonList.length - this.list.length > 5) {
-          for (var i = this.index; i < this.index + 5; i++) {
+        if (this.lessonList.length - this.list.length > this.listThreshold) {
+          for (var i = this.index; i < this.index + this.listThreshold; i++) {
             this.list.push(this.lessonList[i]);
           }
-          this.index = this.index + 5;
+          this.index = this.index + this.listThreshold;
         } else {
-          for (var i = this.index; i < this.lessonList.length; i++) {
+          for (var i = this.index; i < this.lessonList.length; i++) {//最后一次加载
+            this.endflag = '1';
             this.list.push(this.lessonList[i]);
           }
         }
@@ -211,13 +215,14 @@ export class MylessonPage implements OnInit {
           this.index = this.lessonList.length;
         }
         event.target.complete();
-        if (this.lessonList.length - this.list1.length > 5) {
-          for (var i = this.index; i < this.index + 5; i++) {
+        if (this.lessonList.length - this.list1.length > this.listThreshold) {
+          for (var i = this.index; i < this.index + this.listThreshold; i++) {
             this.list1.push(this.lessonList[i]);
           }
-          this.index = this.index + 5;
+          this.index = this.index + this.listThreshold;
         } else {
           for (var i = this.index; i < this.lessonList.length; i++) {
+            this.endflag = '1';
             this.list1.push(this.lessonList[i]);
           }
         }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
-import { PickerController, AlertController } from '@ionic/angular';
+import { PickerController, AlertController, Platform } from '@ionic/angular';
 @Component({
   selector: 'app-user-inf',
   templateUrl: './user-inf.page.html',
@@ -28,7 +28,8 @@ export class UserInfPage implements OnInit {
   constructor(public router: Router, public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
-    public pickerController: PickerController) { }
+    public pickerController: PickerController) { 
+    }
 
   // pickerController = document.querySelector('ion-picker-controller');
   school = [[]]

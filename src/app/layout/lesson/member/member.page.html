@@ -5,7 +5,7 @@
                 <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title color="medium">{{lesson.name}}</ion-title>
+        <ion-title color="medium" style="text-align:center;margin-right: 30px;">{{lesson.name}}</ion-title>
     </ion-toolbar>
 
     <ion-toolbar color="secondary" *ngIf="isTeacher == '0'">
@@ -14,7 +14,7 @@
                 <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>{{lesson.name}}</ion-title>
+        <ion-title style="text-align:center;margin-right: 30px;">{{lesson.name}}</ion-title>
     </ion-toolbar>
 
     <ion-toolbar *ngIf="isTeacher=='1'">
@@ -30,11 +30,11 @@
                     </ion-label>
                 </ion-col>
                 <ion-col style="width:50%;text-align: center;">
-                    <ion-avatar class="circle" style="background-color:#ed576b;color:#3dc2ff">
+                    <ion-avatar class="circle" style="background-color:#ed576b;color:#3dc2ff" [routerLink]="['/choose']">
                         <ion-icon color="light" name="people-outline"></ion-icon>
                     </ion-avatar>
                     <ion-label style="margin-top: 8px;">
-                        <h2>小组方案(待开发)</h2>
+                        <h2>考勤记录</h2>
                     </ion-label>
                 </ion-col>
             </ion-row>
@@ -44,6 +44,7 @@
     <ion-toolbar *ngIf="isTeacher=='0'"
         style="--background:linear-gradient(#3dc2ff 0%,#3dc2ff 60%,white 60%,white 100%);--border-width: 0 0 0px;">
         <!-- <div style="width:100%；height：100px;color:blue"></div> -->
+        <div style="width: 100%;height: 20px;opacity: 0;"></div>
         <ion-grid>
             <ion-row class="text1">
                 <ion-label>第{{rank}}名</ion-label>
@@ -52,7 +53,7 @@
                 <ion-label>当前获得{{my_exp}}经验值</ion-label>
             </ion-row>
         </ion-grid>
-        <ion-card (click)="gotoCheck()">
+        <ion-card mode="ios" (click)="gotoCheck()">
             <ion-item lines="none">
                 <ion-avatar class="my-thum">
                     <!-- <ion-avatar class="my-thum" [routerLink]="['/student-checkin']"> -->
@@ -83,7 +84,7 @@
         <ion-list>
             <ion-item lines="full">
                 <ion-label>
-                    <p>成员总数{{flag}}</p>
+                    <p>成员总数</p>
                 </ion-label>
                 <ion-label style="text-align: -webkit-right;">
                     <p>{{memberNo}}人</p>

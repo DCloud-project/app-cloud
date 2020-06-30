@@ -27,11 +27,11 @@ export class LoginPage implements OnInit {
     private iab: InAppBrowser,
     private qq: QQSDK) {
     //登录状态为1时自动登录
-    // if (localStorage.getItem("isLogin") == "1") {
-    //   if(this.isOverTime()){
-    //     this.router.navigateByUrl('\lesson-tabs');
-    //   }
-    // }
+    if (localStorage.getItem("isLogin") == "1") {
+      if(this.isOverTime()){
+        this.router.navigateByUrl('\lesson-tabs');
+      }
+    }
   }
 
   ngOnInit() {
@@ -114,7 +114,7 @@ export class LoginPage implements OnInit {
     var api = '/user/info';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
-        console.log(response.data)
+        // console.log(response.data)
       }
     })
   }
@@ -161,43 +161,43 @@ export class LoginPage implements OnInit {
   
 
   loginByQQ() {
-    // var api = "/getQQCode";
+    var api = "/getQQCode";
 
-    // this.httpService.getAll(api).then(async (response: any) => {
-    //   console.log(response.data.url);
-    //   const browser = this.iab.create(response.data.url);
-    // })
-    const options: QQShareOptions = {
-      client: this.qq.ClientType.QQ,
-      scene: this.qq.Scene.QQ,
-      title: 'This is a title for cordova-plugin-qqsdk',
-      url: 'https://cordova.apache.org/',
-      image: 'https://cordova.apache.org/static/img/cordova_bot.png',
-      description: 'This is  Cordova QQ share description',
-      flashUrl:  'http://stream20.qqmusic.qq.com/30577158.mp3',
-    }
+    this.httpService.getAll(api).then(async (response: any) => {
+      console.log(response.data.url);
+      const browser = this.iab.create(response.data.url);
+    })
+    // const options: QQShareOptions = {
+    //   client: this.qq.ClientType.QQ,
+    //   scene: this.qq.Scene.QQ,
+    //   title: 'This is a title for cordova-plugin-qqsdk',
+    //   url: 'https://cordova.apache.org/',
+    //   image: 'https://cordova.apache.org/static/img/cordova_bot.png',
+    //   description: 'This is  Cordova QQ share description',
+    //   flashUrl:  'http://stream20.qqmusic.qq.com/30577158.mp3',
+    // }
     
-    const clientOptions: QQShareOptions = {
-      client: this.qq.ClientType.QQ,
-    }
+    // const clientOptions: QQShareOptions = {
+    //   client: this.qq.ClientType.QQ,
+    // }
     
-    const shareTextOptions: QQShareOptions = {
-      client: this.qq.ClientType.QQ,
-      text: 'This is Share Text',
-      scene: this.qq.Scene.QQ,
-    }
+    // const shareTextOptions: QQShareOptions = {
+    //   client: this.qq.ClientType.QQ,
+    //   text: 'This is Share Text',
+    //   scene: this.qq.Scene.QQ,
+    // }
     
-    this.qq.ssoLogin(clientOptions)
-       .then(result => {
-          // Success
-          console.log('token is ' + result.access_token);
-          console.log('userid is ' + result.userid);
-          console.log('expires_time is ' + new Date(parseInt(result.expires_time)) + ' TimeStamp is ' + result.expires_time);
-       })
-       .catch(error => {
-         console.log(clientOptions);
-          console.log(error); // Failed
-       });
+    // this.qq.ssoLogin(clientOptions)
+    //    .then(result => {
+    //       // Success
+    //       console.log('token is ' + result.access_token);
+    //       console.log('userid is ' + result.userid);
+    //       console.log('expires_time is ' + new Date(parseInt(result.expires_time)) + ' TimeStamp is ' + result.expires_time);
+    //    })
+    //    .catch(error => {
+    //      console.log(clientOptions);
+    //       console.log(error); // Failed
+    //    });
     
   }
 
