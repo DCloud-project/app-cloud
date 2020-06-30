@@ -71,7 +71,7 @@ export class MylessonPage implements OnInit {
       // this.property = queryParams.property;
       // this.pageNum = queryParams.pageNum;
       if (queryParams.flush == '1') {
-        console.log("flush");
+        // console.log("flush");
         this.getCreateLesson();
       }
     });

@@ -53,7 +53,7 @@ export class UserInfPage implements OnInit {
         this.user["sex"] = response.data.sex.toString();
         this.user["email"] = localStorage.getItem("email");
         //获取学校名称
-        console.log(this.user.school);
+        // console.log(this.user.school);
         if (this.user.school == null || this.user.school == "") {
           this.schoolChoosed = "未设置";
         } else {
@@ -177,7 +177,7 @@ export class UserInfPage implements OnInit {
                 var param = {
                   academy: this.academyId,
                 }
-                console.log(param);
+                // console.log(param);
                 this.academyChoosed = '未设置';
                 var api = '/schools';//后台接口
                 this.httpService.get(api, param).then(async (response: any) => {
@@ -210,7 +210,7 @@ export class UserInfPage implements OnInit {
 
                 }
               }
-              console.log(this.user.school);
+              // console.log(this.user.school);
             }
           }
         ]

@@ -49,7 +49,7 @@ export class UpdateLessonPage implements OnInit {
     var api = '/courses';
     this.httpService.get(api, params).then(async (response: any) => {
       this.lesson = response.data;
-      console.log(response.data);
+      // console.log(response.data);
     })
   }
   onUpdate() {
@@ -124,7 +124,7 @@ export class UpdateLessonPage implements OnInit {
         {
           text: '确认',
           handler: (value) => {
-            console.log(value.col.text);
+            // console.log(value.col.text);
             this.lesson.term = value.col.text;
           }
         }

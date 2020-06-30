@@ -153,7 +153,7 @@ export class DetailPage implements OnInit {
                 }
 
               }
-              console.log(this.lesson.school);
+              // console.log(this.lesson.school);
               //更新
               var params_update = {
                 code: localStorage.getItem("lesson_no"),
@@ -161,7 +161,7 @@ export class DetailPage implements OnInit {
               }
               var api_update = '/courses';
               this.httpService.patch(api_update, params_update).then(async (response: any) => {
-                console.log(response);
+                // console.log(response);
               })
             }
           }
@@ -217,7 +217,7 @@ export class DetailPage implements OnInit {
       code: localStorage.getItem("lesson_no"),
       isjoin: this.lesson.checked
     }
-    console.log(params)
+    // console.log(params)
     var api = '/courses';
     this.httpService.patch(api, params).then(async (response: any) => {
       // console.log(response);
@@ -233,7 +233,7 @@ export class DetailPage implements OnInit {
     var api = '/courses';
     this.httpService.get(api, params).then(async (response: any) => {
       this.lesson = response.data;
-      console.log(response.data);
+      // console.log(response.data);
       // console.log(this.lesson);
       if (this.lesson.school == null || this.lesson.school == "") {
         this.schoolChoosed = "未设置";
@@ -261,7 +261,7 @@ export class DetailPage implements OnInit {
           }
           this.academyList = response.data;
           this.academyOptions = this.academy[0].length;
-          console.log(this.academyList);
+          // console.log(this.academyList);
         })
       }
       if (this.lesson.require == null) {

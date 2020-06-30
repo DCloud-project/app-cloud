@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule,HttpClientJsonpModule} from '@angular/common/http';//请求数据的模块
 import {HttpServiceService} from '../app/shared/services/http-service.service';//引入请求数据的服务
-import {BackButtonService} from '../app/shared/services/back-button.service';
+// import {BackButtonService} from '../app/shared/services/back-button.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { QQSDK, QQShareOptions } from '@ionic-native/qqsdk/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -28,7 +28,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
     StatusBar,
     SplashScreen,
     HttpServiceService,
-    BackButtonService,
+    // BackButtonService,
     InAppBrowser,
     QQSDK,
     Geolocation,

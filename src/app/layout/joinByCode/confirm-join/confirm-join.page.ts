@@ -36,7 +36,7 @@ export class ConfirmJoinPage implements OnInit {
     }
     var api = '/courses';//后台接口
     this.httpService.post(api, params).then(async (response: any) => {
-      console.log(response);
+      // console.log(response);
       if (response.status == 200) {
         if(response.data.respCode=="您已加入本班课，请勿重复加入！"){
           const alert = await this.alertController.create({
