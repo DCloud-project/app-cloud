@@ -208,7 +208,7 @@ export class UserInfPage implements OnInit {
                 var param = {
                   academy: this.academyId,
                 }
-                console.log(param);
+                // console.log(param);
                 this.academyChoosed = '未设置';
                 var api = '/schools';//后台接口
                 this.httpService.get(api, param).then(async (response: any) => {
@@ -241,7 +241,7 @@ export class UserInfPage implements OnInit {
 
                 }
               }
-              console.log(this.user.school);
+              // console.log(this.user.school);
             }
           }
         ]

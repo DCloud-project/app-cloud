@@ -161,7 +161,6 @@ export class CreatelessonPage implements OnInit {
                 }
 
               }
-              console.log(this.lesson.school);
             }
           }
         ]
@@ -241,7 +240,6 @@ export class CreatelessonPage implements OnInit {
       })
 
     }
-    console.log(this.lesson);
   }
 
   getTime() {
@@ -270,7 +268,6 @@ export class CreatelessonPage implements OnInit {
         {
           text: '确认',
           handler: (value) => {
-            console.log(value.col.text);
             this.lesson.term = value.col.text;
           }
         }

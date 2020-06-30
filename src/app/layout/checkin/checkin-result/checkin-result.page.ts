@@ -71,7 +71,7 @@ export class CheckinResultPage implements OnInit {
   }
   checkAbsence(item) {
     let sum = 0;
-    console.log(item)
+    // console.log(item)
     this.absenceList.forEach(item1 => {
       if (item == item1) {
         if (item.checked == false || item.checked == undefined) {
@@ -171,20 +171,6 @@ export class CheckinResultPage implements OnInit {
           this.setState(item, 1)
         }
       },
-      //  {
-      //   text: '设为迟到',
-      //   icon: 'alarm-outline',
-      //   handler: () => {
-      //     console.log('Favorite clicked');
-      //   }
-      // },
-      // {
-      //   text: '设为早退',
-      //   icon: 'exit-outline',
-      //   handler: () => {
-      //     console.log('Favorite clicked');
-      //   }
-      // }, 
       {
         text: '设为已签到',
         icon: 'heart-outline',
@@ -196,7 +182,7 @@ export class CheckinResultPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          // console.log('Cancel clicked');
         }
       }]
     });
@@ -264,14 +250,14 @@ export class CheckinResultPage implements OnInit {
         type: type
       }
       data.push(params);
-      console.log("999")
+      // console.log("999")
     }
     // if (data.length==0) {
     //   this.presentToast("请至少选中一条数据");
     // } else {
     var api = "/attendenceResult/change"
     this.httpService.put(api, data).then(async (response: any) => {
-      console.log(response.data)
+      // console.log(response.data)
       if (response.data.respCode == "1") {
         this.presentToast("状态修改成功！");
       } else {

@@ -81,6 +81,7 @@ export class MylessonPage implements OnInit {
     // }
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.flush == '1') {
+        // console.log("flush");
         this.getCreateLesson();
       }
     });

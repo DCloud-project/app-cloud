@@ -32,11 +32,13 @@ export class ClickPage implements OnInit {
   }
 
   ngOnInit() {
-    this.funcTest()
+    this.getCheckResult();
+    this.funcTest();
   }
   ionViewWillEnter() {
     //这两个方法在将要进入界面的时候会触发,相当于是局部刷新,整个页面不会跟着刷新
-    this.funcTest()
+    this.getCheckResult();
+    this.funcTest();
   }
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
@@ -49,7 +51,7 @@ export class ClickPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '确定',
@@ -59,7 +61,7 @@ export class ClickPage implements OnInit {
               type: 0
             }
             this.httpService.delete(this.api, params).then(async (response: any) => {
-              console.log(response.data)
+              // console.log(response.data)
               clearInterval(this.interval)
               this.router.navigateByUrl('choose')
             })
@@ -84,7 +86,7 @@ export class ClickPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '确定',

@@ -13,17 +13,15 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class ChoosePage implements OnInit {
   api = '/attendence';//后台接口
   public params = {};
-  public record = [];
-  public latitude = '';
-  public longitude = '';
+  public record = []
   constructor(public modalController: ModalController,
-    public router: Router,
-    public loadingController: LoadingController,
-    public httpService: HttpServiceService,
-    private geolocation: Geolocation) {
-  }
+     public router: Router,
+     public loadingController: LoadingController,
+     public httpService: HttpServiceService,
+     private geolocation: Geolocation) { 
+     }
   async checkExplain() {
-    console.log("签到方式说明");
+    // console.log("签到方式说明");
     //弹出说明模态框
     const modal = await this.modalController.create({
       component: CheckinComponent,
@@ -32,19 +30,20 @@ export class ChoosePage implements OnInit {
     await modal.present();
   }
   gotoClick() {
-    this.getLocation();
+    this.startCheck();
     this.router.navigateByUrl('click');
   }
 
-  getLocation() {
+  getLocation(){
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.latitude = JSON.stringify(resp.coords.latitude);
-      this.longitude = JSON.stringify(resp.coords.longitude);
-      this.startCheck();
+      var latitude = resp.coords.latitude;
+      var longitude = resp.coords.longitude;
+      // console.log(latitude + "," + longitude);
+      return latitude + "," + longitude;
       //获得系统参数
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
   }
   gotoGesture() {
     this.router.navigateByUrl('gesture');
@@ -65,8 +64,11 @@ export class ChoosePage implements OnInit {
   ionViewWillEnter() {
     this.getCheckHistory()
   }
-
+  ionViewDidEnter() {
+    this.getCheckHistory()
+  }
   async startCheck() {
+    // this.getLocation();
     const loading = await this.loadingController.create({
       message: 'Please wait...',
     });
@@ -74,7 +76,7 @@ export class ChoosePage implements OnInit {
     this.params = {
       code: localStorage.getItem("lesson_no"),
       // local: "12,13"
-      local: this.latitude + "," + this.longitude
+      local:this.getLocation()
     }
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
@@ -87,7 +89,7 @@ export class ChoosePage implements OnInit {
       code: localStorage.getItem("lesson_no")
     }
     this.httpService.patch(this.api, this.params).then(async (response: any) => {
-      console.log(response.data)
+      // console.log(response.data)
       this.record = response.data;
     })
   }
