@@ -73,8 +73,11 @@ export class LoginPage implements OnInit {
         var api = '/loginByPassword';//后台接口
 
         this.httpService.post(api, params).then(async (response: any) => {
+          console.log(response);
           this.result = response.data.respCode;
           if (this.result == "1") {
+            //获取该user的信息（teacher_id,student_id）
+
             localStorage.setItem("token", response.data.token);
             //拦截器 头部设置token
             // axios.interceptors.request.use((config) => {
@@ -87,12 +90,12 @@ export class LoginPage implements OnInit {
             //   console.log('错误参数')
             //   return Promise.reject(error);
             // });
-            this.router.navigateByUrl('\lesson-tabs');
+            // localStorage.setItem("email", response.data.email);
             localStorage.setItem("email", this.login.email);
             localStorage.setItem("isLogin", "1");
-            //获取该user的信息（teacher_id,student_id）
             this.getInf(this.login.email);
             this.setTime();
+
           } else {
             let alert = await this.alertController.create({
               header: '提示',
@@ -114,7 +117,11 @@ export class LoginPage implements OnInit {
     var api = '/user/info';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
-        // console.log(response.data)
+        localStorage.setItem("role", response.data.role);
+        if (localStorage.getItem("role") != null) {
+          this.router.navigateByUrl('/lesson-tabs/mylesson');
+        }
+
       }
     })
   }
@@ -158,7 +165,7 @@ export class LoginPage implements OnInit {
 
   }
 
-  
+
 
   loginByQQ() {
     var api = "/getQQCode";
@@ -176,17 +183,17 @@ export class LoginPage implements OnInit {
     //   description: 'This is  Cordova QQ share description',
     //   flashUrl:  'http://stream20.qqmusic.qq.com/30577158.mp3',
     // }
-    
+
     // const clientOptions: QQShareOptions = {
     //   client: this.qq.ClientType.QQ,
     // }
-    
+
     // const shareTextOptions: QQShareOptions = {
     //   client: this.qq.ClientType.QQ,
     //   text: 'This is Share Text',
     //   scene: this.qq.Scene.QQ,
     // }
-    
+
     // this.qq.ssoLogin(clientOptions)
     //    .then(result => {
     //       // Success
@@ -198,7 +205,7 @@ export class LoginPage implements OnInit {
     //      console.log(clientOptions);
     //       console.log(error); // Failed
     //    });
-    
+
   }
 
 }

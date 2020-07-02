@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
-import { PickerController, AlertController, Platform } from '@ionic/angular';
+import { PickerController, AlertController, Platform, ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-user-inf',
   templateUrl: './user-inf.page.html',
@@ -28,7 +28,8 @@ export class UserInfPage implements OnInit {
   constructor(public router: Router, public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
-    public pickerController: PickerController) {
+    public pickerController: PickerController,
+    public toast: ToastController,) {
   }
 
   // pickerController = document.querySelector('ion-picker-controller');
@@ -42,6 +43,7 @@ export class UserInfPage implements OnInit {
   public academyId;
   public schoolOptions = 0;
   public academyOptions = 0;
+  public isTeacher;
   ngOnInit() {
     var params = {//后台所需参数
       email: localStorage.getItem("email"),
@@ -49,10 +51,16 @@ export class UserInfPage implements OnInit {
     var api = '/user/info';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
-        console.log(response.data);
+        // console.log(response.data);
         this.user = response.data;
         this.user["sex"] = response.data.sex.toString();
         this.user["email"] = localStorage.getItem("email");
+        console.log(response.data.role == 0);
+        if(response.data.role == 0){
+          this.isTeacher = "(教师)";
+        }else{
+          this.isTeacher = "(学生)";
+        }
         //获取学校名称
         console.log(this.user.school);
         if (response.data.name == 0) {
@@ -137,6 +145,7 @@ export class UserInfPage implements OnInit {
     console.log(params);
     var api = '/user/info';//后台接口
     this.httpService.put(api, params).then(async (response: any) => {
+      console.log(response);
       if (response.data.respCode == 1) {
         let alert = await this.alertController.create({
           header: '提示',
@@ -168,6 +177,19 @@ export class UserInfPage implements OnInit {
             }
           }
         })
+      }else if(response.data.respCode == "改手机号已被使用"){
+        const toast = await this.toast.create({
+                    message: '改手机号已被使用',
+                    duration: 2000
+                  });
+                  toast.present();
+
+      }else if(response.data.respCode == "改昵称已被使用"){
+        const toast = await this.toast.create({
+                    message: '改昵称已被使用',
+                    duration: 2000
+                  });
+                  toast.present();
       }
     })
     // }

@@ -11,11 +11,11 @@ import { AlertController } from '@ionic/angular';
 })
 export class ConfirmJoinPage implements OnInit {
 
-  public lesson={
-    class:"",
-    name:"",
-    tname:"",
-    schoolLesson:"学校课表班课"
+  public lesson = {
+    class: "",
+    name: "",
+    tname: "",
+    schoolLesson: "学校课表班课"
   }
   constructor(
     private router: Router,
@@ -39,22 +39,22 @@ export class ConfirmJoinPage implements OnInit {
     this.httpService.post(api, params).then(async (response: any) => {
       // console.log(response);
       if (response.status == 200) {
-        if(response.data.respCode=="您已加入本班课，请勿重复加入！"){
+        if (response.data.respCode == "您已加入本班课，请勿重复加入！") {
           const alert = await this.alertController.create({
             header: '警告',
             message: '您已加入本班课，请勿重复加入！',
             buttons: ['确认']
           });
           await alert.present();
-        }else if(response.data.respCode=="不能加入自己创建的班课！"){
+        } else if (response.data.respCode == "不能加入自己创建的班课！") {
           const alert = await this.alertController.create({
             header: '警告',
             message: '不能加入自己创建的班课！',
             buttons: ['确认']
           });
           await alert.present();
-          
-        }else if (response.data.respCode == "1") {
+
+        } else if (response.data.respCode == "1") {
           const alert = await this.alertController.create({
             // header: '',
             message: '加入班课成功!',
@@ -64,6 +64,11 @@ export class ConfirmJoinPage implements OnInit {
                 cssClass: 'secondary',
                 handler: (blah) => {
                   this.router.navigateByUrl('/lesson-tabs');
+                  this.router.navigate(['/lesson-tabs/mylesson'], {
+                    queryParams: {
+                      join: '1'
+                    }
+                  })
                 }
               }
             ]

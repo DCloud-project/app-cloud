@@ -2,15 +2,16 @@
 <!-- <ion-backdrop style="z-index: 100;"></ion-backdrop> -->
 <ion-header>
     <ion-toolbar>
-        <ion-segment mode="md" [(ngModel)]="tab" style="background-color: rgba(225,225,225,0);width:60%;float:left">
+        <ion-title *ngIf="tab=='tab1'" color="medium">我创建的班课列表</ion-title>
+        <ion-title *ngIf="tab=='tab2'" color="medium">我加入的班课列表</ion-title>
+        <!-- <ion-segment mode="md" [(ngModel)]="tab" style="background-color: rgba(225,225,225,0);width:60%;float:left">
             <ion-segment-button value="tab1" (click)="getCreateLesson()">
                 <ion-label>我创建的</ion-label>
             </ion-segment-button>
             <ion-segment-button value="tab2" (click)="getMyLesson()">
                 <ion-label>我加入的</ion-label>
             </ion-segment-button>
-            <!-- <div style="width:25%"> </div> -->
-        </ion-segment>
+        </ion-segment> -->
         <ion-button slot="end" (click)="addLesson()" fill="clear">
             <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>

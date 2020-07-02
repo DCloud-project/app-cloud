@@ -39,12 +39,14 @@ export class MemberPage implements OnInit {
     this.lesson.name = localStorage.getItem("lesson_name");
     this.lesson.no = localStorage.getItem("lesson_no");
     this.isTeacher = localStorage.getItem("isTeacher");
+    
     if (this.isTeacher == '1') {
       this.orderByNo();
-      localStorage.setItem("isNo", "1");
     } else {
       this.orderByExp();
     }
+
+    //个人排名与经验值
     var params = {
       code: localStorage.getItem("lesson_no"),
       order: "0",//按经验值顺序显示
@@ -105,7 +107,7 @@ export class MemberPage implements OnInit {
     }
     var api = '/courses/member';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
-      console.log(response.data)
+      
       await loading.dismiss();
       if (response.data.respCode == "该课程没有学生") {
         this.flag = '0';

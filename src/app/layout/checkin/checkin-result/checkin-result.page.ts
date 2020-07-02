@@ -20,6 +20,9 @@ export class CheckinResultPage implements OnInit {
     public activateInfo: ActivatedRoute) {
     activateInfo.queryParams.subscribe(queryParams => {
       this.type = queryParams.type;
+      if(queryParams.success == '1'){
+        this.getData();
+      }
     })
   }
   public type = 0;
@@ -287,7 +290,11 @@ export class CheckinResultPage implements OnInit {
     }
   }
   goback() {
-    this.router.navigateByUrl("/choose")
+    this.router.navigate(['/choose'], {
+      queryParams: {
+        flush: '1'
+      }
+    })
   }
   async startManual() {
     const loading = await this.loadingController.create({

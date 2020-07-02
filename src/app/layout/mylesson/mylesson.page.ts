@@ -20,12 +20,12 @@ export class MylessonPage implements OnInit {
   params = {}
   public result;
   api = '/courses';//后台接口
-  public listThreshold = 8;
+  public listThreshold = 7;
 
   public list = [];
   public list1 = [];
   public index = 0;
-  public endflag='0';
+  public endflag = '0';
   public flag = '0';
   public lessonList = [{
     no: "",
@@ -35,7 +35,7 @@ export class MylessonPage implements OnInit {
     name: ""
   }
   ];
-  
+
 
   constructor(public httpService: HttpServiceService,
     public http: HttpClient,
@@ -47,16 +47,16 @@ export class MylessonPage implements OnInit {
   }
 
   doRefresh(event) {
-    if(this.tab == 'tab1'){
+    if (this.tab == 'tab1') {
       this.forTeacher();
-    }else{
+    } else {
       this.forStudent();
     }
     setTimeout(() => {
       event.target.complete();
     }, 1000);
   }
-  
+
   async search(type) {
     //弹出搜索模态框
     const modal = await this.modalController.create({
@@ -75,27 +75,44 @@ export class MylessonPage implements OnInit {
   }
   ngOnInit() {
     //请求后台获取 我创建的班课列表
-    this.getCreateLesson();
+    console.log("lesson");
+    console.log(localStorage.getItem("role"))
+    if (localStorage.getItem("role") == '0') {//教师
+      this.flag = '0';
+      this.getCreateLesson();
+    } else {
+      this.getMyLesson();
+    }
+
     // this.params = {
     //   teacher_id: 2
     // }
     this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
       if (queryParams.flush == '1') {
         // console.log("flush");
+        this.flag = '0';
         this.getCreateLesson();
+      }else if(queryParams.delete == '1'){
+        this.flag = '0';
+        this.getCreateLesson();
+      }else if(queryParams.success == '1'){
+        this.getCreateLesson();
+      }else if(queryParams.join == '1'){
+        this.getMyLesson();
       }
     });
   }
-  ionViewWillEnter() {
-    this.getCreateLesson();
-  }
+  // ionViewWillEnter() {
+  //   this.getCreateLesson();
+  // }
 
   //我创建的 user的教师id-->该教师对应的课程（登录时就应存该id）
   getCreateLesson() {
-    this.flag = '0';
+    this.tab = 'tab1';
     this.forTeacher();
   }
-  async forTeacher(){
+  async forTeacher() {
     localStorage.setItem("isTeacher", '1');
 
     const loading = await this.loadingController.create({
@@ -106,10 +123,12 @@ export class MylessonPage implements OnInit {
     this.params = {
       teacher_email: localStorage.getItem("email")
     }
+    console.log(this.params);
     this.httpService.get(this.api, this.params).then(async (response: any) => {
+      
       await loading.dismiss();
       this.lessonList = response.data;
-      if(this.lessonList.length != 0){
+      if (this.lessonList.length != 0) {
         this.flag = '1';
       }
       if (this.lessonList.length > this.listThreshold) {
@@ -133,11 +152,12 @@ export class MylessonPage implements OnInit {
 
   //我加入的 user的学生id，该学生对应的课程
   getMyLesson() {
+    this.tab = 'tab2';
     this.flag = '0';
     this.forStudent();
   }
 
-  async forStudent(){
+  async forStudent() {
     localStorage.setItem("isTeacher", '0');
 
     const loading = await this.loadingController.create({
@@ -151,7 +171,7 @@ export class MylessonPage implements OnInit {
     this.httpService.get(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
       this.lessonList = response.data;
-      if(this.lessonList.length != 0){
+      if (this.lessonList.length != 0) {
         this.flag = '1';
       }
       if (this.lessonList.length > this.listThreshold) {
@@ -187,38 +207,70 @@ export class MylessonPage implements OnInit {
     this.router.navigateByUrl("/tabs/member")
   }
   async addLesson() {
-    const actionSheet = await this.actionSheetController.create({
-      mode:"ios",
-      buttons: [
-        {
-          text: '创建班课',
-          handler: () => {
-            this.router.navigateByUrl('createlesson');
+    if(localStorage.getItem("role") == '0'){
+      const actionSheet = await this.actionSheetController.create({
+        mode: "ios",
+        buttons: [
+          {
+            text: '创建班课',
+            handler: () => {
+              this.router.navigateByUrl('createlesson');
+            }
+          },
+          // {
+          //   text: '使用班课号加入班课',
+          //   handler: () => {
+          //     this.router.navigateByUrl('join-by-code');
+          //   }
+          // },
+          // {
+          //   text: '使用二维码加入班课',
+          //   handler: () => {
+          //     this.router.navigateByUrl('qr-scanner');
+          //   }
+          // },
+          {
+            text: '取消',
+            role: 'destructive'
           }
-        },
-        {
-          text: '使用班课号加入班课',
-          handler: () => {
-            this.router.navigateByUrl('join-by-code');
+        ]
+      });
+      await actionSheet.present();
+    }else{
+      const actionSheet = await this.actionSheetController.create({
+        mode: "ios",
+        buttons: [
+          // {
+          //   text: '创建班课',
+          //   handler: () => {
+          //     this.router.navigateByUrl('createlesson');
+          //   }
+          // },
+          {
+            text: '使用班课号加入班课',
+            handler: () => {
+              this.router.navigateByUrl('join-by-code');
+            }
+          },
+          {
+            text: '使用二维码加入班课',
+            handler: () => {
+              this.router.navigateByUrl('qr-scanner');
+            }
+          },
+          {
+            text: '取消',
+            role: 'destructive'
           }
-        },
-        {
-          text: '使用二维码加入班课',
-          handler: () => {
-            this.router.navigateByUrl('qr-scanner');
-          }
-        },
-        {
-          text: '取消',
-          role: 'destructive'
-        }
-      ]
-    });
-    await actionSheet.present();
+        ]
+      });
+      await actionSheet.present();
+    }
+    
   }
 
   loadData(event) {
-    if(localStorage.getItem("isTeacher")=="1"){
+    if (localStorage.getItem("isTeacher") == "1") {
       setTimeout(() => {
         if (this.list.length == this.lessonList.length) {
           event.target.disabled = true;
@@ -237,7 +289,7 @@ export class MylessonPage implements OnInit {
           }
         }
       }, 500);
-    }else{
+    } else {
       setTimeout(() => {
         if (this.list1.length == this.lessonList.length) {
           event.target.disabled = true;
@@ -257,7 +309,7 @@ export class MylessonPage implements OnInit {
         }
       }, 500);
     }
-    
+
   }
 
 }

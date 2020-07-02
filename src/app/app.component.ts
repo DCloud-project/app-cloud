@@ -55,38 +55,42 @@ export class AppComponent {
   /**
    * 重写物理返回键
    */
-  @HostListener('document:ionBackButton',['$event'])
-  private overrideHardwareBackAction($event:any){
-    $event.detail.register(100,async()=>{
+  @HostListener('document:ionBackButton', ['$event'])
+  private overrideHardwareBackAction($event: any) {
+    $event.detail.register(100, async () => {
       //关闭键盘
-      try{
-        if(this.keyValue){
+      try {
+        if (this.keyValue) {
           this.keyValue = false;
           return;
         }
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
 
       //关闭action sheet
-      try{
+      try {
         const element = await this.actionSheetCtrl.getTop();
-        if(element){element.dismiss();return;}
-      }catch(error){
+        if (element) { element.dismiss(); return; }
+      } catch (error) {
         console.log(error);
       }
 
       //关闭modal
-      try{
+      try {
         const element = await this.modalCtrl.getTop();
-        if(element){element.dismiss();return;}
-      }catch(error){
+        if (element) { element.dismiss(); return; }
+      } catch (error) {
         console.log(error);
       }
-      
+
       if (this.router.url === '/lesson-tabs'
-      ||this.router.url === '/lesson-tabs/mylesson'
-      ||this.router.url === '/lesson-tabs/user-inf'
+      || this.router.url === '/lesson-tabs/mylesson'
+        || this.router.url === '/lesson-tabs/mylesson?flush=1'
+        || this.router.url === '/lesson-tabs/mylesson?success=1'
+        || this.router.url === '/lesson-tabs/mylesson?delete=1'
+        || this.router.url === '/lesson-tabs/mylesson?join=1'
+        || this.router.url === '/lesson-tabs/user-inf'
       ) {//判断是否是初始界面
         if (this.backButtonPressed) {
           navigator['app'].exitApp();
@@ -100,7 +104,7 @@ export class AppComponent {
           this.backButtonPressed = true;
           setTimeout(() => this.backButtonPressed = false, 2000);//延时器改变退出判断属性
         }
-      } else if(this.router.url === '/click'){
+      } else if (this.router.url === '/click') {
         //确认是否要结束签到
         const alert = await this.alertController.create({
           header: '提示',
@@ -122,7 +126,11 @@ export class AppComponent {
                   console.log(response.data)
                   clearInterval(this.interval)
                   // this.router.navigateByUrl('checkin-result');
-                  this.router.navigateByUrl('checkin-result', { replaceUrl: true });
+                  // this.router.navigateByUrl('checkin-result', { replaceUrl: true });
+                  this.router.navigate(['/checkin-result'], { 
+                    queryParams:{ interval: '1' } 
+                  });
+
                 })
               }
             }
@@ -131,17 +139,21 @@ export class AppComponent {
         await alert.present();
       }
       // else if(this.router.url === '/checkin-result'){
-      //   this.navController.back();
-      //   this.navController.back();
+      //   this.router.navigate(['/lesson-tabs/mylesson'], {queryParams: {success: '1'}});
       // }
-      else if(this.router.url === '/create-success'){
+      else if (this.router.url === '/create-success') {
+        // this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
+        this.router.navigate(['/lesson-tabs/mylesson'], { queryParams: { success: '1' } });
+      } else if (this.router.url === '/tabs/member') {
         this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
-      }else{
+      } else if (this.router.url === '/tabs/detail') {
+        this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
+      } else {
         this.navController.back();//返回上一界面
       }
     })
   }
-  
+
   // registerBackButtonAction() {
   //   let that = this;
   //   //有监听到键盘 但是会返回到前一页
@@ -178,7 +190,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.overlaysWebView(true);
-            // this.statusBar.backgroundColorByHexString('#fff'); //状态栏的样式设置
+      // this.statusBar.backgroundColorByHexString('#fff'); //状态栏的样式设置
       // this.statusBar.backgroundColorByHexString('#ffffff'); //状态栏的样式设置
       //       this.splashScreen.hide();
       // this.statusBar.styleDefault();
@@ -189,12 +201,12 @@ export class AppComponent {
   }
   keyboardEvent() {//键盘触发
     //键盘事件即将隐藏
-    this.keyboard.onKeyboardWillHide().subscribe(async data =>{
-      setTimeout(()=>{
+    this.keyboard.onKeyboardWillHide().subscribe(async data => {
+      setTimeout(() => {
         this.keyValue = false;
-      },500);
+      }, 500);
     })
-    this.keyboard.onKeyboardWillShow().subscribe(async data =>{
+    this.keyboard.onKeyboardWillShow().subscribe(async data => {
       this.keyValue = true;
     });
   }

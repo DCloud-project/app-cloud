@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-    <div class="my-circle" (click)="getLocation()">
+    <div *ngIf="historyFlag == '0'" class="my-circle" (click)="getLocation()">
         <p style="position: relative;top: 40%;margin: 0px;font-size: 16px;">签到</p>
     </div>
     <ion-item-divider class="row-text">

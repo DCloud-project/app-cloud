@@ -24,6 +24,7 @@ export class RegisterPage implements OnInit {
     countdown: 60,
     disable: true
   }
+  public role = '3';
   constructor(public httpService: HttpServiceService,
     public http: HttpClient,
     public router: Router,
@@ -45,6 +46,10 @@ export class RegisterPage implements OnInit {
               email: this.register_email,
               password: this.password1
             }
+            if(this.role == '3'){
+              params["role_id"] = '3';
+            }
+            console.log(params);
             var api = '/register';//后台接口
             this.httpService.post(api, params).then(async (response: any) => {
               console.log(response.data);//返回参数
@@ -52,6 +57,7 @@ export class RegisterPage implements OnInit {
                 this.router.navigateByUrl('/lesson-tabs');
                 localStorage.setItem("email", this.register_email);
                 localStorage.setItem("isLogin", "1");
+                this.getInf(this.register_email);
               }else if(response.data.respCode == '账号已存在'){
                 let alert = await this.alertController.create({
                   header: '提示',
@@ -120,6 +126,19 @@ export class RegisterPage implements OnInit {
     }, 1000);
   }
 
+  //获取个人信息
+  getInf(email) {
+    var params = {//后台所需参数
+      email: email,
+    };
+    var api = '/user/info';//后台接口
+    this.httpService.get(api, params).then(async (response: any) => {
+      if (response.status == 200) {
+        console.log(response.data.role)
+        localStorage.setItem("role",response.data.role);
+      }
+    })
+  }
 
 
 }

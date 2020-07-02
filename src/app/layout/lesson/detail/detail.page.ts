@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PickerController, AlertController, Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -43,6 +43,7 @@ export class DetailPage implements OnInit {
   public isTeacher: any;
 
   constructor(
+    private router: Router,
     public httpService: HttpServiceService,
     public http: HttpClient,
     private activatedRoute: ActivatedRoute,
@@ -335,7 +336,8 @@ export class DetailPage implements OnInit {
                   buttons: [{
                     text: "确认",
                     handler: () => {
-                      location.replace('/lesson-tabs');
+                      this.router.navigate(['/lesson-tabs/mylesson'], {queryParams: {delete: '1'}});
+                      // location.replace('/lesson-tabs');
                     }
                   }]
                 });
@@ -374,7 +376,7 @@ export class DetailPage implements OnInit {
                   buttons: [{
                     text: "确认",
                     handler: () => {
-                      location.replace('/lesson-tabs');
+                      this.router.navigate(['/lesson-tabs/mylesson'], {queryParams: {join: '1'}});
                     }
                   }]
                 });

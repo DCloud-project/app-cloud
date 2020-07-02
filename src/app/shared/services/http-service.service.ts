@@ -12,8 +12,8 @@ export class HttpServiceService {
   }
 
   //axios方法
-  commonUrl = 'http://39.97.108.239:8080';
-  // commonUrl = 'http://cmc79x.natappfree.cc';
+  // commonUrl = 'http://39.97.108.239:8080';
+  commonUrl = 'http://2qi6hp.natappfree.cc';
   // instance = axios.create({
   //   headers: { 'token': localStorage.getItem("token") }
   // });

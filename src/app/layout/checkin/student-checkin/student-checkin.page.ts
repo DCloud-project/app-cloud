@@ -3,6 +3,7 @@ import { HttpServiceService } from 'src/app/shared/services/http-service.service
 import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-checkin',
@@ -15,13 +16,24 @@ export class StudentCheckinPage implements OnInit {
   public percent = 0;
   latitude: string;
   longitude: string;
+  public historyFlag = '0';
   constructor(public modalController: ModalController,
     public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
     private loadingController: LoadingController,
     public toastController: ToastController,
-    private geolocation: Geolocation) { }
+    private geolocation: Geolocation,
+    private activatedRoute: ActivatedRoute,
+    public router: Router) { 
+      this.activatedRoute.queryParams.subscribe(queryParams => {
+        console.log(queryParams);
+        if (queryParams.historyFlag == '1') {
+          // console.log("flush");
+          this.historyFlag = '1';
+        }
+      });
+    }
 
   ngOnInit() {
     this.getHistory();
@@ -39,7 +51,7 @@ export class StudentCheckinPage implements OnInit {
   }
   async checkin() {
 
-    var api = '/attendenceResult';//后台接口
+    var api = '/attendenceResult';//返回签到结果列表
     var params = {
       student_email: localStorage.getItem("email"),
       code: localStorage.getItem("lesson_no"),
@@ -54,6 +66,7 @@ export class StudentCheckinPage implements OnInit {
       if (response.data.respCode != "" && response.data.respCode != null) {
         this.presentToast(response.data.respCode)
       } else {
+        this.getHistory();
         this.presentToast("签到成功！" + response.data)
       }
     })

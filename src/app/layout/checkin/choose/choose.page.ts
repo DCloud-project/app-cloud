@@ -2,7 +2,7 @@ import { HttpServiceService } from 'src/app/shared/services/http-service.service
 import { Component, OnInit } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { CheckinComponent } from '../../../shared/components/checkin/checkin.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
@@ -14,11 +14,14 @@ export class ChoosePage implements OnInit {
   api = '/attendence';//后台接口
   public params = {};
   public record = []
+  latitude: string;
+  longitude: string;
   constructor(public modalController: ModalController,
      public router: Router,
      public loadingController: LoadingController,
      public httpService: HttpServiceService,
-     private geolocation: Geolocation) { 
+     private geolocation: Geolocation,
+     private activatedRoute: ActivatedRoute) { 
      }
   async checkExplain() {
     // console.log("签到方式说明");
@@ -28,18 +31,24 @@ export class ChoosePage implements OnInit {
 
     });
     await modal.present();
+
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
+      if (queryParams.flush == '1') {
+        this.getCheckHistory();
+      }
+    });
   }
   gotoClick() {
-    this.startCheck();
+    this.getLocation();
     this.router.navigateByUrl('click');
   }
 
   getLocation(){
     this.geolocation.getCurrentPosition().then((resp) => {
-      var latitude = resp.coords.latitude;
-      var longitude = resp.coords.longitude;
-      // console.log(latitude + "," + longitude);
-      return latitude + "," + longitude;
+      this.latitude = JSON.stringify(resp.coords.latitude);
+      this.longitude = JSON.stringify(resp.coords.longitude);
+      this.startCheck();
       //获得系统参数
      }).catch((error) => {
        console.log('Error getting location', error);
@@ -61,9 +70,9 @@ export class ChoosePage implements OnInit {
   ngOnInit() {
     this.getCheckHistory();
   }
-  ionViewWillEnter() {
-    this.getCheckHistory()
-  }
+  // ionViewWillEnter() {
+  //   this.getCheckHistory()
+  // }
   ionViewDidEnter() {
     this.getCheckHistory()
   }
@@ -76,7 +85,7 @@ export class ChoosePage implements OnInit {
     this.params = {
       code: localStorage.getItem("lesson_no"),
       // local: "12,13"
-      local:this.getLocation()
+      local:this.latitude + "," + this.longitude
     }
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
