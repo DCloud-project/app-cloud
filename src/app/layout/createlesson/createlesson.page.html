@@ -56,7 +56,7 @@
                 <ion-note class="my_inf" slot="end">{{lesson.name}}&nbsp;&nbsp;</ion-note>
             </ion-item>
             <ion-item-divider>
-                <ion-label style="margin: auto;font-size: 14px;color: dodgerblue;" [routerLink]="['/add-lesson-name']">
+                <ion-label style="margin: auto;font-size: 14px;color: dodgerblue;" (click)="toAdd()">
                     <ion-icon name="color-filter-outline"></ion-icon>&nbsp;&nbsp;自定义课程</ion-label>
             </ion-item-divider>
             <ion-item-divider>设置学校，院系等其他信息

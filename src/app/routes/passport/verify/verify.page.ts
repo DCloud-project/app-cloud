@@ -37,8 +37,10 @@ export class VerifyPage implements OnInit {
       console.log("输入的验证码为" + this.verify_code);
       console.log("返回的验证码为" + this.return_code);
       if(this.verify_code == this.return_code){//相同
+        localStorage.setItem("isLogin", "1");
         localStorage.setItem("email",this.email);
-        this.router.navigateByUrl('/lesson-tabs');
+        this.getInf(this.email);
+        // this.router.navigateByUrl('/lesson-tabs/mylesson');
       }else{//不同，弹出提示框
         let alert = await this.alertController.create({
           header: '提示',
@@ -51,18 +53,34 @@ export class VerifyPage implements OnInit {
     }
   }
 
+  //获取个人信息
+  getInf(email) {
+    var params = {//后台所需参数
+      email: email,
+    };
+    var api = '/user/info';//后台接口
+    this.httpService.get(api, params).then(async (response: any) => {
+      if (response.status == 200) {
+        localStorage.setItem("role", response.data.role);
+        if (localStorage.getItem("role") != null) {
+          this.router.navigateByUrl('/lesson-tabs/mylesson');
+        }
+
+      }
+    })
+  }
+
   async onSendSMS() {
     //点击按钮后请求后台数据 开始倒计时
     if (this.verifyCode.disable == true) {
       var params = {//后台所需参数
         email: this.email,
       };
-      console.log("发给后台参数" + params.email);
       //获取邮箱，将邮箱发给后台，请求后台返回验证码
       var api = '/sendCode';//后台接口
       this.httpService.post(api, params).then((response: any) => {
         console.log(response);//返回参数
-        this.return_code = response.data;
+        this.return_code = response.data.respCode;
       })
       
     }

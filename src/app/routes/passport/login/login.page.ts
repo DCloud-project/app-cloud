@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
   async onLogin(form: NgForm) {
     if (form.valid) {
       var params;
-      if (this.tab == 'tab1') {//验证码登录
+      if (this.tab == 'tab2') {//验证码登录
         //点击获取验证码后，进入获取验证码界面 
         params = {//后台所需参数
           email: this.login.email
@@ -48,19 +48,25 @@ export class LoginPage implements OnInit {
         var api = '/loginByCode';//后台接口
         this.httpService.post(api, params).then(async (response: any) => {
           this.result = response.data.role;
-          if (this.result == "-1") {
+          console.log(response);
+          if (response.data.role == "-1") {
             let alert = await this.alertController.create({
               header: '提示',
-              message: '账号不存在',
+              message: '账号不存在！',
               buttons: ['确定']
             });
             alert.present();
-          } else {
+          } else if(response.data.respCode == "账号已被删除！"){
+            let alert = await this.alertController.create({
+              header: '提示',
+              message: '该账号已被删除！',
+              buttons: ['确定']
+            });
+            alert.present();
+          }else {
             this.router.navigateByUrl(`/verify/${this.login.email}`);
             localStorage.setItem("email", this.login.email);
-            localStorage.setItem("isLogin", "1");
-            //获取该user的信息（teacher_id,student_id）
-            this.getInf(this.login.email);
+            // this.getInf(this.login.email);
             this.setTime();
           }
         })
@@ -90,8 +96,8 @@ export class LoginPage implements OnInit {
             //   console.log('错误参数')
             //   return Promise.reject(error);
             // });
-            // localStorage.setItem("email", response.data.email);
-            localStorage.setItem("email", this.login.email);
+            localStorage.setItem("email", response.data.email);
+            // localStorage.setItem("email", this.login.email);
             localStorage.setItem("isLogin", "1");
             this.getInf(this.login.email);
             this.setTime();

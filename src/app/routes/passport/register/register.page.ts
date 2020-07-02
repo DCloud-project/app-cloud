@@ -46,19 +46,32 @@ export class RegisterPage implements OnInit {
               email: this.register_email,
               password: this.password1
             }
-            if(this.role == '3'){
+            if (this.role == '3') {
               params["role_id"] = '3';
             }
             console.log(params);
             var api = '/register';//后台接口
             this.httpService.post(api, params).then(async (response: any) => {
-              console.log(response.data);//返回参数
               if (response.data.respCode == 1) {//注册成功
-                this.router.navigateByUrl('/lesson-tabs');
-                localStorage.setItem("email", this.register_email);
-                localStorage.setItem("isLogin", "1");
-                this.getInf(this.register_email);
-              }else if(response.data.respCode == '账号已存在'){
+                let alert = await this.alertController.create({
+                  header: '提示',
+                  message: '注册成功！',
+                  buttons: [
+                    {
+                      text: '确认',
+                      cssClass: 'secondary',
+                      handler: (blah) => {
+                        this.router.navigateByUrl('/lesson-tabs');
+                        localStorage.setItem("email", this.register_email);
+                        localStorage.setItem("isLogin", "1");
+                        this.getInf(this.register_email);
+                      }
+                    }
+                  ]
+                });
+                alert.present();
+
+              } else if (response.data.respCode == '账号已存在') {
                 let alert = await this.alertController.create({
                   header: '提示',
                   message: '账号已存在',
@@ -88,19 +101,41 @@ export class RegisterPage implements OnInit {
   onSendSMS() {
     //点击按钮后请求后台数据 开始倒计时
     if (this.verifyCode.disable == true) {
-      console.log(this.verify_code);
       var params = {//后台所需参数
         email: this.register_email,
       };
-      console.log("发给后台参数" + params.email);
       //获取邮箱，将邮箱发给后台，请求后台返回验证码
-      var api = '/sendCode';//后台接口
-      this.httpService.post(api, params).then((response: any) => {
-        this.return_code = response.data;//返回参数
+      // var api = '/sendCode';//后台接口
+      // this.httpService.post(api, params).then((response: any) => {
+      //   this.return_code = response.data.respCode;//返回参数
+      // })
+      var api = '/loginByCode';//后台接口
+      this.httpService.post(api, params).then(async (response: any) => {
+        if (response.data.role == "-1") {
+          var api = '/sendCode';//后台接口
+          this.httpService.post(api, params).then((response: any) => {
+            this.return_code = response.data.respCode;//返回参数
+          })
+          this.verifyCode.disable = false;
+          this.settime();
+        } else if (response.data.respCode == "账号已被删除！") {
+          let alert = await this.alertController.create({
+            header: '提示',
+            message: '该账号已被删除！',
+            buttons: ['确定']
+          });
+          alert.present();
+        } else {
+          let alert = await this.alertController.create({
+            header: '提示',
+            message: '您已注册过到云账号，请直接登录！',
+            buttons: ['确定']
+          });
+          alert.present();
+        }
       })
     }
-    this.verifyCode.disable = false;
-    this.settime();
+
   }
 
   hasCode() {
@@ -135,7 +170,7 @@ export class RegisterPage implements OnInit {
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
         console.log(response.data.role)
-        localStorage.setItem("role",response.data.role);
+        localStorage.setItem("role", response.data.role);
       }
     })
   }

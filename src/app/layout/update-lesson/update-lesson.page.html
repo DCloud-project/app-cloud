@@ -36,12 +36,12 @@
                 <ion-input slot="end" type="text" name="class" class="my_inf" required placeholder="未设置" [(ngModel)]="lesson.class"></ion-input>
             </ion-item>
 
-            <ion-item>
+            <!-- <ion-item>
                 <ion-label slot="start">
                     <ion-text color="danger">*</ion-text> 课程
                 </ion-label>
                 <ion-input slot="end" type="text" name="name" class="my_inf" required placeholder="未设置" [(ngModel)]="lesson.name"></ion-input>
-            </ion-item>
+            </ion-item> -->
             <ion-item (click)="termPicker(1,termOptions,term)">
                 <ion-label slot="start">
                     <ion-text color="danger">*</ion-text> 学期
@@ -50,6 +50,17 @@
                 <!-- <ion-input slot="end" type="text" name="term" class="my_inf" required placeholder="未设置" [(ngModel)]="lesson.term"></ion-input> -->
 
             </ion-item>
+            <ion-item (click)="coursePicker(1,courseOptions,course)">
+                <ion-label slot="start">
+                    <ion-text color="danger">*</ion-text> 课程
+                </ion-label>
+                <ion-note class="my_inf" slot="end">{{lesson.name}}&nbsp;&nbsp;</ion-note>
+            </ion-item>
+            <ion-item-divider>
+                <ion-label style="margin: auto;font-size: 14px;color: dodgerblue;" (click)="toAdd()">
+                    <ion-icon name="color-filter-outline"></ion-icon>&nbsp;&nbsp;自定义课程</ion-label>
+            </ion-item-divider>
+           
             <ion-item-divider>类型
             </ion-item-divider>
             <ion-item>
