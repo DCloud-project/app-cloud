@@ -84,10 +84,10 @@ export class AppComponent {
         console.log(error);
       }
 
-      if (this.router.url === '/lesson-tabs'
-      || this.router.url === '/lesson-tabs/mylesson'
+      if (this.router.url === '/'
+        || this.router.url === '/lesson-tabs'
+        || this.router.url === '/lesson-tabs/mylesson'
         || this.router.url === '/lesson-tabs/mylesson?flush=1'
-        || this.router.url === '/lesson-tabs/mylesson?success=1'
         || this.router.url === '/lesson-tabs/mylesson?delete=1'
         || this.router.url === '/lesson-tabs/mylesson?join=1'
         || this.router.url === '/lesson-tabs/user-inf'
@@ -110,31 +110,6 @@ export class AppComponent {
           header: '提示',
           message: '请先放弃或结束签到！',
           buttons: ['确认']
-            // {
-            //   text: '取消',
-            //   role: 'cancel',
-            //   cssClass: 'medium'
-            // }, {
-            //   text: '确认',
-            //   handler: async () => {
-            //     var params = {
-            //       attend_id: localStorage.getItem("attend_id"),
-            //       type: 1
-            //     }
-            //     var api = '/attendence';//后台接口
-            //     this.httpService.delete(api, params).then(async (response: any) => {
-            //       console.log(response.data)
-            //       clearInterval(this.interval)
-            //       // this.router.navigateByUrl('checkin-result');
-            //       // this.router.navigateByUrl('checkin-result', { replaceUrl: true });
-            //       this.router.navigate(['/checkin-result'], { 
-            //         queryParams:{ interval: '1' } 
-            //       });
-
-            //     })
-            //   }
-            // }
-          // ]
         });
         await alert.present();
       }
@@ -142,8 +117,11 @@ export class AppComponent {
       //   this.router.navigate(['/lesson-tabs/mylesson'], {queryParams: {success: '1'}});
       // }
       else if (this.router.url === '/create-success') {
-        // this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
-        this.router.navigate(['/lesson-tabs/mylesson'], { queryParams: { success: '1' } });
+        // localStorage.setItem("create-back", '1');
+        // if (localStorage.getItem("create-back") == '1') {
+        //   this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
+        // }
+        // this.router.navigate(['/lesson-tabs/mylesson'], { queryParams: { success: '1' } });
       } else if (this.router.url === '/tabs/member') {
         this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
       } else if (this.router.url === '/tabs/detail') {
@@ -154,43 +132,10 @@ export class AppComponent {
     })
   }
 
-  // registerBackButtonAction() {
-  //   let that = this;
-  //   //有监听到键盘 但是会返回到前一页
-  //   this.platform.backButton.subscribe(async () => {
-  //     console.log(this.router.url);
-  //     // return;
-  //     // console.log(that.keyValue);
-  //     // if (that.keyValue) {
-  //     //   that.keyValue = false;//触发返回键操作，当为true时不返回上一界面
-  //     //   return;
-  //     // }
-  //     // if (this.serve.get("scan")) { this.serve.set("scan", false); return; }//此处为服务传值
-  //     if (that.url === '/lesson-tabs'
-  //     ||that.url === '/lesson-tabs/mylesson'
-  //     ||that.url === '/lesson-tabs/user-inf'
-  //     ||that.url === '/') {//判断是否是初始界面
-  //       if (that.backButtonPressed) {
-  //         navigator['app'].exitApp();
-  //         that.backButtonPressed = false;//退出
-  //       } else {
-  //         const toast = await this.toast.create({
-  //           message: '再按一次退出应用',
-  //           duration: 2000
-  //         });
-  //         toast.present();
-  //         that.backButtonPressed = true;
-  //         setTimeout(() => that.backButtonPressed = false, 2000);//延时器改变退出判断属性
-  //       }
-  //     } else {
-  //       that.navController.back();//返回上一界面
-  //     }
-  //   });
-  // }
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.overlaysWebView(true);
-      // this.statusBar.backgroundColorByHexString('#fff'); //状态栏的样式设置
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.backgroundColorByHexString('#00BFFF'); //状态栏的样式设置
       // this.statusBar.backgroundColorByHexString('#ffffff'); //状态栏的样式设置
       //       this.splashScreen.hide();
       // this.statusBar.styleDefault();
@@ -210,11 +155,4 @@ export class AppComponent {
       this.keyValue = true;
     });
   }
-  // initRouterListen() {
-  //   this.router.events.subscribe(event => { // 需要放到最后一个执行获取当前界面的url
-  //     if (event instanceof NavigationEnd) {
-  //       this.url = event.url;
-  //     }
-  //   });
-  // }
 }

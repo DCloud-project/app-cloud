@@ -44,6 +44,20 @@ export class MylessonPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public loadingController: LoadingController,
     private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.queryParams.subscribe(async queryParams => {
+      this.list = [];
+      this.list1 = [];
+      this.index = 0;
+      if (queryParams.flush == '1') {
+        this.flag = '0';
+        this.getCreateLesson();
+      } else if (queryParams.delete == '1') {
+        this.flag = '0';
+        this.getCreateLesson();
+      } else if (queryParams.join == '1') {
+        this.getMyLesson();
+      }
+    });
   }
 
   doRefresh(event) {
@@ -75,8 +89,6 @@ export class MylessonPage implements OnInit {
   }
   ngOnInit() {
     //请求后台获取 我创建的班课列表
-    console.log("lesson");
-    console.log(localStorage.getItem("role"))
     if (localStorage.getItem("role") == '0') {//教师
       this.flag = '0';
       this.getCreateLesson();
@@ -84,24 +96,7 @@ export class MylessonPage implements OnInit {
       this.getMyLesson();
     }
 
-    // this.params = {
-    //   teacher_id: 2
-    // }
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      console.log(queryParams);
-      if (queryParams.flush == '1') {
-        // console.log("flush");
-        this.flag = '0';
-        this.getCreateLesson();
-      }else if(queryParams.delete == '1'){
-        this.flag = '0';
-        this.getCreateLesson();
-      }else if(queryParams.success == '1'){
-        this.getCreateLesson();
-      }else if(queryParams.join == '1'){
-        this.getMyLesson();
-      }
-    });
+
   }
   // ionViewWillEnter() {
   //   this.getCreateLesson();
@@ -110,6 +105,7 @@ export class MylessonPage implements OnInit {
   //我创建的 user的教师id-->该教师对应的课程（登录时就应存该id）
   getCreateLesson() {
     this.tab = 'tab1';
+    this.endflag = '0';
     this.forTeacher();
   }
   async forTeacher() {
@@ -123,9 +119,7 @@ export class MylessonPage implements OnInit {
     this.params = {
       teacher_email: localStorage.getItem("email")
     }
-    console.log(this.params);
     this.httpService.get(this.api, this.params).then(async (response: any) => {
-      
       await loading.dismiss();
       this.lessonList = response.data;
       if (this.lessonList.length != 0) {
@@ -138,6 +132,7 @@ export class MylessonPage implements OnInit {
         this.index = this.listThreshold;
       } else {
         this.list = this.lessonList;
+        this.endflag = '1';
       }
     }).catch(async function (error) {
       await loading.dismiss();
@@ -154,6 +149,7 @@ export class MylessonPage implements OnInit {
   getMyLesson() {
     this.tab = 'tab2';
     this.flag = '0';
+    this.endflag = '0';
     this.forStudent();
   }
 
@@ -181,6 +177,7 @@ export class MylessonPage implements OnInit {
         this.index = this.listThreshold;
       } else {
         this.list1 = this.lessonList;
+        this.endflag = '1';
       }
     }).catch(async function (error) {
       await loading.dismiss();
@@ -207,7 +204,7 @@ export class MylessonPage implements OnInit {
     this.router.navigateByUrl("/tabs/member")
   }
   async addLesson() {
-    if(localStorage.getItem("role") == '0'){
+    if (localStorage.getItem("role") == '0') {
       const actionSheet = await this.actionSheetController.create({
         mode: "ios",
         buttons: [
@@ -217,18 +214,6 @@ export class MylessonPage implements OnInit {
               this.router.navigateByUrl('createlesson');
             }
           },
-          // {
-          //   text: '使用班课号加入班课',
-          //   handler: () => {
-          //     this.router.navigateByUrl('join-by-code');
-          //   }
-          // },
-          // {
-          //   text: '使用二维码加入班课',
-          //   handler: () => {
-          //     this.router.navigateByUrl('qr-scanner');
-          //   }
-          // },
           {
             text: '取消',
             role: 'destructive'
@@ -236,7 +221,7 @@ export class MylessonPage implements OnInit {
         ]
       });
       await actionSheet.present();
-    }else{
+    } else {
       const actionSheet = await this.actionSheetController.create({
         mode: "ios",
         buttons: [
@@ -266,18 +251,21 @@ export class MylessonPage implements OnInit {
       });
       await actionSheet.present();
     }
-    
+
   }
 
   loadData(event) {
     if (localStorage.getItem("isTeacher") == "1") {
+      // console.log(this.list.length);
+      // console.log(this.lessonList.length);
       setTimeout(() => {
         if (this.list.length == this.lessonList.length) {
           event.target.disabled = true;
           this.index = this.lessonList.length;
         }
         event.target.complete();
-        if (this.lessonList.length - this.list.length > this.listThreshold) {
+        var disparity = this.lessonList.length - this.list.length;
+        if (disparity > this.listThreshold) {
           for (var i = this.index; i < this.index + this.listThreshold; i++) {
             this.list.push(this.lessonList[i]);
           }
@@ -296,7 +284,8 @@ export class MylessonPage implements OnInit {
           this.index = this.lessonList.length;
         }
         event.target.complete();
-        if (this.lessonList.length - this.list1.length > this.listThreshold) {
+        var disparity = this.list1.length - this.lessonList.length;
+        if (disparity > this.listThreshold) {
           for (var i = this.index; i < this.index + this.listThreshold; i++) {
             this.list1.push(this.lessonList[i]);
           }

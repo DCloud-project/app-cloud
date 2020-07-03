@@ -66,7 +66,7 @@ export class ClickPage implements OnInit {
               // console.log(response.data)
               this.stopRequest();
               // clearInterval(this.interval)
-              this.router.navigateByUrl('choose')
+              this.router.navigateByUrl('choose', { replaceUrl: true });
             })
 
           }

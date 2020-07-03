@@ -108,5 +108,11 @@ export class StudentCheckinPage implements OnInit {
     return week;
   }
 
+  doRefresh(event) {
+    this.getHistory();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
 
 }

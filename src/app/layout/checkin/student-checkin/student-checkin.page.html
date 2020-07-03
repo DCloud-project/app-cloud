@@ -7,10 +7,7 @@
         </ion-buttons>
         <ion-title style="text-align:center;margin-right: 30px;">签到</ion-title>
     </ion-toolbar>
-</ion-header>
-
-<ion-content>
-    <div *ngIf="historyFlag == '0'" class="my-circle" (click)="getLocation()">
+    <div *ngIf="historyFlag == '0'" class="my-circle" (click)="getLocation()" style="margin-top:20px">
         <p style="position: relative;top: 40%;margin: 0px;font-size: 16px;">签到</p>
     </div>
     <ion-item-divider class="row-text">
@@ -18,6 +15,13 @@
         <ion-note slot="end" color="tertiary" style="padding: 10px 0 0 0;font-size: 15px;margin-right: 10px;">{{percent}}</ion-note>
         <ion-checkbox slot="end" color="primary" (click)="selectAllAbsence()" [(ngModel)]="isSelectAllAbsence" *ngIf="show==true" style="margin-left:0px;margin-right: 17px;"></ion-checkbox>
     </ion-item-divider>
+</ion-header>
+
+<ion-content>
+    
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
     <ion-list>
         <!-- <ion-item-sliding > -->
         <ion-item *ngFor="let item of checkHistory">
