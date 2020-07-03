@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <!-- <domain includeSubdomains="true">2qi6hp.natappfree.cc</domain> -->
+        <!-- <domain includeSubdomains="true">geudmf.natappfree.cc</domain> -->
         <domain includeSubdomains="true">39.97.108.239</domain>
     </domain-config>
 </network-security-config>

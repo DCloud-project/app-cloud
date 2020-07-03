@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { LoadingController, AlertController } from '@ionic/angular';
+import { VirtualTimeScheduler } from 'rxjs';
 
 declare var BMap: any
 @Component({
@@ -19,7 +20,7 @@ export class ClickPage implements OnInit {
   public attnId: any;
   public checkinNum = 0;
   public totalNum = 0;
-  public interval: any;
+  public interval: any = null;
   constructor(public httpService: HttpServiceService,
     public loadingController: LoadingController,
     public router: Router,
@@ -32,14 +33,14 @@ export class ClickPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getCheckResult();
+    // this.getCheckResult();
     this.funcTest();
   }
-  ionViewWillEnter() {
-    //这两个方法在将要进入界面的时候会触发,相当于是局部刷新,整个页面不会跟着刷新
-    this.getCheckResult();
-    this.funcTest();
-  }
+  // ionViewWillEnter() {
+  //   //这两个方法在将要进入界面的时候会触发,相当于是局部刷新,整个页面不会跟着刷新
+  //   this.getCheckResult();
+  //   this.funcTest();
+  // }
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -60,9 +61,11 @@ export class ClickPage implements OnInit {
               attend_id: localStorage.getItem("attend_id"),
               type: 0
             }
+            console.log(params);
             this.httpService.delete(this.api, params).then(async (response: any) => {
               // console.log(response.data)
-              clearInterval(this.interval)
+              this.stopRequest();
+              // clearInterval(this.interval)
               this.router.navigateByUrl('choose')
             })
 
@@ -112,17 +115,33 @@ export class ClickPage implements OnInit {
       attend_id: localStorage.getItem("attend_id"),
       code: localStorage.getItem("lesson_no")
     }
+    console.log(params);
     this.httpService.put(this.api, params).then(async (response: any) => {
-      // console.log(response.data.count)
+      console.log(response.data)
       this.checkinNum = response.data.count;
       this.totalNum = response.data.total;
     })
   }
   funcTest() {
     //每隔3秒执行一次
+    // this.interval = setInterval(() => {
+    //   this.getCheckResult();
+    // }, 3000);
+    this.startRequest();
+
+  }
+
+  startRequest() {//启动计时器函数
+    if (this.interval != null) {//判断计时器是否为空
+      clearInterval(this.interval);
+      this.interval = null;
+    }
     this.interval = setInterval(() => {
       this.getCheckResult();
     }, 3000);
-
+  }
+  stopRequest() {
+    clearInterval(this.interval);
+    this.interval = null;
   }
 }

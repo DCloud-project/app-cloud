@@ -108,33 +108,33 @@ export class AppComponent {
         //确认是否要结束签到
         const alert = await this.alertController.create({
           header: '提示',
-          message: '是否结束签到？',
-          buttons: [
-            {
-              text: '取消',
-              role: 'cancel',
-              cssClass: 'medium'
-            }, {
-              text: '确认',
-              handler: async () => {
-                var params = {
-                  attend_id: localStorage.getItem("attend_id"),
-                  type: 1
-                }
-                var api = '/attendence';//后台接口
-                this.httpService.delete(api, params).then(async (response: any) => {
-                  console.log(response.data)
-                  clearInterval(this.interval)
-                  // this.router.navigateByUrl('checkin-result');
-                  // this.router.navigateByUrl('checkin-result', { replaceUrl: true });
-                  this.router.navigate(['/checkin-result'], { 
-                    queryParams:{ interval: '1' } 
-                  });
+          message: '请先放弃或结束签到！',
+          buttons: ['确认']
+            // {
+            //   text: '取消',
+            //   role: 'cancel',
+            //   cssClass: 'medium'
+            // }, {
+            //   text: '确认',
+            //   handler: async () => {
+            //     var params = {
+            //       attend_id: localStorage.getItem("attend_id"),
+            //       type: 1
+            //     }
+            //     var api = '/attendence';//后台接口
+            //     this.httpService.delete(api, params).then(async (response: any) => {
+            //       console.log(response.data)
+            //       clearInterval(this.interval)
+            //       // this.router.navigateByUrl('checkin-result');
+            //       // this.router.navigateByUrl('checkin-result', { replaceUrl: true });
+            //       this.router.navigate(['/checkin-result'], { 
+            //         queryParams:{ interval: '1' } 
+            //       });
 
-                })
-              }
-            }
-          ]
+            //     })
+            //   }
+            // }
+          // ]
         });
         await alert.present();
       }

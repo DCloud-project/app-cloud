@@ -41,7 +41,8 @@ export class ChoosePage implements OnInit {
   }
   gotoClick() {
     this.getLocation();
-    this.router.navigateByUrl('click');
+    // this.startCheck();
+    // this.router.navigateByUrl('click');
   }
 
   getLocation(){
@@ -90,6 +91,7 @@ export class ChoosePage implements OnInit {
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();
       localStorage.setItem("attend_id", response.data);
+      this.router.navigateByUrl('click');
     })
   }
 
