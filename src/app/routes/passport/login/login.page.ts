@@ -28,11 +28,11 @@ export class LoginPage implements OnInit {
     private qq: QQSDK,
     public loadingController:LoadingController) {
     //登录状态为1时自动登录
-    // if (localStorage.getItem("isLogin") == "1") {
-    //   if(this.isOverTime()){
-    //     this.router.navigateByUrl('\lesson-tabs');
-    //   }
-    // }
+    if (localStorage.getItem("isLogin") == "1") {
+      if(this.isOverTime()){
+        this.router.navigateByUrl('\lesson-tabs');
+      }
+    }
   }
 
   ngOnInit() {
