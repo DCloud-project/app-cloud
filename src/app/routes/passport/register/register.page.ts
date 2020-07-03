@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
@@ -29,12 +29,17 @@ export class RegisterPage implements OnInit {
     public http: HttpClient,
     public router: Router,
     private alertController: AlertController,
-    private toastController: ToastController) { }
+    private toastController: ToastController,
+    private loadingController:LoadingController) { }
 
   ngOnInit() {
   }
 
   async onRegister(form: NgForm) {
+    const loading = await this.loadingController.create({
+      message: '请稍等...',
+    });
+    await loading.present();
     if (this.hasCode()) {
       if (form.valid) {
         //验证验证码是否正确
@@ -53,6 +58,7 @@ export class RegisterPage implements OnInit {
             var api = '/register';//后台接口
             this.httpService.post(api, params).then(async (response: any) => {
               console.log(response.data);//返回参数
+              await loading.dismiss();
               if (response.data.respCode == 1) {//注册成功
                 this.router.navigateByUrl('/lesson-tabs');
                 localStorage.setItem("email", this.register_email);
@@ -69,6 +75,7 @@ export class RegisterPage implements OnInit {
             })
 
           } else {
+            await loading.dismiss();
             let toast = await this.toastController.create({
               message: '两次密码不一致！',
               duration: 2000
@@ -76,6 +83,7 @@ export class RegisterPage implements OnInit {
             toast.present();
           }
         } else {
+          await loading.dismiss();
           let toast = await this.toastController.create({
             message: '验证码不正确！',
             duration: 2000

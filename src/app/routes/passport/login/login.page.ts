@@ -3,7 +3,7 @@ import { HttpServiceService } from '../../../shared/services/http-service.servic
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { QQSDK, QQShareOptions } from '@ionic-native/qqsdk/ngx';
 
@@ -25,7 +25,8 @@ export class LoginPage implements OnInit {
     public http: HttpClient, public router: Router,
     public alertController: AlertController,
     private iab: InAppBrowser,
-    private qq: QQSDK) {
+    private qq: QQSDK,
+    public loadingController:LoadingController) {
     //登录状态为1时自动登录
     // if (localStorage.getItem("isLogin") == "1") {
     //   if(this.isOverTime()){
@@ -40,6 +41,10 @@ export class LoginPage implements OnInit {
   async onLogin(form: NgForm) {
     if (form.valid) {
       var params;
+      const loading = await this.loadingController.create({
+        message: '登录中...',
+      });
+      await loading.present();
       if (this.tab == 'tab1') {//验证码登录
         //点击获取验证码后，进入获取验证码界面 
         params = {//后台所需参数
@@ -48,6 +53,7 @@ export class LoginPage implements OnInit {
         var api = '/loginByCode';//后台接口
         this.httpService.post(api, params).then(async (response: any) => {
           this.result = response.data.role;
+          await loading.dismiss();
           if (this.result == "-1") {
             let alert = await this.alertController.create({
               header: '提示',
@@ -74,6 +80,7 @@ export class LoginPage implements OnInit {
 
         this.httpService.post(api, params).then(async (response: any) => {
           console.log(response);
+          await loading.dismiss();
           this.result = response.data.respCode;
           if (this.result == "1") {
             //获取该user的信息（teacher_id,student_id）
