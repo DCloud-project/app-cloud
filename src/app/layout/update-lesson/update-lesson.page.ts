@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
 import { AlertController, PickerController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-lesson',
@@ -25,21 +25,45 @@ export class UpdateLessonPage implements OnInit {
 
   };
   term = [[]];
-  termOptions = 16;
+  course = [[]];
+  termOptions = 12;
+  courseOptions: number;
 
   constructor(
     public httpService: HttpServiceService,
     public http: HttpClient,
     private alertController: AlertController,
     private router: Router,
-    public pickerController: PickerController
+    public pickerController: PickerController,
+    private activatedRoute: ActivatedRoute
   ) {
-    
+    activatedRoute.queryParams.subscribe(queryParams => {
+      // if(queryParams.name == '1'){
+      if (queryParams.name != undefined) {
+        this.lesson.name = queryParams.name;
+        if (this.course[0][this.course.length - 1] != queryParams.name) {
+          this.course[0].push(this.lesson.name);
+          this.courseOptions++;
+        }
+      }
+      // }
+    });
+
   }
 
   ngOnInit() {
     this.getLesson();
     this.getTime();
+    //请求后台数据
+    var api = '/courseManage';//后台接口
+    this.httpService.getAll(api).then(async (response: any) => {
+
+      // this.courseList = response.data;
+      for (var i = 0; i < response.data.length; i++) {
+        this.course[0].push(response.data[i].name);
+      }
+      this.courseOptions = this.course[0].length;
+    })
   }
 
   getLesson() {
@@ -59,7 +83,7 @@ export class UpdateLessonPage implements OnInit {
       name: this.lesson.name,
       tname: this.lesson.tname,
       type: this.lesson.type,
-      term:this.lesson.term
+      term: this.lesson.term
     }
     // console.log(params)
     var api = '/courses';
@@ -79,7 +103,7 @@ export class UpdateLessonPage implements OnInit {
                     term: this.lesson.term,
                     name: this.lesson.name,
                     tname: this.lesson.tname,
-                    class:this.lesson.class,
+                    class: this.lesson.class,
                     type: this.lesson.type
                   }
                 })
@@ -102,12 +126,11 @@ export class UpdateLessonPage implements OnInit {
     let myDate = new Date();
     //获取当前年
     var year = myDate.getFullYear();
-    for (var i = 0; i < 5; i++) {
-      var start = year + i -2;
+    for (var i = 0; i < 6; i++) {
+      var start = year + i - 2;
       var end = start + 1;
       this.term[0].push(start + "-" + end + "-01");
       this.term[0].push(start + "-" + end + "-02");
-      this.term[0].push(start + "-" + end + "-小");
     }
     this.term[0].push("不设置学期")
   }
@@ -159,4 +182,54 @@ export class UpdateLessonPage implements OnInit {
   }
 
 
+  async coursePicker(numColumns = 1, numOptions, columnOptions) {
+
+    const picker = await this.pickerController.create({
+      columns: this.getCourseColumns(numColumns, numOptions, columnOptions),
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel'
+        },
+        {
+          text: '确认',
+          handler: (value) => {
+            // console.log(value.col.text);
+            this.lesson.name = value.col.text;
+          }
+        }
+      ]
+    });
+
+    await picker.present();
+  }
+
+  getCourseColumns(numColumns, numOptions, columnOptions) {
+    let columns = [];
+    for (let i = 0; i < numColumns; i++) {
+      columns.push({
+        name: `col`,
+        options: this.getCourseColumnOptions(i, numOptions, columnOptions)
+      });
+    }
+
+    return columns;
+  }
+
+  getCourseColumnOptions(columnIndex, numOptions, columnOptions) {
+    let options = [];
+    for (let i = 0; i < numOptions; i++) {
+      options.push({
+        text: columnOptions[columnIndex][i % numOptions],
+        value: i
+      })
+    }
+
+    return options;
+  }
+
+  toAdd() {
+    this.router.navigateByUrl('/add-lesson-name');
+    localStorage.setItem("isCreate", '0');
+  }
 }

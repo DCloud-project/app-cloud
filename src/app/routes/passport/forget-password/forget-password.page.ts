@@ -26,7 +26,7 @@ export class ForgetPasswordPage implements OnInit {
   }
   async onForgetPass() {
     //两次新密码是否相同
-    if(this.forgetinf.password1!=null || this.forgetinf.password1!=""){
+    if(this.forgetinf.password1.length!=0){
       if (this.forgetinf.password1 == this.forgetinf.password2) {
         //email
         this.forgetinf.email = localStorage.getItem("email")

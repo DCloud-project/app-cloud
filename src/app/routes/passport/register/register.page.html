@@ -32,7 +32,7 @@
         </ion-row>
         <ion-row class="row">
           <ion-input name='pwd1' type="password" class="input-user" placeholder="请输入密码" required
-            pattern="^(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,12}$" [(ngModel)]="password1"
+            pattern="^(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,16}$" [(ngModel)]="password1"
             #pwd1="ngModel">
             <ion-icon name="lock-closed-outline" class="input_icon"></ion-icon>
           </ion-input>

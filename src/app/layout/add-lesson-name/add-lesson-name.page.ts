@@ -4,6 +4,7 @@ import { HttpServiceService } from 'src/app/shared/services/http-service.service
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-add-lesson-name',
@@ -45,11 +46,20 @@ export class AddLessonNamePage implements OnInit {
                 text: '确认',
                 cssClass: 'secondary',
                 handler: (blah) => {
-                  this.router.navigate(['/createlesson'], {
+                  if(localStorage.getItem("isCreate") == '1'){
+                    this.router.navigate(['/createlesson'], {
                     queryParams: {
                       name: this.lesson.name
                     }
                   })
+                  }else{
+                    this.router.navigate(['/update-lesson'], {
+                      queryParams: {
+                        name: this.lesson.name
+                      }
+                    })
+                  }
+                  
                 }
               }
             ]

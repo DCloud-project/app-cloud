@@ -39,7 +39,7 @@ export class CreatelessonPage implements OnInit {
   course = [[]];
   tempCourse: any;
   term = [[]];
-  termOptions = 16;
+  termOptions = 12;
   courseOptions: number;
   mark: any;
   temp: any;
@@ -55,17 +55,14 @@ export class CreatelessonPage implements OnInit {
     public platform: Platform
   ) {
     activatedRoute.queryParams.subscribe(queryParams => {
-      // this.property = queryParams.property;
-      // this.pageNum = queryParams.pageNum;
+
       if (queryParams.pageNum == '1') {
         this.lesson.require = queryParams.property;
       } else if (queryParams.pageNum == '2') {
         this.lesson.process = queryParams.property;
       } else if (queryParams.pageNum == '3') {
         this.lesson.examination = queryParams.property;
-      } else {
-        // console.log(queryParams.name);
-        // this.temp = queryParams.name;
+      } else{
         if (queryParams.name != undefined) {
           this.lesson.name = queryParams.name;
           if (this.course[0][this.course.length - 1] != queryParams.name) {
@@ -246,12 +243,11 @@ export class CreatelessonPage implements OnInit {
     let myDate = new Date();
     //获取当前年
     var year = myDate.getFullYear();
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 6; i++) {
       var start = year + i -2;
       var end = start + 1;
       this.term[0].push(start + "-" + end + "-01");
       this.term[0].push(start + "-" + end + "-02");
-      this.term[0].push(start + "-" + end + "-小");
     }
     this.term[0].push("不设置学期")
   }
@@ -345,6 +341,11 @@ export class CreatelessonPage implements OnInit {
     }
 
     return options;
+  }
+
+  toAdd(){
+    this.router.navigateByUrl('/add-lesson-name');
+    localStorage.setItem("isCreate",'1');
   }
 
 }
