@@ -33,8 +33,11 @@
     </ion-card-content>
   </ion-card>
   <!-- <ion-item lines="none"> -->
-  <ion-row class="row">
+  <ion-row class="row" *ngIf="flag=='0'">
     <ion-button color="secondary" class="btn btn-login" routerLink="/lesson-tabs/mylesson" [queryParams]="{flush:value}"> 返回 </ion-button>
+  </ion-row>
+  <ion-row class="row" *ngIf="flag=='1'">
+    <ion-button color="secondary" class="btn btn-login" routerLink="/tabs/detail"> 返回 </ion-button>
   </ion-row>
 <!-- </ion-item> -->
 </ion-content>

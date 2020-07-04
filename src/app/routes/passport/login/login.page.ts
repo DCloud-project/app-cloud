@@ -26,10 +26,10 @@ export class LoginPage implements OnInit {
     public alertController: AlertController,
     private iab: InAppBrowser,
     private qq: QQSDK,
-    public loadingController:LoadingController) {
+    public loadingController: LoadingController) {
     //登录状态为1时自动登录
     if (localStorage.getItem("isLogin") == "1") {
-      if(this.isOverTime()){
+      if (this.isOverTime()) {
         this.router.navigateByUrl('\lesson-tabs');
       }
     }
@@ -61,14 +61,14 @@ export class LoginPage implements OnInit {
               buttons: ['确定']
             });
             alert.present();
-          } else if(response.data.respCode == "账号已被删除！"){
+          } else if (response.data.respCode == "账号已被删除！") {
             let alert = await this.alertController.create({
               header: '提示',
               message: '该账号已被删除！',
               buttons: ['确定']
             });
             alert.present();
-          }else {
+          } else {
             this.router.navigateByUrl(`/verify/${this.login.email}`);
             localStorage.setItem("email", this.login.email);
             // this.getInf(this.login.email);

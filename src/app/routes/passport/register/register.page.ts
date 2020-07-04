@@ -77,10 +77,10 @@ export class RegisterPage implements OnInit {
                 });
                 alert.present();
 
-              } else if (response.data.respCode == '账号已存在') {
+              } else if (response.data.respCode == '该邮箱已经注册过了！') {
                 let alert = await this.alertController.create({
                   header: '提示',
-                  message: '账号已存在',
+                  message: '该邮箱已经注册过了！',
                   buttons: ['确定']
                 });
                 alert.present();
@@ -113,35 +113,35 @@ export class RegisterPage implements OnInit {
         email: this.register_email,
       };
       //获取邮箱，将邮箱发给后台，请求后台返回验证码
-      // var api = '/sendCode';//后台接口
-      // this.httpService.post(api, params).then((response: any) => {
-      //   this.return_code = response.data.respCode;//返回参数
-      // })
-      var api = '/loginByCode';//后台接口
-      this.httpService.post(api, params).then(async (response: any) => {
-        if (response.data.role == "-1") {
-          var api = '/sendCode';//后台接口
-          this.httpService.post(api, params).then((response: any) => {
-            this.return_code = response.data.respCode;//返回参数
-          })
-          this.verifyCode.disable = false;
-          this.settime();
-        } else if (response.data.respCode == "账号已被删除！") {
-          let alert = await this.alertController.create({
-            header: '提示',
-            message: '该账号已被删除！',
-            buttons: ['确定']
-          });
-          alert.present();
-        } else {
-          let alert = await this.alertController.create({
-            header: '提示',
-            message: '您已注册过到云账号，请直接登录！',
-            buttons: ['确定']
-          });
-          alert.present();
-        }
+      var api = '/sendCode';//后台接口
+      this.httpService.post(api, params).then((response: any) => {
+        this.return_code = response.data.respCode;//返回参数
       })
+      // var api = '/loginByCode';//后台接口
+      // this.httpService.post(api, params).then(async (response: any) => {
+      //   if (response.data.role == "-1") {
+      //     var api = '/sendCode';//后台接口
+      //     this.httpService.post(api, params).then((response: any) => {
+      //       this.return_code = response.data.respCode;//返回参数
+      //     })
+      //     this.verifyCode.disable = false;
+      //     this.settime();
+      //   } else if (response.data.respCode == "账号已被删除！") {
+      //     let alert = await this.alertController.create({
+      //       header: '提示',
+      //       message: '该账号已被删除！',
+      //       buttons: ['确定']
+      //     });
+      //     alert.present();
+      //   } else {
+      //     let alert = await this.alertController.create({
+      //       header: '提示',
+      //       message: '您已注册过到云账号，请直接登录！',
+      //       buttons: ['确定']
+      //     });
+      //     alert.present();
+      //   }
+      // })
     }
 
   }

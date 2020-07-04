@@ -91,7 +91,7 @@
                 </ion-label>
             </ion-item>
             <ion-item *ngFor="let item of member;let i = index" style="margin:5px 0px;"
-            routerLink="/student-checkin" [queryParams]="{historyFlag:'1'} ">
+            routerLink="/student-checkin" [queryParams]="{historyFlag:'1',studentEmail:item.email}">
                 <h3 style="color:#3dc2ff;">{{item.index+1}}&nbsp;&nbsp;</h3>
                 <ion-thumbnail>
                     <img src="../../../../assets/icon/head.png">

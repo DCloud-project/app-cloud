@@ -44,7 +44,15 @@ export class MylessonPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public loadingController: LoadingController,
     private activatedRoute: ActivatedRoute) {
+      //请求后台获取 我创建的班课列表
     this.activatedRoute.queryParams.subscribe(async queryParams => {
+      if (localStorage.getItem("role") == '0') {//教师
+        this.flag = '0';
+        this.getCreateLesson();
+      } else {
+        this.getMyLesson();
+      }
+
       this.list = [];
       this.list1 = [];
       this.index = 0;
@@ -58,6 +66,16 @@ export class MylessonPage implements OnInit {
         this.getMyLesson();
       }
     });
+    
+  }
+
+  ngOnInit() {
+    if (localStorage.getItem("role") == '0') {//教师
+      this.flag = '0';
+      this.getCreateLesson();
+    } else {
+      this.getMyLesson();
+    }
   }
 
   doRefresh(event) {
@@ -87,17 +105,7 @@ export class MylessonPage implements OnInit {
     localStorage.setItem("lesson_no", this.lessonList[index].no);
     this.router.navigateByUrl('/choose');
   }
-  ngOnInit() {
-    //请求后台获取 我创建的班课列表
-    if (localStorage.getItem("role") == '0') {//教师
-      this.flag = '0';
-      this.getCreateLesson();
-    } else {
-      this.getMyLesson();
-    }
 
-
-  }
   // ionViewWillEnter() {
   //   this.getCreateLesson();
   // }

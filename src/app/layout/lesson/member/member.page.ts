@@ -35,6 +35,7 @@ export class MemberPage implements OnInit {
   ngOnInit() {
     this.getdata();
   }
+
   async getdata() {
     this.lesson.name = localStorage.getItem("lesson_name");
     this.lesson.no = localStorage.getItem("lesson_no");

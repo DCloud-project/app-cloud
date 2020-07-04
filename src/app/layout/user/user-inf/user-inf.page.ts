@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { PickerController, AlertController, Platform, ToastController } from '@ionic/angular';
@@ -29,7 +29,9 @@ export class UserInfPage implements OnInit {
     public http: HttpClient,
     private alertController: AlertController,
     public pickerController: PickerController,
-    public toast: ToastController,) {
+    public toast: ToastController,
+    private activatedRoute: ActivatedRoute) {
+      
   }
 
   // pickerController = document.querySelector('ion-picker-controller');
@@ -45,6 +47,7 @@ export class UserInfPage implements OnInit {
   public academyOptions = 0;
   public isTeacher;
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(async queryParams => {
     var params = {//后台所需参数
       email: localStorage.getItem("email"),
     };
@@ -55,14 +58,12 @@ export class UserInfPage implements OnInit {
         this.user = response.data;
         this.user["sex"] = response.data.sex.toString();
         this.user["email"] = localStorage.getItem("email");
-        console.log(response.data.role == 0);
         if(response.data.role == 0){
           this.isTeacher = "(教师)";
         }else{
           this.isTeacher = "(学生)";
         }
         //获取学校名称
-        console.log(this.user.school);
         if (response.data.name == 0) {
           this.user.name = "";
         }
@@ -125,7 +126,7 @@ export class UserInfPage implements OnInit {
       this.schoolOptions = this.school[0].length;
     })
 
-
+  });
   }
 
   //编辑个人信息

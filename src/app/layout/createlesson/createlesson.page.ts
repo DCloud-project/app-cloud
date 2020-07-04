@@ -228,6 +228,7 @@ export class CreatelessonPage implements OnInit {
               text: '确认',
               cssClass: 'secondary',
               handler: (blah) => {
+                // localStorage.setItem("origin",'0');
                 this.router.navigateByUrl('/create-success');
               }
             }

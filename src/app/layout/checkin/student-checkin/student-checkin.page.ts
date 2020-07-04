@@ -25,15 +25,25 @@ export class StudentCheckinPage implements OnInit {
     public toastController: ToastController,
     private geolocation: Geolocation,
     private activatedRoute: ActivatedRoute,
-    public router: Router) { 
-      this.activatedRoute.queryParams.subscribe(queryParams => {
-        console.log(queryParams);
-        if (queryParams.historyFlag == '1') {
-          // console.log("flush");
-          this.historyFlag = '1';
+    public router: Router) {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
+      if (queryParams.historyFlag == '1') {
+        // console.log("flush");
+        this.historyFlag = '1';
+        var api = '/attendenceResult';//后台接口
+        var params = {
+          student_email: queryParams.studentEmail,
+          code: localStorage.getItem("lesson_no")
         }
-      });
-    }
+        this.httpService.put(api, params).then(async (response: any) => {
+          this.checkHistory = response.data;
+          this.percent = this.checkHistory[this.checkHistory.length - 1].per
+          this.checkHistory.splice(this.checkHistory.length - 1)
+        })
+      }
+    });
+  }
 
   ngOnInit() {
     this.getHistory();
@@ -72,15 +82,15 @@ export class StudentCheckinPage implements OnInit {
     })
   }
 
-  getLocation(){
+  getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.latitude = JSON.stringify(resp.coords.latitude);
       this.longitude = JSON.stringify(resp.coords.longitude);
       this.checkin();
       //获得系统参数
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
   async getHistory() {

@@ -1,6 +1,6 @@
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { CheckinComponent } from '../../../shared/components/checkin/checkin.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -17,12 +17,13 @@ export class ChoosePage implements OnInit {
   latitude: string;
   longitude: string;
   constructor(public modalController: ModalController,
-     public router: Router,
-     public loadingController: LoadingController,
-     public httpService: HttpServiceService,
-     private geolocation: Geolocation,
-     private activatedRoute: ActivatedRoute) { 
-     }
+    public router: Router,
+    public loadingController: LoadingController,
+    public httpService: HttpServiceService,
+    private geolocation: Geolocation,
+    private activatedRoute: ActivatedRoute,
+    private alertController: AlertController) {
+  }
   async checkExplain() {
     // console.log("签到方式说明");
     //弹出说明模态框
@@ -33,27 +34,64 @@ export class ChoosePage implements OnInit {
     await modal.present();
 
     this.activatedRoute.queryParams.subscribe(queryParams => {
-      console.log(queryParams);
       if (queryParams.flush == '1') {
         this.getCheckHistory();
       }
     });
   }
   gotoClick() {
-    this.getLocation();
+    //先请求是否有未结束班课，若有，则弹出框是否要停止
+    var params = {
+      code: localStorage.getItem("lesson_no")
+    }
+    var api = '/attendence/isEnd'
+    this.httpService.post(api, params).then(async (response: any) => {
+      if (response.data.respCode == '0') {//未结束
+        const alert = await this.alertController.create({
+          message: '有未结束签到，是否结束？',
+          buttons: [
+            {
+              text: '取消',
+            },
+            {
+              text: '确认',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                //结束当前班课
+                var api = '/attendence/end'
+                this.httpService.post(api, params).then(async (response: any) => {
+                  if (response.data.respCode == '1') {
+                    const alert = await this.alertController.create({
+                      message: '成功结束签到，可发起新一轮签到！',
+                      buttons: ['确认']
+                    })
+                    await alert.present();
+                  }
+                })
+              }
+            }
+          ]
+        });
+        await alert.present();
+      } else {
+        this.getLocation();
+      }
+    })
+
+    // this.getLocation();
     // this.startCheck();
     // this.router.navigateByUrl('click');
   }
 
-  getLocation(){
+  getLocation() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.latitude = JSON.stringify(resp.coords.latitude);
       this.longitude = JSON.stringify(resp.coords.longitude);
       this.startCheck();
       //获得系统参数
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
   gotoGesture() {
     this.router.navigateByUrl('gesture');
@@ -86,7 +124,7 @@ export class ChoosePage implements OnInit {
     this.params = {
       code: localStorage.getItem("lesson_no"),
       // local: "12,13"
-      local:this.latitude + "," + this.longitude
+      local: this.latitude + "," + this.longitude
     }
     this.httpService.post(this.api, this.params).then(async (response: any) => {
       await loading.dismiss();

@@ -19,11 +19,12 @@ export class CreateSuccessPage implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
-      if (queryParams.lessonNo) {
+      console.log(JSON.stringify(queryParams.lessonNo));
+      if (queryParams.lessonNo) {//详情
         this.flag = '1';
         this.lessonCode = queryParams.lessonNo;
         this.createdCode = queryParams.lessonNo;
-      }else{
+      }else{//新建班课
         this.flag='0';
         this.lessonCode = localStorage.getItem("create-code");
         this.createdCode = localStorage.getItem("create-code");

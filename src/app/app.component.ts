@@ -112,20 +112,18 @@ export class AppComponent {
           buttons: ['确认']
         });
         await alert.present();
+      }else if(this.router.url === '/checkin-result'){
+        this.router.navigateByUrl('/choose', { replaceUrl: true });
       }
-      // else if(this.router.url === '/checkin-result'){
-      //   this.router.navigate(['/lesson-tabs/mylesson'], {queryParams: {success: '1'}});
-      // }
       else if (this.router.url === '/create-success') {
         // localStorage.setItem("create-back", '1');
         // if (localStorage.getItem("create-back") == '1') {
         //   this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
         // }
         // this.router.navigate(['/lesson-tabs/mylesson'], { queryParams: { success: '1' } });
-      } else if (this.router.url === '/tabs/member') {
-        this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
-      } else if (this.router.url === '/tabs/detail') {
-        this.router.navigateByUrl('lesson-tabs/mylesson', { replaceUrl: true });
+      } else if (this.router.url === '/tabs/member'
+      || this.router.url === '/tabs/detail') {
+        this.router.navigate(['lesson-tabs/mylesson']);
       } else {
         this.navController.back();//返回上一界面
       }

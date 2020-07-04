@@ -29,54 +29,71 @@ export class ConfirmJoinPage implements OnInit {
     this.lesson = JSON.parse(localStorage.getItem("joinInf"));
   }
 
-  confimJoin() {
-    var params = {
-      email: localStorage.getItem("email"),
-      code: localStorage.getItem("joinCode")
-    }
-    console.log(params);
-    var api = '/courses';//后台接口
-    this.httpService.post(api, params).then(async (response: any) => {
-      // console.log(response);
-      if (response.status == 200) {
-        if (response.data.respCode == "您已加入本班课，请勿重复加入！") {
-          const alert = await this.alertController.create({
-            header: '警告',
-            message: '您已加入本班课，请勿重复加入！',
-            buttons: ['确认']
-          });
-          await alert.present();
-        } else if (response.data.respCode == "不能加入自己创建的班课！") {
-          const alert = await this.alertController.create({
-            header: '警告',
-            message: '不能加入自己创建的班课！',
-            buttons: ['确认']
-          });
-          await alert.present();
+  async confirmJoin() {
+    const alert = await this.alertController.create({
+      header: '提示',
+      message: '确认加入班课？',
+      buttons: [
+        {
+          text: '取消',
+        },
+        {
+          text: '确认',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            var params = {
+              email: localStorage.getItem("email"),
+              code: localStorage.getItem("joinCode")
+            }
+            var api = '/courses';//后台接口
+            this.httpService.post(api, params).then(async (response: any) => {
+              // console.log(response);
+              if (response.status == 200) {
+                if (response.data.respCode == "您已加入本班课，请勿重复加入！") {
+                  const alert = await this.alertController.create({
+                    header: '警告',
+                    message: '您已加入本班课，请勿重复加入！',
+                    buttons: ['确认']
+                  });
+                  await alert.present();
+                } else if (response.data.respCode == "不能加入自己创建的班课！") {
+                  const alert = await this.alertController.create({
+                    header: '警告',
+                    message: '不能加入自己创建的班课！',
+                    buttons: ['确认']
+                  });
+                  await alert.present();
 
-        } else if (response.data.respCode == "1") {
-          const alert = await this.alertController.create({
-            // header: '',
-            message: '加入班课成功!',
-            buttons: [
-              {
-                text: '确认',
-                cssClass: 'secondary',
-                handler: (blah) => {
-                  this.router.navigateByUrl('/lesson-tabs');
-                  this.router.navigate(['/lesson-tabs/mylesson'], {
-                    queryParams: {
-                      join: '1'
-                    }
-                  })
+                } else if (response.data.respCode == "1") {
+                  const alert = await this.alertController.create({
+                    message: '加入班课成功！',
+                    buttons: [
+                      {
+                        text: '确认',
+                        cssClass: 'secondary',
+                        handler: (blah) => {
+                          this.router.navigateByUrl('/lesson-tabs');
+                          this.router.navigate(['/lesson-tabs/mylesson'], {
+                            queryParams: {
+                              join: '1'
+                            }
+                          })
+                        }
+                      }
+                    ]
+                  });
+                  await alert.present();
+
                 }
               }
-            ]
-          });
-          await alert.present();
+            })
+
+          }
         }
-      }
-    })
+      ]
+    });
+    await alert.present();
+
   }
 
 }
