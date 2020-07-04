@@ -14,6 +14,7 @@ export class StudentCheckinPage implements OnInit {
 
   public checkHistory = [];
   public percent = 0;
+  public studentEmail="";
   latitude: string;
   longitude: string;
   public historyFlag = '0';
@@ -36,6 +37,7 @@ export class StudentCheckinPage implements OnInit {
           student_email: queryParams.studentEmail,
           code: localStorage.getItem("lesson_no")
         }
+        this.studentEmail=queryParams.studentEmail;
         this.httpService.put(api, params).then(async (response: any) => {
           this.checkHistory = response.data;
           this.percent = this.checkHistory[this.checkHistory.length - 1].per
@@ -123,7 +125,20 @@ export class StudentCheckinPage implements OnInit {
   }
 
   doRefresh(event) {
-    this.getHistory();
+    if (this.historyFlag != '1') {
+      this.getHistory();
+    }else{
+      var api = '/attendenceResult';//后台接口
+      var params = {
+        student_email: this.studentEmail,
+        code: localStorage.getItem("lesson_no")
+      }
+      this.httpService.put(api, params).then(async (response: any) => {
+        this.checkHistory = response.data;
+        this.percent = this.checkHistory[this.checkHistory.length - 1].per
+        this.checkHistory.splice(this.checkHistory.length - 1)
+      })
+    }
     setTimeout(() => {
       event.target.complete();
     }, 1000);
