@@ -138,7 +138,7 @@ export class ClickPage implements OnInit {
     }
     this.interval = setInterval(() => {
       this.getCheckResult();
-    }, 3000);
+    }, 1000);
   }
   stopRequest() {
     clearInterval(this.interval);
