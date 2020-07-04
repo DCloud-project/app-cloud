@@ -209,7 +209,7 @@ export class MylessonPage implements OnInit {
     } else {
       localStorage.setItem("isTeacher", '0');
     }
-    this.router.navigateByUrl("/tabs/member")
+    // this.router.navigateByUrl("/tabs/member],")
   }
   async addLesson() {
     if (localStorage.getItem("role") == '0') {
