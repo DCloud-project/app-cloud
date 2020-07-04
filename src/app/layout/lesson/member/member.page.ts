@@ -4,7 +4,7 @@ import { ModalController, AlertController, LoadingController, ToastController } 
 import { SearchComponent } from '../../../shared/components/search/search.component'
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SearchMemberComponent } from 'src/app/shared/components/search-member/search-member.component';
 
 @Component({
@@ -30,17 +30,25 @@ export class MemberPage implements OnInit {
     public http: HttpClient,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    public toastController: ToastController) {
+    public toastController: ToastController,
+    private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      if (queryParams.isFlash == '1') {
+        this.getdata();
+      }
+    })
   }
   ngOnInit() {
     this.getdata();
   }
-
+  ionViewWillEnter() {
+    this.getdata();
+  }
   async getdata() {
     this.lesson.name = localStorage.getItem("lesson_name");
     this.lesson.no = localStorage.getItem("lesson_no");
     this.isTeacher = localStorage.getItem("isTeacher");
-    
+
     if (this.isTeacher == '1') {
       this.orderByNo();
     } else {
@@ -108,7 +116,7 @@ export class MemberPage implements OnInit {
     }
     var api = '/courses/member';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
-      
+
       await loading.dismiss();
       if (response.data.respCode == "该课程没有学生") {
         this.flag = '0';
