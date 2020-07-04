@@ -46,11 +46,15 @@ export class StudentCheckinPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getHistory();
+    if (this.historyFlag != '1') {
+      this.getHistory();
+    }
   }
   ionViewWillEnter() {
     //这两个方法在将要进入界面的时候会触发,相当于是局部刷新,整个页面不会跟着刷新
-    this.getHistory();
+    if (this.historyFlag != '1') {
+      this.getHistory();
+    }
   }
   async presentToast(message) {
     const toast = await this.toastController.create({
