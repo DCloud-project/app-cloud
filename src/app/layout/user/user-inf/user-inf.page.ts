@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpServiceService } from 'src/app/shared/services/http-service.service';
-import { PickerController, AlertController, Platform, ToastController } from '@ionic/angular';
+import { PickerController, AlertController, Platform, ToastController, LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-user-inf',
   templateUrl: './user-inf.page.html',
@@ -30,8 +30,9 @@ export class UserInfPage implements OnInit {
     private alertController: AlertController,
     public pickerController: PickerController,
     public toast: ToastController,
-    private activatedRoute: ActivatedRoute) {
-      
+    private activatedRoute: ActivatedRoute,
+    public loadingController: LoadingController,) {
+
   }
 
   // pickerController = document.querySelector('ion-picker-controller');
@@ -47,10 +48,21 @@ export class UserInfPage implements OnInit {
   public academyOptions = 0;
   public isTeacher;
   ngOnInit() {
+    // this.getInf()
     this.activatedRoute.queryParams.subscribe(async queryParams => {
+      this.getInf()
+
+    });
+  }
+  //获取个人信息
+  async getInf() {
     var params = {//后台所需参数
       email: localStorage.getItem("email"),
     };
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
     var api = '/user/info';//后台接口
     this.httpService.get(api, params).then(async (response: any) => {
       if (response.status == 200) {
@@ -58,9 +70,9 @@ export class UserInfPage implements OnInit {
         this.user = response.data;
         this.user["sex"] = response.data.sex.toString();
         this.user["email"] = localStorage.getItem("email");
-        if(response.data.role == 0){
+        if (response.data.role == 0) {
           this.isTeacher = "(教师)";
-        }else{
+        } else {
           this.isTeacher = "(学生)";
         }
         //获取学校名称
@@ -90,7 +102,7 @@ export class UserInfPage implements OnInit {
               var param1 = {
                 schoolCode: str[0],//父级id
               }
-              this.academyChoosed = '未设置';
+              // this.academyChoosed = '未设置';
 
               var api = '/schools';//后台接口
               this.httpService.get(api, param1).then(async (response: any) => {
@@ -102,9 +114,13 @@ export class UserInfPage implements OnInit {
               })
             }
           })
-          this.httpService.get(api, { code: str[1] }).then(async (response: any) => {
-            this.academyChoosed = response.data;
-          })
+          if (JSON.stringify(str[1]) != "") {
+            await loading.dismiss();
+            this.httpService.get(api, { code: str[1] }).then(async (response: any) => {
+              this.academyChoosed = response.data;
+            })
+
+          }
 
 
         }
@@ -125,10 +141,7 @@ export class UserInfPage implements OnInit {
       }
       this.schoolOptions = this.school[0].length;
     })
-
-  });
   }
-
   //编辑个人信息
   updateInf() {
     // if (form.valid) {
@@ -178,19 +191,19 @@ export class UserInfPage implements OnInit {
             }
           }
         })
-      }else if(response.data.respCode == "改手机号已被使用"){
+      } else if (response.data.respCode == "改手机号已被使用") {
         const toast = await this.toast.create({
-                    message: '改手机号已被使用',
-                    duration: 2000
-                  });
-                  toast.present();
+          message: '改手机号已被使用',
+          duration: 2000
+        });
+        toast.present();
 
-      }else if(response.data.respCode == "改昵称已被使用"){
+      } else if (response.data.respCode == "改昵称已被使用") {
         const toast = await this.toast.create({
-                    message: '改昵称已被使用',
-                    duration: 2000
-                  });
-                  toast.present();
+          message: '改昵称已被使用',
+          duration: 2000
+        });
+        toast.present();
       }
     })
     // }

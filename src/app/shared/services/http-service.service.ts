@@ -13,7 +13,7 @@ export class HttpServiceService {
 
   //axios方法
   commonUrl = 'http://39.97.108.239:8080';
-  // commonUrl = 'http://g6a4gd.natappfree.cc';
+  // commonUrl = 'http://fy7u76.natappfree.cc';
   // instance = axios.create({
   //   headers: { 'token': localStorage.getItem("token") }
   // });

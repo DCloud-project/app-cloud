@@ -74,7 +74,7 @@ export class StudentCheckinPage implements OnInit {
       local: this.latitude + "," + this.longitude
     }
     const loading = await this.loadingController.create({
-      message: 'Please wait...',
+      message: '签到中...',
     });
     await loading.present();//加载
     this.httpService.post(api, params).then(async (response: any) => {
@@ -88,10 +88,15 @@ export class StudentCheckinPage implements OnInit {
     })
   }
 
-  getLocation() {
-    this.geolocation.getCurrentPosition().then((resp) => {
+  async getLocation() {
+    const loading = await this.loadingController.create({
+      message: '获取位置信息中...',
+    });
+    await loading.present();
+    this.geolocation.getCurrentPosition().then(async (resp) => {
       this.latitude = JSON.stringify(resp.coords.latitude);
       this.longitude = JSON.stringify(resp.coords.longitude);
+      await loading.dismiss();
       this.checkin();
       //获得系统参数
     }).catch((error) => {

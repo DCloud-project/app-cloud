@@ -312,64 +312,66 @@ export class DetailPage implements OnInit {
     }
   }
 
-  deleteLesson() {
-    var params = {
-      code: localStorage.getItem("lesson_no")
-    }
-    var api = '/courses';
-    this.httpService.delete(api, params).then(async (response: any) => {
-      if (response.data.respCode == 1) {
-        const alert = await this.alertController.create({
-          header: '提示',
-          message: '是否确认删除？',
-          buttons: [
-            {
-              text: '取消',
-              role: 'cancel',
-              cssClass: 'medium'
-            }, {
-              text: '确认',
-              handler: async () => {
-                const alert = await this.alertController.create({
-                  // header: '提示',
-                  message: '删除成功！',
-                  buttons: [{
-                    text: "确认",
-                    handler: () => {
+  async deleteLesson() {
+    const alert = await this.alertController.create({
+      header: '提示',
+      message: '是否确认删除？',
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          cssClass: 'medium'
+        }, {
+          text: '确认',
+          handler: async () => {
+            const alert = await this.alertController.create({
+              // header: '提示',
+              message: '删除成功！',
+              buttons: [{
+                text: "确认",
+                handler: () => {
+                  var params = {
+                    code: localStorage.getItem("lesson_no")
+                  }
+                  var api = '/courses';
+                  this.httpService.delete(api, params).then(async (response: any) => {
+                    if (response.data.respCode == 1) {
                       this.router.navigate(['/lesson-tabs/mylesson'], {queryParams: {delete: '1'}});
-                      // location.replace('/lesson-tabs');
+                  // location.replace('/lesson-tabs');
                     }
-                  }]
-                });
-                await alert.present();
-              }
-            }
-          ]
-        });
-        await alert.present();
-      }
-    })
+                  })
+                }
+              }]
+            });
+            await alert.present();
+          }
+        }
+      ]
+    });
+    await alert.present();
+    
+    
   }
 
-  outLesson() {
-    var params = {
-      code: localStorage.getItem("lesson_no"),
-      email: localStorage.getItem("email")
-    }
-    var api = '/courses';
-    this.httpService.delete(api, params).then(async (response: any) => {
-      if (response.data.respCode == 1) {
-        const alert = await this.alertController.create({
-          header: '提示',
-          message: '是否确认退出？',
-          buttons: [
-            {
-              text: '取消',
-              role: 'cancel',
-              cssClass: 'medium'
-            }, {
-              text: '确认',
-              handler: async () => {
+  async outLesson() {
+    const alert = await this.alertController.create({
+      header: '提示',
+      message: '是否确认退出？',
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          cssClass: 'medium'
+        }, {
+          text: '确认',
+          handler: async () => {
+            var params = {
+              code: localStorage.getItem("lesson_no"),
+              email: localStorage.getItem("email")
+            }
+            var api = '/courses';
+            this.httpService.delete(api, params).then(async (response: any) => {
+              if (response.data.respCode == 1) {
                 const alert = await this.alertController.create({
                   // header: '提示',
                   message: '退出成功！',
@@ -382,11 +384,14 @@ export class DetailPage implements OnInit {
                 });
                 await alert.present();
               }
-            }
-          ]
-        });
-        await alert.present();
-      }
-    })
+            })
+
+            
+          }
+        }
+      ]
+    });
+    await alert.present();
+    
   }
 }

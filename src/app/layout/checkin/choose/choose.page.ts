@@ -39,13 +39,18 @@ export class ChoosePage implements OnInit {
       }
     });
   }
-  gotoClick() {
+  async gotoClick() {
     //先请求是否有未结束班课，若有，则弹出框是否要停止
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
     var params = {
       code: localStorage.getItem("lesson_no")
     }
     var api = '/attendence/isEnd'
     this.httpService.post(api, params).then(async (response: any) => {
+      await loading.dismiss();
       if (response.data.respCode == '0') {//未结束
         const alert = await this.alertController.create({
           message: '有未结束签到，是否结束？',
@@ -83,11 +88,20 @@ export class ChoosePage implements OnInit {
     // this.router.navigateByUrl('click');
   }
 
-  getLocation() {
-    this.geolocation.getCurrentPosition().then((resp) => {
+  async getLocation() {
+    const loading = await this.loadingController.create({
+      message: '获取位置信息中..',
+    });
+    await loading.present();
+    this.geolocation.getCurrentPosition().then(async (resp) => {
       this.latitude = JSON.stringify(resp.coords.latitude);
       this.longitude = JSON.stringify(resp.coords.longitude);
+      await loading.dismiss();
       this.startCheck();
+      // if(this.latitude.length > 0 || this.longitude.length > 0){
+      //   // await loading.dismiss();
+      //   this.startCheck();
+      // }
       //获得系统参数
     }).catch((error) => {
       console.log('Error getting location', error);
@@ -118,7 +132,7 @@ export class ChoosePage implements OnInit {
   async startCheck() {
     // this.getLocation();
     const loading = await this.loadingController.create({
-      message: 'Please wait...',
+      message: '发起签到中...',
     });
     await loading.present();
     this.params = {
