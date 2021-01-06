@@ -31,7 +31,7 @@
     "@ionic-native/status-bar": "^5.27.0",
     "@ionic/angular": "^5.2.3",
     "@types/jquery": "^3.5.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cordova-android": "^8.1.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
